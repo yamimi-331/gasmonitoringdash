@@ -1,1 +1,15 @@
 /.metadata/
+# STS / Eclipse 관련
+*.iml
+.classpath
+.project
+.settings/
+Servers/
+
+# 빌드 파일
+target/
+
+# OS 및 기타
+.DS_Store
+*.log
+
