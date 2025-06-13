@@ -7,7 +7,8 @@ plt.rcParams['font.family'] = 'Gulim'
 import warnings
 warnings.filterwarnings('ignore')
 
-xls = pd.read_excel("가스공급 전처리 데이터.xlsx", sheet_name=None)
+df = pd.read_excel("data/가스공급 전처리 데이터.xlsx", sheet_name='2023')
+xls = pd.read_excel("data/가스공급 전처리 데이터.xlsx", sheet_name=None)
 
 # 각 시트별 데이터프레임을 리스트로 저장
 df_list = []
@@ -26,11 +27,11 @@ df_all.fillna(0, inplace=True)
 #                   '전남':14, '경북':15, '경남':16, '제주':17,}}, inplace=True)
 
 df_seoul = df_all[df_all['지역'] == '서울']
-sns.barplot(x='월', y='공급량', hue='지역', data=df[df['지역'] == '서울'])
+sns.barplot(x='월', y='공급량', hue='지역', data=df)
 plt.show()
 
 
-df2=pd.read_excel("기상청 전처리 데이터.xlsx", sheet_name='서울_전처리')
+df2=pd.read_excel("data/기상청 전처리 데이터.xlsx", sheet_name='서울_전처리')
 df2.fillna(0, inplace=True)
 
 df2_2023 = df2[df2['년'] == 2023]
