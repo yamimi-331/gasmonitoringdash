@@ -29,9 +29,21 @@
 	</logger>
 
 	<logger name="org.springframework.web">
-		<level value="info" />
+		<level value="WARN" />
 	</logger>
-
+	
+	<!-- 로깅 메세지 줄이기 -->
+	<logger name="org.apache.catalina">
+		<level value="WARN" />
+	</logger>
+	
+	<logger name="org.apache.coyote">
+		<level value="WARN" />
+	</logger>
+	
+	<logger name="org.apache.jasper">
+		<level value="WARN" />
+	</logger>
 	<!-- Root Logger -->
 	<root>
 		<priority value="warn" />
