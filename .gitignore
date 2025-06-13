@@ -1,0 +1,30 @@
+# Python 관련
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+venv/
+.ipynb_checkpoints/
+
+# FastAPI 정적/환경파일
+fastapi-ml/static/
+fastapi-ml/.env
+
+# Java / Spring 관련
+spring-backend/target/
+.springBeans
+.classpath
+.project
+.settings/
+*.class
+
+# 공통
+.DS_Store
+*.log
+*.tmp
+
+# IDE 관련
+.vscode/
+.idea/
