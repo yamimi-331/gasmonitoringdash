@@ -15,5 +15,6 @@
 <P>  The time on the server is ${serverTime}. </P>
 <p>pjh</p>
 <p>이동건</p>
+<a href="/test/gas/prediction">테스트</a>
 </body>
 </html>
