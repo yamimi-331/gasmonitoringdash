@@ -203,6 +203,17 @@ button:hover {
 	</c:if>
 
 
+<img src="data:image/png;base64,${visualizations.supply_prediction_timeline_xgboost}" />
+
+<img src="data:image/png;base64,${visualizations.prophet_prediction_timeline}" />
+
+<img src="data:image/png;base64,${visualizations.lstm_prediction_timeline}" />
+
+<img src="data:image/png;base64,${visualizations.regional_pattern}" />
+
+
+
+
 	<%-- 	<h2>시각화 결과</h2>
 	<c:if test="${not empty visualizations}">
 		<h3>월별 추이</h3>
