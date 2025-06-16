@@ -174,19 +174,19 @@ button:hover {
 
 		<h3>예측 비교</h3>
 		<img
-			src="data:image/png;base64,${visualizations.prediction_comparison}" />
+			src="data:image/png;base64,${visualizations.supply_prediction_timeline_xgboost}" />
 		<h3>예측 비교2</h3>
 		<img
-			src="data:image/png;base64,${visualizations.supply_prediction_timeline}" />
+			src="data:image/png;base64,${visualizations.prophet_prediction_timeline}" />
+		<h3>예측 비교3</h3>
+		<img
+			src="data:image/png;base64,${visualizations.lstm_prediction_timeline}" />
+				
 	</c:if>
 
 	<c:if test="${not empty error}">
 		<p style="color: red;">오류: ${error}</p>
 	</c:if>
-	
-	<script>
-		const ctx1 = docu
-	</script>
 	
 
 </body>
