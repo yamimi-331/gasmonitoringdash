@@ -36,17 +36,16 @@
     <option value="" disabled selected>모델을 선택하세요</option>
     <option value="XGBoost">XGBoost</option>
     <option value="Prophet">Prophet</option>
+    <option value="LSTM">LSTM</option>
+  </select>
+  <label for="period">예측 기간:</label>
+  <select id="period" name="period" required>
+  	<option value="3" selected>3개월</option>
+    <option value="6">6개월</option>
+    <option value="12">12개월</option>
   </select>
   <button type="button" onclick="fetchPrediction()">조회</button>
 </form>
-
-<!-- <p>선택된 지역: ${selectedCity}</p>
-<p>이미지 길이: ${chartImage.length()}</p>
-
-	<c:if test="${not empty chartImage}">
-		<h3>선택한 지역: ${selectedCity}</h3>
-		<img src="data:image/png;base64,${chartImage}" alt="차트 이미지" />
-	</c:if> -->
 	
 	<p>선택된 지역: <span id="selectedCityText">없음</span></p>
 	<p>선택된 모델: <span id="selectedModelText">없음</span></p>
@@ -60,6 +59,7 @@
 function fetchPrediction() {
 	const selectedCity = document.getElementById("city").value;
 	const selectedModel = document.getElementById("model").value;
+	const selectedPeriod = document.getElementById("period").value;
 	const selectedCityText = document.getElementById("selectedCityText");
 	const selectedModelText = document.getElementById("selectedModelText");
 	const localImg = document.getElementById("localChart");
@@ -86,7 +86,8 @@ function fetchPrediction() {
 	console.log("선택된 타입:", selectedCity);  // 디버깅용 로그
 	console.log("선택된 모델:", selectedModel);
 
-	const url = "http://localhost:8000/api/gas/local?city=" + encodeURIComponent(selectedCity) + "&model=" + encodeURIComponent(selectedModel);
+	const url = "http://localhost:8000/api/gas/local?city=" + encodeURIComponent(selectedCity)
+			+ "&model=" + encodeURIComponent(selectedModel) + "&period=" + encodeURIComponent(selectedPeriod);
 	fetch(url)
 		.then(response => {
 			if (!response.ok) throw new Error("네트워크 응답이 올바르지 않습니다.");
