@@ -126,6 +126,105 @@ def train_models(df):
     
     return results, X_test, y_test
 
+# 가스 공급량및 수요예측 그래프
+def plot_supply_prediction_timeline(df, results, start_date='2020-01-01', end_date=None):
+    df = df.copy()
+    df['YearMonth'] = df['Date'].dt.to_period('M').astype(str)
+
+    # XGBoost 모델 가져오기
+    model = results['XGBoost']['model']
+
+    # 기간 설정
+    if end_date is None:
+        end_date = df['Date'].max()
+    date_range = pd.date_range(start=start_date, end=end_date, freq='MS')
+    year_month_list = date_range.to_period('M').astype(str)
+
+    # 날짜 숫자 변환 & 지역 인코딩 (모델 입력 준비)
+    date_ordinals = date_range.map(pd.Timestamp.toordinal).values
+
+    # 모든 지역을 포함하는 입력 생성 (지역별로 동일한 날짜 반복)
+    locals_ = df['Local'].unique()
+    X_pred_list = []
+    pred_dates = []
+    for local in locals_:
+        local_df = df[df['Local'] == local] # 지역별 데이터 미리 필터링
+        local_encoded = local_df['Local_encoded'].iloc[0] # 지역 인코딩 값은 동일
+
+        for date_obj in date_range: # pd.Timestamp 객체로 직접 사용
+            date_ord = date_obj.toordinal()
+            year_month_str = str(date_obj.to_period('M'))
+
+            # 해당 월의 데이터가 있는지 확인
+            current_month_data = local_df[local_df['Date'].dt.to_period('M') == year_month_str]
+
+            temp_val = current_month_data['Temperature'].mean() if not current_month_data.empty else None
+            hum_val = current_month_data['Humidity'].mean() if not current_month_data.empty else None
+            pop_val = current_month_data['Population'].mean() if not current_month_data.empty else None
+
+            # 미래 예측 시점에 대한 특징 값 추정 로직 추가
+            if temp_val is None:
+                # 예시: 전년 동월의 평균 온도/습도/인구 사용
+                # 실제 데이터에 맞춰 더 정교한 로직 필요
+                prev_year_date = date_obj - pd.DateOffset(years=1)
+                prev_year_month_data = local_df[local_df['Date'].dt.to_period('M') == str(prev_year_date.to_period('M'))]
+
+                if not prev_year_month_data.empty:
+                    temp_val = prev_year_month_data['Temperature'].mean()
+                    hum_val = prev_year_month_data['Humidity'].mean()
+                    pop_val = prev_year_month_data['Population'].mean()
+                else:
+                    # 전년 동월 데이터도 없으면 전체 평균 사용 (최후의 수단)
+                    temp_val = df['Temperature'].mean()
+                    hum_val = df['Humidity'].mean()
+                    pop_val = df['Population'].mean()
+
+            X_pred_list.append([
+                date_ord,
+                local_encoded,
+                temp_val,
+                hum_val,
+                pop_val
+            ])
+            pred_dates.append((local, year_month_str))
+    X_pred = np.array(X_pred_list)
+
+    # 예측 수행
+    y_pred = model.predict(X_pred)
+
+    # 지역별 월별 예측 합산
+    pred_df = pd.DataFrame(pred_dates, columns=['Local', 'YearMonth'])
+    pred_df['GasSupply'] = y_pred
+    monthly_pred = pred_df.groupby('YearMonth')['GasSupply'].sum().reset_index()
+
+    # 실제 월별 데이터
+    monthly_actual = df.groupby('YearMonth')['GasSupply'].sum().reset_index()
+    monthly_actual['Type'] = '실제'
+    monthly_pred['Type'] = '예측'
+
+    # 실제+예측 합치기
+    plot_df = pd.concat([monthly_actual, monthly_pred])
+    plot_df = plot_df.drop_duplicates(subset=['YearMonth', 'Type'])
+    plot_df = plot_df.sort_values('YearMonth')
+
+    # 막대 그래프 그리기
+    plt.figure(figsize=(14, 6))
+    sns.barplot(data=plot_df, x='YearMonth', y='GasSupply', hue='Type', palette={'실제': 'dodgerblue', '예측': 'skyblue'})
+    plt.xticks(rotation=45)
+    plt.title('가스 공급량 (실제 vs 예측)')
+    plt.xlabel('연월')
+    plt.ylabel('가스 공급량')
+    plt.legend(title='데이터 유형')
+
+    buf = io.BytesIO()
+    plt.tight_layout()
+    plt.savefig(buf, format='png')
+    plt.close()
+    buf.seek(0)
+
+    return base64.b64encode(buf.read()).decode('utf-8')
+
+
 def create_visualizations(df, results, X_test, y_test):
     """
     다양한 시각화 생성
@@ -206,6 +305,11 @@ def get_prediction_results():
     # 시각화 생성
     visualizations = create_visualizations(df, results, X_test, y_test)
     
+    # 새 함수 호출 (예측 포함 타임라인)
+    timeline_img = plot_supply_prediction_timeline(df, results, start_date='2020-01-01', end_date='2025-07-31')
+    visualizations['supply_prediction_timeline'] = timeline_img
+
+
     # 결과 반환
     return {
         'models': {

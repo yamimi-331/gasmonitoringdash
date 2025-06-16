@@ -175,6 +175,9 @@ button:hover {
 		<h3>예측 비교</h3>
 		<img
 			src="data:image/png;base64,${visualizations.prediction_comparison}" />
+		<h3>예측 비교2</h3>
+		<img
+			src="data:image/png;base64,${visualizations.supply_prediction_timeline}" />
 	</c:if>
 
 	<c:if test="${not empty error}">
