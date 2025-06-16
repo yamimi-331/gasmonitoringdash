@@ -40,14 +40,36 @@ body {
 }
 
 .chart-box {
+	position: relative;
 	flex: 1;
-	height: 200px;
+	height: 250px;
 	background-color: #e6e6e6;
+	border-radius: 8px;
+	font-size: 1rem;
+	overflow: hidden;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border-radius: 8px;
-	font-size: 1.1rem;
+	padding: 10px;
+}
+
+.chart-box img {
+	max-width: 250px;
+	max-height: 250px;
+	object-fit: contain;
+}
+
+.chart-title {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	background-color: rgba(255, 255, 255, 0.7); /* 배경 흰색 반투명 */
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-weight: bold;
+	font-size: 1rem;
+	color: #333;
+	z-index: 1;
 }
 
 .controls {
@@ -109,9 +131,27 @@ button:hover {
 
 		<!-- 상단 차트 공간 -->
 		<div class="charts-top">
-			<div class="chart-box">차트1</div>
-			<div class="chart-box">차트2(예정)</div>
+			<div class="chart-box">
+				<c:if test="${not empty visualizations}">
+					<div class="chart-title">월별 추이</div>
+					<img src="data:image/png;base64,${visualizations.monthly_trend}" />
+				</c:if>
+			</div>
+			<div class="chart-box">
+				<c:if test="${not empty visualizations}">
+					<div class="chart-title">온도-공급량 관계</div>
+					<img src="data:image/png;base64,${visualizations.temp_supply}" />
+				</c:if>
+			</div>
+
+			<div class="chart-box">
+				<c:if test="${not empty visualizations}">
+					<div class="chart-title">지역별 패턴</div>
+					<img src="data:image/png;base64,${visualizations.regional_pattern}" />
+				</c:if>
+			</div>
 		</div>
+
 
 		<!-- 선택 컨트롤 -->
 		<div class="controls">
@@ -131,7 +171,7 @@ button:hover {
 		</div>
 
 		<!-- 하단 차트 3개 -->
-		<div class="chart-bottom">
+		<div class="charts-bottom">
 			<div class="chart-container">
 				<canvas id="chart1"></canvas>
 			</div>
@@ -143,7 +183,7 @@ button:hover {
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- 예제 코드 -->
 	<c:if test="${not empty models}">
 		<h3>XGBoost</h3>
@@ -161,7 +201,7 @@ button:hover {
 	</c:if>
 
 
-	<h2>시각화 결과</h2>
+	<%-- 	<h2>시각화 결과</h2>
 	<c:if test="${not empty visualizations}">
 		<h3>월별 추이</h3>
 		<img src="data:image/png;base64,${visualizations.monthly_trend}" />
@@ -174,20 +214,16 @@ button:hover {
 
 		<h3>예측 비교</h3>
 		<img
-			src="data:image/png;base64,${visualizations.supply_prediction_timeline_xgboost}" />
-		<h3>예측 비교2</h3>
-		<img
-			src="data:image/png;base64,${visualizations.prophet_prediction_timeline}" />
-		<h3>예측 비교3</h3>
-		<img
-			src="data:image/png;base64,${visualizations.lstm_prediction_timeline}" />
-				
-	</c:if>
+			src="data:image/png;base64,${visualizations.prediction_comparison}" /> --%>
 
 	<c:if test="${not empty error}">
 		<p style="color: red;">오류: ${error}</p>
 	</c:if>
-	
+
+	<!-- 	<script>
+		const ctx1 = docu
+	</script> -->
+
 
 </body>
 
