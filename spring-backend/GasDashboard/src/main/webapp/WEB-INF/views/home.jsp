@@ -14,7 +14,8 @@
 
 <p>pjh</p>
 <p>이동건</p>
-<a href="/test/gas/supply/2025/graph">테스트</a>
+<a href="/test/gas/supply/2025/graph">테스트</a><br>
+<a href="/test/api-supply-prediction">테스트2</a><br>
 <a href="/Dashboard">대시보드</a>
 </body>
 </html>

@@ -9,11 +9,14 @@ from sklearn.metrics import mean_squared_error, r2_score
 import xgboost as xgb
 from prophet import Prophet
 import tensorflow as tf
+import pickle
+from keras.models import load_model
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler # MinMaxScaler 추가
 import io
 import base64
+import joblib
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -534,3 +537,79 @@ def get_prediction_results():
         },
         'visualizations': visualizations
     }
+
+def plot_supply_prediction_timeline_A(df, model_type='xgboost', start_date=None, end_date=None):
+    """
+    저장된 모델을 불러와서 특정 구간의 가스 공급량을 예측하고 시각화합니다.
+    """
+    df = df.copy()
+    df['Date'] = pd.to_datetime(df['Date'])
+    df['date_ordinal'] = df['Date'].map(pd.Timestamp.toordinal)
+
+    if 'Local' in df.columns:
+        df['Local_encoded'] = df['Local'].astype('category').cat.codes
+    else:
+        df['Local_encoded'] = 0
+
+    # 날짜 필터
+    if start_date:
+        df = df[df['Date'] >= pd.to_datetime(start_date)]
+    if end_date:
+        df = df[df['Date'] <= pd.to_datetime(end_date)]
+
+    # 예측 수행
+    if model_type == 'xgboost':
+        model = joblib.load('models/xgb_model.pkl')
+        X = df[['date_ordinal', 'Local_encoded', 'Temperature', 'Humidity', 'Population']]
+        df['Predicted'] = model.predict(X)
+
+    elif model_type == 'prophet':
+        with open('models/prophet_model.pkl', 'rb') as f:
+            model = pickle.load(f)
+        future = df[['Date']].rename(columns={"Date": "ds"})
+        forecast = model.predict(future)
+        df = df.merge(forecast[['ds', 'yhat']], left_on='Date', right_on='ds', how='left')
+        df['Predicted'] = df['yhat']
+
+    elif model_type == 'lstm':
+        model = load_model('models/lstm_model.h5')
+        scaler_X = joblib.load('models/lstm_scaler_X.pkl')
+        scaler_y = joblib.load('models/lstm_scaler_y.pkl')
+
+        features = ['date_ordinal', 'Local_encoded', 'Temperature', 'Humidity', 'Population']
+        seq_len = 12
+        X_scaled = scaler_X.transform(df[features])
+
+        X_seq = []
+        for i in range(seq_len, len(X_scaled)):
+            X_seq.append(X_scaled[i - seq_len:i])
+        X_seq = np.array(X_seq)
+
+        y_pred = model.predict(X_seq)
+        y_pred_inv = scaler_y.inverse_transform(y_pred)
+        df = df.iloc[seq_len:].copy()  # 시퀀스 자른 만큼 자르기
+        df['Predicted'] = y_pred_inv.flatten()
+
+    else:
+        raise ValueError("지원하지 않는 모델입니다: 'xgboost', 'prophet', 'lstm' 중 선택하세요.")
+
+    # 예측 결과 그리기 (이미지 생성용)
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.plot(df['Date'], df['GasSupply'], label='실제 공급량', marker='o')
+    ax.plot(df['Date'], df['Predicted'], label='예측값', linestyle='--')
+    ax.set_title(f'{model_type.upper()} 모델 - 가스 공급량 예측')
+    ax.set_xlabel('날짜')
+    ax.set_ylabel('공급량')
+    ax.legend()
+    ax.grid(True)
+    plt.tight_layout()
+
+    # 이미지 버퍼에 저장
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    img_base64 = base64.b64encode(buf.read()).decode('utf-8')
+    buf.close()
+    plt.close(fig)  # 메모리 누수 방지
+
+    return {"image_base64": f"data:image/png;base64,{img_base64}"}

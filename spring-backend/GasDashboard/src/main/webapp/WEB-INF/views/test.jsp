@@ -66,5 +66,8 @@
     <c:if test="${empty base64Image2025 && empty error}">
         <p>그래프 이미지를 불러올 수 없습니다. FastAPI 서버를 확인해주세요.</p>
     </c:if>
+    
+    <img src="${newImage}" alt="예측 그래프" />
+    
 </body>
 </html>
