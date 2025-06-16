@@ -11,6 +11,7 @@ from prophet import Prophet
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
+from sklearn.preprocessing import LabelEncoder
 import io
 import base64
 import warnings
@@ -27,18 +28,18 @@ def load_and_preprocess_data():
     - 시계열 데이터 정렬
     """
     # 데이터 로드
-    df = pd.read_excel("./data/GasData.xlsx")
+    df = pd.read_excel("./data/TotalData3.xlsx")
     
     # 결측치 처리
     df.fillna(0, inplace=True)
     
     # 지역 코드를 숫자로 변환 (R01~R17)
-    region_mapping = {f'R{i:02d}': i for i in range(1, 18)}
-    df['Local'] = df['Local'].map(region_mapping)
+    # region_mapping = {f'R{i:02d}': i for i in range(1, 18)}
+    # df['Local'] = df['Local'].map(region_mapping)
     
-    # 날짜 컬럼 생성 및 정렬
-    df['date'] = pd.to_datetime(df[['Year', 'Month']].assign(day=1))
-    df = df.sort_values('date')
+    # 날짜 컬럼 정렬
+    df['Date'] = pd.to_datetime(df['Date'])  # 엑셀에서 날짜로 합친 경우
+    df = df.sort_values('Date')
     
     return df
 
@@ -49,7 +50,7 @@ def prepare_time_series_data(df):
     - LSTM 모델용 시퀀스 데이터 생성
     """
     # Prophet용 데이터 준비
-    prophet_df = df.groupby('date')['gas_supply_amount'].sum().reset_index()
+    prophet_df = df.groupby('Date')['GasSupply'].sum().reset_index()
     prophet_df.columns = ['ds', 'y']
     
     # LSTM용 데이터 준비
@@ -60,8 +61,8 @@ def prepare_time_series_data(df):
     for region in df['Local'].unique():
         region_data = df[df['Local'] == region]
         for i in range(len(region_data) - sequence_length):
-            X_lstm.append(region_data[['temperature', 'humidity', 'num_occupants']].iloc[i:i+sequence_length].values)
-            y_lstm.append(region_data['gas_supply_amount'].iloc[i+sequence_length])
+            X_lstm.append(region_data[['Temperature', 'Humidity', 'Population']].iloc[i:i+sequence_length].values)
+            y_lstm.append(region_data['GasSupply'].iloc[i+sequence_length])
     
     return prophet_df, np.array(X_lstm), np.array(y_lstm)
 
@@ -72,9 +73,16 @@ def train_models(df):
     - Prophet: 시계열 특성을 고려한 예측
     - LSTM: 시계열 패턴 학습
     """
-    # XGBoost 모델 학습
-    X = df[['Year', 'Month', 'Local', 'temperature', 'humidity', 'num_occupants']]
-    y = df['gas_supply_amount']
+     # 날짜 숫자화
+    df['date_ordinal'] = df['Date'].map(pd.Timestamp.toordinal)
+
+    # 지역 문자열 인코딩
+    le = LabelEncoder()
+    df['Local_encoded'] = le.fit_transform(df['Local'])
+
+    # X, y 정의
+    X = df[['date_ordinal', 'Local_encoded', 'Temperature', 'Humidity', 'Population']]
+    y = df['GasSupply']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     xgb_model = xgb.XGBRegressor(
@@ -130,7 +138,8 @@ def create_visualizations(df, results, X_test, y_test):
     
     # 1. 월별 평균 가스 공급량 추이
     plt.figure(figsize=(12, 6))
-    monthly_avg = df.groupby('Month')['gas_supply_amount'].mean()
+    df['Month'] = df['Date'].dt.month  # date에서 월 정보 추출
+    monthly_avg = df.groupby('Month')['GasSupply'].mean()
     sns.lineplot(x=monthly_avg.index, y=monthly_avg.values)
     plt.title('월별 평균 가스 공급량 추이')
     plt.xlabel('월')
@@ -143,7 +152,7 @@ def create_visualizations(df, results, X_test, y_test):
     
     # 2. 온도와 가스 공급량의 관계
     plt.figure(figsize=(12, 6))
-    sns.scatterplot(data=df, x='temperature', y='gas_supply_amount', hue='Local')
+    sns.scatterplot(data=df, x='Temperature', y='GasSupply', hue='Local')
     plt.title('온도와 가스 공급량의 관계 (지역별)')
     plt.xlabel('온도')
     plt.ylabel('가스 공급량')
@@ -155,7 +164,7 @@ def create_visualizations(df, results, X_test, y_test):
     
     # 3. 지역별 가스 공급량 패턴
     plt.figure(figsize=(12, 6))
-    sns.boxplot(data=df, x='Local', y='gas_supply_amount')
+    sns.boxplot(data=df, x='Local', y='GasSupply')
     plt.title('지역별 가스 공급량 분포')
     plt.xlabel('지역 코드')
     plt.ylabel('가스 공급량')
