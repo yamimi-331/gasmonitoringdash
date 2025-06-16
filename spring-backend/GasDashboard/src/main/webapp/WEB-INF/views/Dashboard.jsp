@@ -214,7 +214,7 @@ button:hover {
 
 
 
-	<%-- 	<h2>시각화 결과</h2>
+		<h2>시각화 결과</h2>
 	<c:if test="${not empty visualizations}">
 		<h3>월별 추이</h3>
 		<img src="data:image/png;base64,${visualizations.monthly_trend}" />
@@ -227,8 +227,8 @@ button:hover {
 
 		<h3>예측 비교</h3>
 		<img
-			src="data:image/png;base64,${visualizations.prediction_comparison}" /> --%>
-
+			src="data:image/png;base64,${visualizations.prediction_comparison}" />
+</c:if>
 	<c:if test="${not empty error}">
 		<p style="color: red;">오류: ${error}</p>
 	</c:if>
