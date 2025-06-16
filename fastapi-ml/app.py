@@ -2,6 +2,7 @@ from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 # from gas_prediction import get_prediction_results
 from pjh import get_local_result
+from functionSett import get_total_supply_by_region_2025
 
 app = FastAPI()
 
@@ -27,5 +28,14 @@ async def get_local(city: str = Query(None)):
     try:
         results = get_local_result(city)
         return results
+    except Exception as e:
+        return {"error": str(e)}
+    
+
+@app.get("/api/gas/supply/2025")
+async def get_supply_by_region_2025():
+    try:
+        result = get_total_supply_by_region_2025()
+        return result
     except Exception as e:
         return {"error": str(e)}
