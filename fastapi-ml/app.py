@@ -1,6 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
-from gas_prediction import get_prediction_results
+# from gas_prediction import get_prediction_results
+from pjh import get_local_result
 
 app = FastAPI()
 
@@ -13,10 +14,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# @app.get("/api/gas/prediction")
+# async def get_gas_prediction():
+#     try:
+#         results = get_prediction_results()
+#         return results
+#     except Exception as e:
+#         return {"error": str(e)}
+    
 @app.get("/api/gas/prediction")
-async def get_gas_prediction():
+async def get_local(city: str = Query(None)):
     try:
-        results = get_prediction_results()
+        results = get_local_result(city)
         return results
     except Exception as e:
         return {"error": str(e)}

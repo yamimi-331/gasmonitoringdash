@@ -33,49 +33,38 @@ def load_and_preprocess_data():
     
     return df
 
-def create_visualizations(df, selected_local = None):
-    visualizations = {}
+def get_local_result(selected_local=None):
+    print(f"Input selected_local: {selected_local}")
+    df = load_and_preprocess_data()
     
-    # 지역 선택: 전체 or 특정 지역
+    region_mapping = {"서울": "서울특별시", "경기도": "경기도"}
+    selected_code = None
     if selected_local:
-        region_mapping = {"서울": "R02", "경기도": "R04"}
         selected_code = region_mapping.get(selected_local)
-        df = df[df['Local'] == selected_code]
-        if df.empty:
-            print(f"선택한 지역 '{selected_local}'에 대한 데이터가 없습니다.")
-            return visualizations  # 빈 결과 반환
-    
-    # 월별 평균 가스 공급량 추이
-    plt.figure(figsize=(12, 6))
-    df['Month'] = df['Date'].dt.month  # date에서 월 정보 추출
+        print(f"Mapped code: {selected_code}")
+        if selected_code:
+            df = df[df['Local'] == selected_code]
+        else:
+            return {"error": f"지역 '{selected_local}'에 대한 데이터가 없습니다."}
+
+    print(f"Filtered data shape: {df.shape}")
+    if df.empty:
+        return {"error": f"'{selected_local}' 지역에 대한 데이터가 없습니다."}
+
+    plt.figure(figsize=(10, 5))
+    df['Month'] = df['Date'].dt.month
     monthly_avg = df.groupby('Month')['GasSupply'].mean()
     sns.lineplot(x=monthly_avg.index, y=monthly_avg.values)
-    plt.title(f'[{selected_local}] 월별 평균 가스 공급량 추이' if selected_local else '월별 평균 가스 공급량 추이')
-    plt.xlabel('월')
-    plt.ylabel('평균 가스 공급량')
+    plt.title(f"{selected_local} 월별 평균 가스 공급량 추이")
+    plt.xlabel("월")
+    plt.ylabel("평균 가스 공급량")
+    
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     plt.close()
     buf.seek(0)
-    visualizations['monthly_trend2'] = base64.b64encode(buf.read()).decode('utf-8')
-
-    return visualizations
-
-def get_prediction_results():
-    df = load_and_preprocess_data()
     
-    # 지역 리스트 가져오기 (중복 제거, 정렬)
-    region_list = sorted(["서울", "경기도"])
-    selected_local = st.selectbox("지역 선택", ["전체"] + region_list)
+    img_base64 = base64.b64encode(buf.read()).decode('utf-8')
     
-    # 전체 선택 시 None 전달
-    if selected_local == "전체":
-        selected_local = None
-    
-    # 시각화 생성
-    visualizations = create_visualizations(df, selected_local)
-    
-    # 이미지 출력
-    if 'monthly_trend2' in visualizations:
-        img_data = visualizations['monthly_trend2']
-        st.image(base64.b64decode(img_data))
+    return {"chartImage": img_base64,
+            "selected_local": selected_local}
