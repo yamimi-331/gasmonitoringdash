@@ -81,30 +81,61 @@ def get_total_supply_by_region_2025():
         "data": region_supply.to_dict(orient="records")
     }
 
-# 이 함수를 FastAPI 엔드포인트에서 호출합니다.
-# 예를 들어:
-# from fastapi import FastAPI, Response
-# from fastapi.responses import HTMLResponse
-#
-# app = FastAPI()
-#
-# @app.get("/api/gas/supply/2025_graph", response_class=HTMLResponse)
-# async def get_2025_regional_supply_graph():
-#     result = get_total_supply_by_region_2025()
-#     if "plot_image_base64" in result:
-#         html_content = f"""
-#         <html>
-#             <head>
-#                 <title>2025년 지역별 가스 공급량</title>
-#             </head>
-#             <body>
-#                 <h1>2025년 지역별 가스 공급량 합계</h1>
-#                 <img src="data:image/png;base64,{result['plot_image_base64']}" alt="2025 Regional Gas Supply">
-#                 <h2>데이터:</h2>
-#                 <pre>{json.dumps(result['data'], indent=2, ensure_ascii=False)}</pre>
-#             </body>
-#         </html>
-#         """
-#         return HTMLResponse(content=html_content)
-#     else:
-#         return {"error": "그래프를 생성할 수 없습니다."}
+def get_local_result(selected_local=None):
+    """
+    각 지역의 월별 도시가스 공급량
+    """
+    df = load_and_preprocess_data()
+    
+    region_mapping = {"서울": "서울특별시", "인천": "인천광역시", "경기": "경기도", "부산": "부산광역시", 
+                      "대구": "대구광역시", "광주": "광주광역시", "대전": "대전광역시", "울산": "울산광역시", 
+                      "세종": "세종특별자치시", "강원": "강원특별자치도", "충북": "충청북도", "충남": "충청남도", 
+                      "전북": "전북특별자치도", "전남": "전라남도", "경북": "경상북도", "경남": "경상남도", 
+                      "제주": "제주특별자치도", "전국": "전국"}
+    selected_code = region_mapping.get(selected_local)
+    if selected_local and selected_code:
+        df = df[df['Local'] == selected_code]
+    elif selected_local and not selected_code:
+        return {"error": f"지역 '{selected_local}'에 대한 데이터가 없습니다."}
+
+    if df.empty:
+        return {"error": f"'{selected_local}' 지역에 대한 데이터가 없습니다."}
+
+    plt.figure(figsize=(10, 5))
+    df['Month'] = df['Date'].dt.month
+    monthly_avg = df.groupby('Month')['GasSupply'].mean()
+    sns.lineplot(x=monthly_avg.index, y=monthly_avg.values)
+    plt.title(f"{selected_local} 월별 평균 가스 공급량 추이")
+    plt.xlabel("월")
+    plt.ylabel("평균 가스 공급량")
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close()
+    buf.seek(0)
+    local_chart = base64.b64encode(buf.read()).decode('utf-8')
+    
+    return {"chartImage": local_chart,
+            "selected_local": selected_local}
+
+
+def load_and_preprocess_data():
+    """
+    데이터 로드 및 전처리 함수
+    - 결측치 처리
+    - 시계열 데이터 정렬
+    """
+    # 데이터 로드
+    df = pd.read_excel("./data/TotalData3.xlsx")
+    
+    # 결측치 처리
+    df.fillna(0, inplace=True)
+    
+    # 지역 문자열 인코딩 (전역적으로 사용하도록 여기에 추가)
+    le = LabelEncoder()
+    df['Local_encoded'] = le.fit_transform(df['Local'])
+
+    # 날짜 컬럼 정렬
+    df['Date'] = pd.to_datetime(df['Date'])  # 엑셀에서 날짜로 합친 경우
+    df = df.sort_values('Date')
+    
+    return df

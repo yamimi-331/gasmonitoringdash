@@ -31,6 +31,14 @@ async def get_local(city: str = Query(None)):
     except Exception as e:
         return {"error": str(e)}
     
+@app.get("/api/gas/local")
+async def get_local(city: str = Query(None), model: str = Query(None)):
+    try:
+        results = get_local_result(city, model)
+        return results
+    except Exception as e:
+        return {"error": str(e)}
+    
 
 @app.get("/api/gas/supply/2025")
 async def get_supply_by_region_2025():

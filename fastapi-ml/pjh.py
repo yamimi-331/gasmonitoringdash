@@ -17,24 +17,13 @@ import base64
 import warnings
 warnings.filterwarnings('ignore')
 import streamlit as st
+from shj import load_and_preprocess_data, train_models, plot_supply_prediction_timeline, plot_prophet_prediction, predict_lstm_future, plot_lstm_prediction
+
 
 # 한글 폰트 설정
 plt.rcParams['font.family'] = 'Gulim'
 
-def load_and_preprocess_data():
-    # 데이터 로드
-    df = pd.read_excel("./data/TotalData3.xlsx")
-    
-    # 결측치 처리
-    df.fillna(0, inplace=True)
-
-    df['Date'] = pd.to_datetime(df['Date'])  # 엑셀에서 날짜로 합친 경우
-    df = df.sort_values('Date')
-    
-    return df
-
-def get_local_result(selected_local=None):
-    print(f"Input selected_local: {selected_local}")
+def get_local_result(selected_local=None, selected_model=None):
     df = load_and_preprocess_data()
     
     region_mapping = {"서울": "서울특별시", "인천": "인천광역시", "경기": "경기도", "부산": "부산광역시", 
@@ -42,16 +31,12 @@ def get_local_result(selected_local=None):
                       "세종": "세종특별자치시", "강원": "강원특별자치도", "충북": "충청북도", "충남": "충청남도", 
                       "전북": "전북특별자치도", "전남": "전라남도", "경북": "경상북도", "경남": "경상남도", 
                       "제주": "제주특별자치도", "전국": "전국"}
-    selected_code = None
-    if selected_local:
-        selected_code = region_mapping.get(selected_local)
-        print(f"Mapped code: {selected_code}")
-        if selected_code:
-            df = df[df['Local'] == selected_code]
-        else:
-            return {"error": f"지역 '{selected_local}'에 대한 데이터가 없습니다."}
+    selected_code = region_mapping.get(selected_local)
+    if selected_local and selected_code:
+        df = df[df['Local'] == selected_code]
+    elif selected_local and not selected_code:
+        return {"error": f"지역 '{selected_local}'에 대한 데이터가 없습니다."}
 
-    print(f"Filtered data shape: {df.shape}")
     if df.empty:
         return {"error": f"'{selected_local}' 지역에 대한 데이터가 없습니다."}
 
@@ -62,13 +47,45 @@ def get_local_result(selected_local=None):
     plt.title(f"{selected_local} 월별 평균 가스 공급량 추이")
     plt.xlabel("월")
     plt.ylabel("평균 가스 공급량")
-    
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     plt.close()
     buf.seek(0)
-    
-    img_base64 = base64.b64encode(buf.read()).decode('utf-8')
-    
-    return {"chartImage": img_base64,
-            "selected_local": selected_local}
+    local_chart = base64.b64encode(buf.read()).decode('utf-8')
+
+    full_df = load_and_preprocess_data()
+    results = train_models(full_df)
+
+    if selected_model == "XGBoost":
+        model_chart = plot_supply_prediction_timeline(df, results, start_date='2020-01-01', end_date='2025-07-01')
+
+    elif selected_model == "Prophet":
+        prophet_model = results['Prophet']['model']
+        prophet_df = results['Prophet']['prophet_df']
+        model_chart = plot_prophet_prediction(prophet_model, prophet_df, forecast_periods=24)
+
+    elif selected_model == "LSTM":
+        lstm_model = results['LSTM']['model']
+        original_df = results['LSTM']['original_df']
+        scaler_X = results['LSTM']['scaler_X']
+        scaler_y = results['LSTM']['scaler_y']
+        sequence_len = results['LSTM']['sequence_length']
+
+        if selected_code:
+            from sklearn.preprocessing import LabelEncoder
+            le = LabelEncoder()
+            original_df['Local_encoded'] = le.fit_transform(original_df['Local'])
+            target_code = le.transform([selected_code])[0]
+        else:
+            target_code = None  # 전국
+
+        pred_df = predict_lstm_future(lstm_model, original_df, scaler_X, scaler_y, sequence_len, forecast_periods=12, target_region_encoded=target_code)
+        model_chart = plot_lstm_prediction(original_df, pred_df)
+
+    else:
+        return {"error": f"'{selected_model}' 분석 모델은 지원되지 않습니다."}
+
+    return {"localChartImage": local_chart,
+            "modelChartImage": model_chart,
+            "selected_local": selected_local,
+            "selected_model": selected_model}
