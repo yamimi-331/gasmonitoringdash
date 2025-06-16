@@ -46,7 +46,7 @@ body {
 	background-color: #e6e6e6;
 	border-radius: 8px;
 	font-size: 1rem;
-	overflow: hidden;
+	overflow: visible; /* 변경 */
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -54,9 +54,11 @@ body {
 }
 
 .chart-box img {
-	max-width: 250px;
-	max-height: 250px;
+	max-width: 400px;
+	max-height: 400px;
 	object-fit: contain;
+	position: relative;
+	z-index: 0; /* 텍스트보다 뒤로 */
 }
 
 .chart-title {
@@ -69,7 +71,7 @@ body {
 	font-weight: bold;
 	font-size: 1rem;
 	color: #333;
-	z-index: 1;
+	z-index: 2; /* 이미지를 덮도록 */
 }
 
 .controls {
@@ -101,7 +103,7 @@ body {
 	padding: 10px;
 }
 
-canvas {
+ canvas {
 	width: 100%;
 	height: 100%;
 }
@@ -144,12 +146,12 @@ button:hover {
 				</c:if>
 			</div>
 
-			<div class="chart-box">
+		<%-- 	<div class="chart-box">
 				<c:if test="${not empty visualizations}">
 					<div class="chart-title">지역별 패턴</div>
 					<img src="data:image/png;base64,${visualizations.regional_pattern}" />
 				</c:if>
-			</div>
+			</div> --%>
 		</div>
 
 
@@ -185,7 +187,7 @@ button:hover {
 	</div>
 
 	<!-- 예제 코드 -->
-	<c:if test="${not empty models}">
+	<c:if test="${not empty models}" >
 		<h3>XGBoost</h3>
 		<ul>
 			<li>MSE: ${models.XGBoost.mse}</li>
