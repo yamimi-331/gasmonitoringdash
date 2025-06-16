@@ -12,9 +12,9 @@
 	Hello world!  
 </h1>
 
-<P>  The time on the server is ${serverTime}. </P>
 <p>pjh</p>
 <p>이동건</p>
 <a href="/test/gas/prediction">테스트</a>
+<a href="/Dashboard">대시보드</a>
 </body>
 </html>
