@@ -48,6 +48,23 @@
 	<c:if test="${not empty error}">
 		<p style="color: red;">오류: ${error}</p>
 	</c:if>
+	
+	 <h1>2025년 지역별 가스 공급량 그래프</h1>
 
+    <c:if test="${not empty error}">
+        <p class="error">오류: ${error}</p>
+    </c:if>
+
+    <c:if test="${not empty message}">
+        <p class="message">메시지: ${message}</p>
+    </c:if>
+
+    <c:if test="${not empty base64Image2025}">
+        <%-- base64 인코딩된 이미지 문자열을 직접 사용합니다. --%>
+        <img src="data:image/png;base64,${base64Image2025}" alt="2025 Regional Gas Supply Bar Chart">
+    </c:if>
+    <c:if test="${empty base64Image2025 && empty error}">
+        <p>그래프 이미지를 불러올 수 없습니다. FastAPI 서버를 확인해주세요.</p>
+    </c:if>
 </body>
 </html>

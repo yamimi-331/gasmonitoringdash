@@ -12,24 +12,26 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/test")
 public class TestController {
 	private final RestTemplate restTemplate = new RestTemplate();
-	private final String fastApiUrl = "http://localhost:8000/api/gas/prediction";
+	private final String fastApi2025Url = "http://localhost:8000/api/gas/supply/2025";
 
-	@GetMapping("/gas/prediction")
+	@GetMapping("/gas/supply/2025/graph")
 	public String getGasPrediction(Model model) {
 		try {
-			// FastAPI 응답 JSON을 Map 형태로 파싱
-			Map<String, Object> response = restTemplate.getForObject(fastApiUrl, Map.class);
+            // FastAPI 응답 (JSON 형태의 Map)을 파싱
+            Map<String, Object> response = restTemplate.getForObject(fastApi2025Url, Map.class);
 
-			if (response != null && response.containsKey("models") && response.containsKey("visualizations")) {
-				model.addAttribute("models", response.get("models"));
-				model.addAttribute("visualizations", response.get("visualizations"));
-			} else {
-				model.addAttribute("error", "FastAPI 응답에 데이터가 없습니다.");
-			}
-		} catch (Exception e) {
-			model.addAttribute("error", "FastAPI 요청 실패: " + e.getMessage());
-		}
+            if (response != null && response.containsKey("plot_image_base64")) {
+                // base64 이미지 문자열을 추출하여 모델에 추가
+                String base64Image = (String) response.get("plot_image_base64");
+                model.addAttribute("base64Image2025", base64Image); // JSP에서 사용할 이름
+                model.addAttribute("message", response.get("message")); // 메시지도 함께 전달
+            } else {
+                model.addAttribute("error", "FastAPI 응답에 이미지 데이터가 없습니다.");
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", "FastAPI 요청 실패: " + e.getMessage());
+        }
 
-		return "test"; // gas_prediction.jsp
+		return "test"; 
 	}
 }
