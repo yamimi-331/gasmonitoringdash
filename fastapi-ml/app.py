@@ -34,9 +34,9 @@ async def get_local(city: str = Query(None)):
         return {"error": str(e)}
     
 @app.get("/api/gas/local")
-async def get_local(city: str = Query(None), model: str = Query(None)):
+async def get_local(city: str = Query(None), model: str = Query(None), period: int = Query(3)):
     try:
-        results = get_local_result(city, model)
+        results = get_local_result(city, model, period)
         return results
     except Exception as e:
         return {"error": str(e)}

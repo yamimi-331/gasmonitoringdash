@@ -23,7 +23,7 @@ from shj import load_and_preprocess_data, train_models, plot_supply_prediction_t
 # 한글 폰트 설정
 plt.rcParams['font.family'] = 'Gulim'
 
-def get_local_result(selected_local=None, selected_model=None):
+def get_local_result(selected_local=None, selected_model=None, period=3):
     df = load_and_preprocess_data()
     
     region_mapping = {"서울": "서울특별시", "인천": "인천광역시", "경기": "경기도", "부산": "부산광역시", 
@@ -57,12 +57,13 @@ def get_local_result(selected_local=None, selected_model=None):
     results = train_models(full_df)
 
     if selected_model == "XGBoost":
-        model_chart = plot_supply_prediction_timeline(df, results, start_date='2020-01-01', end_date='2025-07-01')
+        end_date = (pd.to_datetime('2025-03-01') + pd.DateOffset(months=period)).strftime('%Y-%m-%d')
+        model_chart = plot_supply_prediction_timeline(df, results, start_date='2024-01-01', end_date=end_date)
 
     elif selected_model == "Prophet":
         prophet_model = results['Prophet']['model']
         prophet_df = results['Prophet']['prophet_df']
-        model_chart = plot_prophet_prediction(prophet_model, prophet_df, forecast_periods=24)
+        model_chart = plot_prophet_prediction(prophet_model, prophet_df, forecast_periods=period)
 
     elif selected_model == "LSTM":
         lstm_model = results['LSTM']['model']
@@ -79,8 +80,8 @@ def get_local_result(selected_local=None, selected_model=None):
         else:
             target_code = None  # 전국
 
-        pred_df = predict_lstm_future(lstm_model, original_df, scaler_X, scaler_y, sequence_len, forecast_periods=12, target_region_encoded=target_code)
-        model_chart = plot_lstm_prediction(original_df, pred_df)
+        pred_df = predict_lstm_future(lstm_model, original_df, scaler_X, scaler_y, sequence_len, forecast_periods=period, target_region_encoded=target_code)
+        model_chart = plot_lstm_prediction(original_df, pred_df, forecast_periods=period)
 
     else:
         return {"error": f"'{selected_model}' 분석 모델은 지원되지 않습니다."}
