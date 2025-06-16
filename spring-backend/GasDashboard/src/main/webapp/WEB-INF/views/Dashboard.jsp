@@ -15,106 +15,133 @@ body {
 }
 
 .dashboard {
-	max-width: 1200px;
+	width: 70vw;
 	margin: 40px auto;
-	padding: 20px;
-	background-color: #fff;
+	padding: 30px;
+	background-color: #1e1e2f;
 	border-radius: 12px;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0, 1);
+	box-sizing: border-box;
 }
 
 .header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 20px;
+	margin-bottom: 30px;
 }
 
 .header h2 {
+	color: white;
+	margin: 0;
+	font-size: 1.8rem;
 	margin: 0;
 }
 
 .charts-top {
 	display: flex;
-	gap: 20px;
+	gap: 35px;
+	margin-bottom: 40px;
+	flex-wrap: wrap;
+	justify-content: center;
 }
 
 .chart-box {
 	position: relative;
-	flex: 1;
-	height: 250px;
+	width: 45%; /* ✅ 한 줄에 2개 배치 (가로 여백 포함) */
+	flex: 1 1 300px;
+	aspect-ratio: 4/2.2;
 	background-color: #e6e6e6;
-	border-radius: 8px;
-	font-size: 1rem;
-	overflow: visible; /* 변경 */
+	border-radius: 12px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 10px;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 .chart-box img {
-	max-width: 400px;
-	max-height: 400px;
-	object-fit: contain;
-	position: relative;
-	z-index: 0; /* 텍스트보다 뒤로 */
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 10px;
+	box-sizing: border-box;
 }
 
 .chart-title {
 	position: absolute;
-	top: 10px;
-	left: 10px;
+	top: 12px;
+	left: 12px;
 	background-color: rgba(255, 255, 255, 0.7); /* 배경 흰색 반투명 */
-	padding: 4px 8px;
-	border-radius: 4px;
+	padding: 6px 12px;
+	border-radius: 6px;
 	font-weight: bold;
-	font-size: 1rem;
+	font-size: 1.1rem;
 	color: #333;
 	z-index: 2; /* 이미지를 덮도록 */
 }
 
+/* 드롭다운 컨트롤 */
 .controls {
-	margin-bottom: 20px;
+	margin-bottom: 30px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 20px;
 }
 
 .controls label {
-	margin-right: 8px;
+	color: white;
+	font-weight: 500;
 }
 
 .controls select {
-	padding: 6px 10px;
-	border-radius: 6px;
+	padding: 8px 14px;
+	border-radius: 8px;
 	border: 1px solid #ccc;
+	font-size: 1rem;
 }
 
+/* 하단 차트 컨테이너 */
 .charts-bottom {
 	display: flex;
 	gap: 20px;
 	flex-wrap: wrap;
+	justify-content: center;
 }
 
 .chart-container {
-	flex: 1;
-	min-width: 300px;
-	width: 300px;
+	flex: 1 1 400px;
+	min-width: 500px;
+	aspect-ratio: 1.5/1;
 	background-color: #f0f0f0;
 	border-radius: 10px;
-	padding: 10px;
+	padding: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	background-color: #f0f0f0;
 }
 
- canvas {
+.chart-container img {
 	width: 100%;
 	height: 100%;
+	object-fit: cover;
+	border-radius: 10px;
+	box-sizing: border-box;
 }
 
+/* 버튼 스타일 */
 button {
-	padding: 6px 14px;
+	padding: 8px 18px;
 	background-color: #007bff;
 	color: white;
 	border: none;
-	border-radius: 6px;
+	border-radius: 8px;
 	cursor: pointer;
+	font-size: 1rem;
+	tramsition: background-color 0.3s;
 }
 
 button:hover {
@@ -146,7 +173,7 @@ button:hover {
 				</c:if>
 			</div>
 
-		<%-- 	<div class="chart-box">
+			<%-- 	<div class="chart-box">
 				<c:if test="${not empty visualizations}">
 					<div class="chart-title">지역별 패턴</div>
 					<img src="data:image/png;base64,${visualizations.regional_pattern}" />
@@ -175,19 +202,24 @@ button:hover {
 		<!-- 하단 차트 3개 -->
 		<div class="charts-bottom">
 			<div class="chart-container">
-				<canvas id="chart1"></canvas>
+				<img
+					src="data:image/png;base64,${visualizations.supply_prediction_timeline_xgboost}" />
 			</div>
 			<div class="chart-container">
-				<canvas id="chart2"></canvas>
+				<img
+					src="data:image/png;base64,${visualizations.lstm_prediction_timeline}" />
 			</div>
 			<div class="chart-container">
-				<canvas id="chart3"></canvas>
+				<img src="data:image/png;base64,${visualizations.regional_pattern}" />
+			</div>
+				<div class="chart-container">
+				<img src= "data:image/png;base64,${visualizations.prophet_prediction_timeline}"/>
 			</div>
 		</div>
 	</div>
 
 	<!-- 예제 코드 -->
-	<c:if test="${not empty models}" >
+	<%-- 	<c:if test="${not empty models}">
 		<h3>XGBoost</h3>
 		<ul>
 			<li>MSE: ${models.XGBoost.mse}</li>
@@ -201,18 +233,7 @@ button:hover {
 		<h3>LSTM</h3>
 		<p>${models.LSTM.model}</p>
 	</c:if>
-
-
-<img src="data:image/png;base64,${visualizations.supply_prediction_timeline_xgboost}" />
-
-<img src="data:image/png;base64,${visualizations.prophet_prediction_timeline}" />
-
-<img src="data:image/png;base64,${visualizations.lstm_prediction_timeline}" />
-
-<img src="data:image/png;base64,${visualizations.regional_pattern}" />
-
-
-
+ --%>
 
 		<h2>시각화 결과</h2>
 	<c:if test="${not empty visualizations}">
@@ -226,12 +247,16 @@ button:hover {
 		<img src="data:image/png;base64,${visualizations.regional_pattern}" />
 
 		<h3>예측 비교</h3>
-		<img
+		<img src="data:image/png;base64,${visualizations.prediction_comparison}" /> 
+	</c:if>
+
+	<%-- 	<c:if test="${not empty error}">
+
 			src="data:image/png;base64,${visualizations.prediction_comparison}" />
 </c:if>
 	<c:if test="${not empty error}">
 		<p style="color: red;">오류: ${error}</p>
-	</c:if>
+	</c:if> --%>
 
 	<!-- 	<script>
 		const ctx1 = docu
