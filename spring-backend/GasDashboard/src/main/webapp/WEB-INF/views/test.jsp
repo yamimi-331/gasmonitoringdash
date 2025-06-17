@@ -9,65 +9,76 @@
 </head>
 <body>
 
-	<c:if test="${not empty models}">
-		<h3>XGBoost</h3>
-		<ul>
-			<li>MSE: ${models.XGBoost.mse}</li>
-			<li>RMSE: ${models.XGBoost.rmse}</li>
-			<li>R²: ${models.XGBoost.r2}</li>
-		</ul>
+	<h2>가스 예측 데이터 가져오기 (LSTM)</h2>
 
-		<h3>Prophet</h3>
-		<p>${models.Prophet.model}</p>
+	<button onclick="fetchPrediction()">예측 데이터 가져오기</button>
 
-		<h3>LSTM</h3>
-		<p>${models.LSTM.model}</p>
-	</c:if>
+	<div id="result">여기에 예측 결과가 표시됩니다...</div>
 
+	<h2>XGBoost 예측 데이터 가져오기</h2>
 
-	<h2>시각화 결과</h2>
-	<c:if test="${not empty visualizations}">
-		<h3>월별 추이</h3>
-		<img src="data:image/png;base64,${visualizations.monthly_trend}" />
+	<label for="xgb-local">지역명:</label>
+	<input type="text" id="xgb-local" value="서울특별시" />
 
-		<h3>온도-공급량 관계</h3>
-		<img src="data:image/png;base64,${visualizations.temp_supply}" />
+	<label for="xgb-start">시작일자 (YYYY-MM-DD):</label>
+	<input type="date" id="xgb-start" />
 
-		<h3>지역별 패턴</h3>
-		<img src="data:image/png;base64,${visualizations.regional_pattern}" />
+	<label for="xgb-end">종료일자 (YYYY-MM-DD):</label>
+	<input type="date" id="xgb-end" />
 
-		<h3>예측 비교</h3>
-		<img
-			src="data:image/png;base64,${visualizations.prediction_comparison}" />
-		
-		<h3>예측 비교2</h3>
-		<img
-			src="data:image/png;base64,${visualizations.supply_prediction_timeline}" />
-	</c:if>
+	<button onclick="fetchXGBoostPrediction()">예측 데이터 가져오기</button>
 
-	<c:if test="${not empty error}">
-		<p style="color: red;">오류: ${error}</p>
-	</c:if>
-	
-	 <h1>2025년 지역별 가스 공급량 그래프</h1>
+	<div id="xgb-result">여기에 예측 결과가 표시됩니다...</div>
 
-    <c:if test="${not empty error}">
-        <p class="error">오류: ${error}</p>
-    </c:if>
+	<script>
+    async function fetchXGBoostPrediction() {
+      const localName = document.getElementById("xgb-local").value;
+      const startDate = document.getElementById("xgb-start").value;
+      const endDate = document.getElementById("xgb-end").value;
 
-    <c:if test="${not empty message}">
-        <p class="message">메시지: ${message}</p>
-    </c:if>
+      if (!localName || !startDate || !endDate) {
+        alert("모든 입력값을 입력해주세요.");
+        return;
+      }
 
-    <c:if test="${not empty base64Image2025}">
-        <%-- base64 인코딩된 이미지 문자열을 직접 사용합니다. --%>
-        <img src="data:image/png;base64,${base64Image2025}" alt="2025 Regional Gas Supply Bar Chart">
-    </c:if>
-    <c:if test="${empty base64Image2025 && empty error}">
-        <p>그래프 이미지를 불러올 수 없습니다. FastAPI 서버를 확인해주세요.</p>
-    </c:if>
-    
-    <img src="${newImage}" alt="예측 그래프" />
-    
+      const queryParams = new URLSearchParams({
+        local_name: localName,
+        start_date: startDate,
+        end_date: endDate
+      });
+
+      try {
+        const response = await fetch('http://localhost:8000/api/gas/xgboost-prediction?'+queryParams);
+        const data = await response.json();
+        document.getElementById("xgb-result").textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById("xgb-result").textContent = "에러 발생: " + error;
+      }
+    }
+
+    async function fetchPrediction() {
+      const region = '서울특별시'; // 원하는 지역명
+      const future_months = 3;
+      const recent_months = 6;
+      const sequence_length = 12;
+
+      const queryParams = new URLSearchParams({
+        region,
+        future_months,
+        recent_months,
+        sequence_length
+      });
+
+      try {
+        const response = await fetch('http://localhost:8000/api/gas/lstm-prediction?'+queryParams);
+        const data = await response.json();
+
+        const resultDiv = document.getElementById("result");
+        resultDiv.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById("result").textContent = "에러 발생: " + error;
+      }
+    }
+  </script>
 </body>
 </html>
