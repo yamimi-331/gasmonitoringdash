@@ -51,7 +51,7 @@
 	<p>선택된 지역: <span id="selectedCityText">없음</span></p>
 	<p>선택된 모델: <span id="selectedModelText">없음</span></p>
 	
-	<p id="loading">데이터를 불러오는 중입니다...</p>
+	<p id="loading" style="display:none;">데이터를 불러오는 중입니다...</p>
 	<p id="xgb-result"></p>
 	<canvas id="gasChart"></canvas>
 	
@@ -69,7 +69,6 @@ async function fetchPrediction() {
 	const selectedCityText = document.getElementById("selectedCityText");
 	const selectedModelText = document.getElementById("selectedModelText");
 	
-	const loading = document.getElementById("loading");
 	const errorMsg = document.getElementById("xgb-result");
 	errorMsg.textContent = "";
 
@@ -83,8 +82,6 @@ async function fetchPrediction() {
 		return;
 	}
 
-	// 로딩 표시
-	loading.style.display = "inline";
 	// 디버깅용 로그
 	console.log("선택된 타입:", selectedCity);
 	console.log("선택된 모델:", selectedModel);
@@ -102,19 +99,15 @@ async function fetchPrediction() {
 	const endDate = new Date(baseDate);
 	endDate.setMonth(endDate.getMonth() + period);
 	const endDateStr = endDate.toISOString().slice(0, 10);
-
-	console.log("start_date:", startDateStr);
-	console.log("end_date:", endDateStr);
 	
 	const queryParams = new URLSearchParams({
 		local_name: selectedCity,
 		start_date: startDateStr,
 		end_date: endDateStr
 	});
-
-	console.log("start_date:", startDateStr);
-	console.log("end_date:", endDateStr);
-	console.log("queryParams:", queryParams.toString());
+	
+	const loading = document.getElementById("loading");
+	loading.style.display = "inline";
 	
 	try {
 		const response = await fetch('http://localhost:8000/api/gas/xgboost-prediction?'+queryParams);
@@ -174,9 +167,11 @@ async function fetchPrediction() {
             }
           }
         });
-	} catch (error) {
-		console.log(error)
-	}
+		} catch (error) {
+			console.error(error);
+		} finally {
+			loading.style.display = "none";
+		}
 
 //	const url = "http://localhost:8000/api/gas/local?city=" + encodeURIComponent(selectedCity)
 //			+ "&model=" + encodeURIComponent(selectedModel) + "&period=" + encodeURIComponent(selectedPeriod);
