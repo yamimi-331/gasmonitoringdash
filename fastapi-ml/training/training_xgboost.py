@@ -1,0 +1,46 @@
+import pandas as pd
+import numpy as np
+import xgboost as xgb
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+# 루트 경로 추가
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from preprocessing.preprocessing_xgboost import preprocess_xgboost
+
+def training_xgboost():
+    """
+    XGBoost 데이터 학습
+    """
+    df, X_xgb, Y_xgb, le = preprocess_xgboost("../data/GasData.xlsx")
+
+    X_train_xgb, X_test_xgb, Y_train_xgb, Y_test_xgb = train_test_split(X_xgb, Y_xgb, test_size=0.2, random_state=42)
+
+    # XGBoost 분류기 모델 객체
+    xgb_model = xgb.XGBRegressor(
+            n_estimators=100,
+            learning_rate=0.1,
+            max_depth=5,
+            random_state=42
+        )
+
+    xgb_model.fit(X_train_xgb, Y_train_xgb)
+    xgb_pred = xgb_model.predict(X_test_xgb)
+
+    # 모델 평가
+    xgb_mse = mean_squared_error(Y_test_xgb, xgb_pred)
+    xgb_rmse = np.sqrt(xgb_mse)
+    xgb_r2 = r2_score(Y_test_xgb, xgb_pred)
+
+    # 딕셔너리로 반환
+    xgb_results = {
+            'model': xgb_model,
+            'mse': xgb_mse,
+            'rmse': xgb_rmse,
+            'r2': xgb_r2,
+            'X_test': X_test_xgb,
+            'y_test': Y_test_xgb
+        }
+    
+    return xgb_results
