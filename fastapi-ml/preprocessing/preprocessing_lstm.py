@@ -116,11 +116,6 @@ def prepare_data_for_single_prediction(df, scaler_X, le,sequence_length=12):
     feature_cols = ['GasSupply', 'Temperature', 'Humidity', 'Population', 'Local_encoded']
     X_raw = df[feature_cols].values
 
-    # --- 디버그 포인트 (single_prediction) ---
-    print(f"\n  [prepare_for_single_prediction DEBUG] 입력 X_raw 형태: {X_raw.shape}")
-    print(f"  [prepare_for_single_prediction DEBUG] 입력 X_raw head:\n{X_raw.head() if isinstance(X_raw, pd.DataFrame) else X_raw[:5]}")
-    print(f"  [prepare_for_single_prediction DEBUG] X_raw NaN 존재 여부: {np.isnan(X_raw).any()}")
-
     if len(X_raw) != sequence_length:
         print(f"  [❌ 오류] 예측을 위한 데이터 길이 불일치: {len(X_raw)}개 (예상 {sequence_length}개)")
         return None
@@ -128,13 +123,8 @@ def prepare_data_for_single_prediction(df, scaler_X, le,sequence_length=12):
     # 이미 학습된 scaler_X로 변환
     X_scaled = scaler_X.transform(X_raw)
 
-    print(f"  [prepare_for_single_prediction DEBUG] X_scaled 형태: {X_scaled.shape}")
-    print(f"  [prepare_for_single_prediction DEBUG] X_scaled NaN 존재 여부: {np.isnan(X_scaled).any()}")
-
     # LSTM 모델 입력 형태 (1, sequence_length, features)로 reshape
     # 1은 샘플 수 (하나의 시퀀스), sequence_length는 시간 스텝, X_scaled.shape[1]은 피처 수
     X_prepared = X_scaled.reshape(1, sequence_length, X_scaled.shape[1])
-
-    print(f"  [prepare_for_single_prediction DEBUG] 최종 LSTM 입력 형태: {X_prepared.shape}")
 
     return X_prepared
