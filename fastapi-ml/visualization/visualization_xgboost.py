@@ -77,30 +77,30 @@ def visualization_xgboost(df, pred_df, local_name, le, start_date=None, end_date
         }
 
 
-    # 그래프 그리기
-    plt.figure(figsize=(16, 7))
-    # sns.barplot(data=plot_df, x='YearMonth', y='Value', hue='Type', palette={'실제': 'dodgerblue', '예측': 'skyblue'})
-    plt.fill_between(actual_monthly['YearMonth_dt'], actual_monthly['GasSupply'], color='dodgerblue', alpha=0.4, label='실제')
-    plt.plot(actual_monthly['YearMonth_dt'], actual_monthly['GasSupply'], color='dodgerblue')
+    # # 그래프 그리기
+    # plt.figure(figsize=(16, 7))
+    # # sns.barplot(data=plot_df, x='YearMonth', y='Value', hue='Type', palette={'실제': 'dodgerblue', '예측': 'skyblue'})
+    # plt.fill_between(actual_monthly['YearMonth_dt'], actual_monthly['GasSupply'], color='dodgerblue', alpha=0.4, label='실제')
+    # plt.plot(actual_monthly['YearMonth_dt'], actual_monthly['GasSupply'], color='dodgerblue')
 
-    plt.fill_between(pred_monthly['YearMonth_dt'], pred_monthly['Predicted_GasSupply'], color='skyblue', alpha=0.4, label='예측')
-    plt.plot(pred_monthly['YearMonth_dt'], pred_monthly['Predicted_GasSupply'], color='skyblue')
+    # plt.fill_between(pred_monthly['YearMonth_dt'], pred_monthly['Predicted_GasSupply'], color='skyblue', alpha=0.4, label='예측')
+    # plt.plot(pred_monthly['YearMonth_dt'], pred_monthly['Predicted_GasSupply'], color='skyblue')
 
-    # x축 눈금 위치와 레이블 설정
-    ax = plt.gca()
-    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=2))  # 2개월 간격
-    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))   # '2024-06' 형태
-    if start_date is not None and end_date is not None:
-        ax.set_xlim(pd.to_datetime(start_date), pd.to_datetime(end_date))
-    ax.set_ylim(bottom=0)
+    # # x축 눈금 위치와 레이블 설정
+    # ax = plt.gca()
+    # ax.xaxis.set_major_locator(mdates.MonthLocator(interval=2))  # 2개월 간격
+    # ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))   # '2024-06' 형태
+    # if start_date is not None and end_date is not None:
+    #     ax.set_xlim(pd.to_datetime(start_date), pd.to_datetime(end_date))
+    # ax.set_ylim(bottom=0)
 
-    plt.xticks(rotation=60, ha='right', fontsize=9)
-    plt.title(f'가스 공급량 예측 vs 실제 ({local_name})', fontsize=16)
-    plt.xlabel('연월')
-    plt.ylabel('가스 공급량')
-    plt.legend(title='데이터 유형')
-    plt.grid(axis='y', linestyle='--', alpha=0.5)
-    plt.tight_layout()
+    # plt.xticks(rotation=60, ha='right', fontsize=9)
+    # plt.title(f'가스 공급량 예측 vs 실제 ({local_name})', fontsize=16)
+    # plt.xlabel('연월')
+    # plt.ylabel('가스 공급량')
+    # plt.legend(title='데이터 유형')
+    # plt.grid(axis='y', linestyle='--', alpha=0.5)
+    # plt.tight_layout()
 
     # plt.show()
     # # 이미지로 반환
@@ -110,4 +110,4 @@ def visualization_xgboost(df, pred_df, local_name, le, start_date=None, end_date
     # buf.seek(0)
     # encoded_img = base64.b64encode(buf.read()).decode('utf-8')
 
-    return json.dumps(result_dict, ensure_ascii=False, indent=2)
+    return result_dict

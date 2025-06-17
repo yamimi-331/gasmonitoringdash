@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import xgboost as xgb
+import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 # 루트 경로 추가
@@ -44,4 +45,6 @@ def training_xgboost(df):
             'df': df}
         }
     
-    return xgb_results
+    os.makedirs('models', exist_ok=True)
+    joblib.dump(xgb_model, 'models/model_xgboost.pkl')
+    joblib.dump(le, f'models/xgboost_label_encoder.pkl') # 🔹 LabelEncoder 저장

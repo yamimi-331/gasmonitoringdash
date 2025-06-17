@@ -13,6 +13,7 @@ from functionSett import get_total_supply_by_region_2025
 from shj import plot_supply_prediction_timeline_A,load_and_preprocess_data
 
 from prediction.prediction_lstm import get_prediction_json
+from prediction.prediction_xgboost import prediction_xgboost
 
 app = FastAPI()
 
@@ -98,6 +99,20 @@ async def get_lstm_prediction(
         df = pd.read_excel("./data/GasData.xlsx")
         result = get_prediction_json(df, region, future_months, recent_months, sequence_length)
         cleaned_result = convert_all_numpy_to_builtin(result)
+        return JSONResponse(cleaned_result)
+    except Exception as e:
+        return {"error": str(e)}
+    
+@app.get("/api/gas/xgboost-prediction")
+async def get_xgboost_prediction(
+    local_name: str = Query(..., description="지역명"),
+    start_date: str = Query(..., description="시작일자"),
+    end_date: str = Query(..., description="종료일자"),
+):
+    try:
+        df = pd.read_excel("./data/GasData.xlsx")
+        preds = prediction_xgboost(df, start_date, end_date, local_name)
+        cleaned_result = convert_all_numpy_to_builtin(preds)
         return JSONResponse(cleaned_result)
     except Exception as e:
         return {"error": str(e)}
