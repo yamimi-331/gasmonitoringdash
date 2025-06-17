@@ -7,6 +7,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from training.training_lstm import train_lstm,train_lstm_by_region
 from prediction.prediction_lstm import predict_lstm,predict_lstm_by_region
+from visualization.visualization_lstm import plot_predictions,barplot_predictions
 
 if __name__ == "__main__":
     # 엑셀 데이터 로딩
@@ -26,9 +27,11 @@ if __name__ == "__main__":
     region_name = "강원특별자치도"
     preds = predict_lstm_by_region(df, region_name)
 
-    if preds:
-        print(f"📊 {region_name}의 향후 3개월 예측 공급량: {preds}")
     # # 결과 출력
+    if preds:
+        plot_predictions(df, region_name, preds)    # 점선으로 이루어진 그래프
+        barplot_predictions(df, region_name, preds) # 막대그래프
+    
     # print("📊 LSTM 미래 공급량 예측 (3개월):")
     # for i, val in enumerate(predictions, 1):
     #     print(f"{i}개월 후 예측 공급량: {val:.2f}")
