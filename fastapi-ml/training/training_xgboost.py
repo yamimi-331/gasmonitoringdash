@@ -9,12 +9,11 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from preprocessing.preprocessing_xgboost import preprocess_xgboost
 
-def training_xgboost():
+def training_xgboost(df):
     """
     XGBoost 데이터 학습
     """
-    df, X_xgb, Y_xgb, le = preprocess_xgboost("../data/GasData.xlsx")
-
+    X_xgb, Y_xgb, le, df = preprocess_xgboost(df)
     X_train_xgb, X_test_xgb, Y_train_xgb, Y_test_xgb = train_test_split(X_xgb, Y_xgb, test_size=0.2, random_state=42)
 
     # XGBoost 분류기 모델 객체
@@ -34,13 +33,15 @@ def training_xgboost():
     xgb_r2 = r2_score(Y_test_xgb, xgb_pred)
 
     # 딕셔너리로 반환
-    xgb_results = {
+    xgb_results = {"XGBoost":{ 
             'model': xgb_model,
+            'le': le,
             'mse': xgb_mse,
             'rmse': xgb_rmse,
             'r2': xgb_r2,
             'X_test': X_test_xgb,
-            'y_test': Y_test_xgb
+            'y_test': Y_test_xgb,
+            'df': df}
         }
     
     return xgb_results

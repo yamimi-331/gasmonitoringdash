@@ -2,12 +2,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
-def preprocess_xgboost(path):
+def preprocess_xgboost(df):
     """
     XGBoost 데이터 전처리
     """
-    # 데이터 가져오기
-    df = pd.read_excel(path)
     # 결측치 처리
     df.fillna(0, inplace=True)
     # 지역명 인코딩
@@ -19,7 +17,7 @@ def preprocess_xgboost(path):
     # 날짜를 숫자형으로 변경
     df['date_ordinal'] = df['Date'].map(pd.Timestamp.toordinal)
     # X, Y설정
-    X_xgb = df[['date_ordinal', 'Local_encoded', 'Temperature', 'Humidity', 'Population']]
+    X_xgb = df[['date_ordinal', 'Local', 'Temperature', 'Humidity', 'Population']]
     Y_xgb = df['GasSupply']
     
-    return df, X_xgb, Y_xgb, le
+    return X_xgb, Y_xgb, le, df
