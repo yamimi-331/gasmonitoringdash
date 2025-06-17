@@ -36,7 +36,7 @@ def prediction_xgboost(df, results, start_date, end_date, local_name=None):
     # 최근 12개월 평균 특성
     recent_data = df[df['Date'] >= (df['Date'].max() - pd.DateOffset(months=11))]
     recent_data['Month'] = recent_data['Date'].dt.month
-    
+
     monthly_avg = recent_data.groupby(['Local', 'Month'])[['Temperature', 'Humidity', 'Population']].mean()
     # 인덱스를 컬럼으로 변환
     monthly_avg = monthly_avg.reset_index()
@@ -70,6 +70,5 @@ def prediction_xgboost(df, results, start_date, end_date, local_name=None):
     # 디코딩용 역변환
     pred_df['LocalName'] = xgb_le.inverse_transform(pred_df['Local'])
 
-    print(monthly_avg[(monthly_avg['Month'] == 12)])
     return pred_df
     

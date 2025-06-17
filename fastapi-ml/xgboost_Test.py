@@ -18,6 +18,7 @@ if __name__ == "__main__":
     # ✅ DataFrame이 비어 있지 않은지 확인
     if not preds.empty:
         le = xgb_results['XGBoost']['le']
-        visualization_xgboost(df, preds, local_name, le, start_date='2024-01-01', end_date='2025-06-01')
+        json_str = visualization_xgboost(df, preds, local_name, le, start_date='2024-01-01', end_date='2025-06-01')
+        print(json_str)
     else:
         print("❗ 예측 결과가 비어 있습니다.")
