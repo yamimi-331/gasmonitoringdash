@@ -172,39 +172,6 @@ async function fetchPrediction() {
 		} finally {
 			loading.style.display = "none";
 		}
-
-//	const url = "http://localhost:8000/api/gas/local?city=" + encodeURIComponent(selectedCity)
-//			+ "&model=" + encodeURIComponent(selectedModel) + "&period=" + encodeURIComponent(selectedPeriod);
-//	fetch(url)
-//		.then(response => {
-//			if (!response.ok) throw new Error("네트워크 응답이 올바르지 않습니다.");
-//			return response.json();
-//		})
-//		.then(data => {
-//			loading.style.display = "none";
-
-//		if (!data.localChartImage) {
-//			errorMsg.textContent = "지역 차트 이미지 데이터를 받지 못했습니다.";
-//			return;
-//		}
-//		if (!data.modelChartImage) {
-//			errorMsg.textContent = "모델 차트 이미지 데이터를 받지 못했습니다.";
-//			return;
-//		}
-
-//		selectedCityText.textContent = selectedCity;
-//		selectedModelText.textContent = selectedModel;
-//		
-//		localImg.src = "data:image/png;base64," + data.localChartImage;
-//		localImg.style.display = "block";
-//		modelImg.src = "data:image/png;base64," + data.modelChartImage;
-//	    modelImg.style.display = "block";
-//		})
-//		.catch(err => {
-//			loading.style.display = "none";
-//			errorMsg.textContent = "에러 발생: " + err.message;
-//			console.error(err);
-//	    });
 	}
 </script>
 </body>
