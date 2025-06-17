@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.extern.log4j.Log4j;
 
 @Controller
-@RequestMapping("/testPjh")
+@RequestMapping("/usage")
 @Log4j
-public class TestPjhController {
+public class UsageController {
 
 	@GetMapping("")
-	public String showDashboard() {
-		log.info("테스트 화면으로이동");
-		return "testPjh";  // JSP 이름 반환만 하면 됨
+	public String usage() {
+		return "/usageForm";
 	}
 }

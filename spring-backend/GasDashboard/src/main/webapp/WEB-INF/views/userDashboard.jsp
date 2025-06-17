@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>대시보드</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript" src="../../resources/js/test.js"></script>
 <style>
 body {
 	margin: 0;
@@ -157,14 +158,49 @@ button:hover {
 			<h2>📊 Dashboard</h2>
 			<button>편집 완료</button>
 		</div>
+		<h2>내</h2>
 
 		<!-- 상단 차트 공간 -->
 		<div class="charts-top">
 			<div class="chart-box">
-				<c:if test="${not empty visualizations}">
-					<div class="chart-title">월별 추이</div>
-					<img src="data:image/png;base64,${visualizations.monthly_trend}" />
-				</c:if>
+				<form method="get" id="cityForm" onsubmit="return false;">
+					<label for="city">지역 선택:</label> <select id="city" name="city"
+						required>
+						<option value="" disabled selected>지역을 선택하세요</option>
+						<option value="서울특별시">서울특별시</option>
+						<option value="인천광역시">인천광역시</option>
+						<option value="경기도">경기도</option>
+						<option value="부산광역시">부산광역시</option>
+						<option value="대구광역시">대구광역시</option>
+						<option value="광주광역시">광주광역시</option>
+						<option value="대전광역시">대전광역시</option>
+						<option value="울산광역시">울산광역시</option>
+						<option value="세종특별자치시">세종특별자치시</option>
+						<option value="강원특별자치도">강원특별자치도</option>
+						<option value="충청북도">충청북도</option>
+						<option value="충청남도">충청남도</option>
+						<option value="전북특별자치도">전북특별자치도</option>
+						<option value="전라남도">전라남도</option>
+						<option value="경상북도">경상북도</option>
+						<option value="경상남도">경상남도</option>
+						<option value="제주특별자치도">제주특별자치도</option>
+					</select> <label for="model">분석 모델 선택:</label> <select id="model"
+						name="model" required>
+						<option value="" disabled selected>모델을 선택하세요</option>
+						<option value="XGBoost">XGBoost</option>
+						<option value="Prophet">Prophet</option>
+						<option value="LSTM">LSTM</option>
+					</select> <label for="period">예측 기간:</label> <select id="period"
+						name="period" required>
+						<option value="3" selected>3개월</option>
+						<option value="6">6개월</option>
+						<option value="12">12개월</option>
+					</select>
+					<button type="button" onclick="fetchPrediction()">조회</button>
+				</form>
+				<p id="loading" style="display: none;">데이터를 불러오는 중입니다...</p>
+				<p id="xgb-result"></p>
+				<canvas id="gasChart"></canvas>
 			</div>
 			<div class="chart-box">
 				<c:if test="${not empty visualizations}">
@@ -181,7 +217,46 @@ button:hover {
 			</div> --%>
 		</div>
 
-
+		<%-- 	<form method="get" id="cityForm" onsubmit="return false;">
+		<label for="city">지역 선택:</label>
+		<select id="city" name="city" required>
+			<option value="" disabled selected>지역을 선택하세요</option>
+			<option value="서울특별시">서울특별시</option>
+			<option value="인천광역시">인천광역시</option>
+			<option value="경기도">경기도</option>
+			<option value="부산광역시">부산광역시</option>
+			<option value="대구광역시">대구광역시</option>
+			<option value="광주광역시">광주광역시</option>
+			<option value="대전광역시">대전광역시</option>
+			<option value="울산광역시">울산광역시</option>
+			<option value="세종특별자치시">세종특별자치시</option>
+			<option value="강원특별자치도">강원특별자치도</option>
+			<option value="충청북도">충청북도</option>
+			<option value="충청남도">충청남도</option>
+			<option value="전북특별자치도">전북특별자치도</option>
+			<option value="전라남도">전라남도</option>
+			<option value="경상북도">경상북도</option>
+			<option value="경상남도">경상남도</option>
+			<option value="제주특별자치도">제주특별자치도</option>
+		</select>
+		<label for="model">분석 모델 선택:</label>
+		<select id="model" name="model" required>
+			<option value="" disabled selected>모델을 선택하세요</option>
+			<option value="XGBoost">XGBoost</option>
+			<option value="Prophet">Prophet</option>
+			<option value="LSTM">LSTM</option>
+		</select>
+		<label for="period">예측 기간:</label>
+		<select id="period" name="period" required>
+			<option value="3" selected>3개월</option>
+			<option value="6">6개월</option>
+			<option value="12">12개월</option>
+		</select>
+		<button type="button" onclick="fetchPrediction()">조회</button>
+	</form>
+	<p id="loading" style="display:none;">데이터를 불러오는 중입니다...</p>
+	<p id="xgb-result"></p>
+	<canvas id="gasChart"></canvas> --%>
 		<!-- 선택 컨트롤 -->
 		<div class="controls">
 			<label for="city">Select City:</label> <select id="city" name="city">
@@ -212,8 +287,9 @@ button:hover {
 			<div class="chart-container">
 				<img src="data:image/png;base64,${visualizations.regional_pattern}" />
 			</div>
-				<div class="chart-container">
-				<img src= "data:image/png;base64,${visualizations.prophet_prediction_timeline}"/>
+			<div class="chart-container">
+				<img
+					src="data:image/png;base64,${visualizations.prophet_prediction_timeline}" />
 			</div>
 		</div>
 	</div>
@@ -235,7 +311,7 @@ button:hover {
 	</c:if>
  --%>
 
-		<h2>시각화 결과</h2>
+	<h2>시각화 결과</h2>
 	<c:if test="${not empty visualizations}">
 		<h3>월별 추이</h3>
 		<img src="data:image/png;base64,${visualizations.monthly_trend}" />
@@ -247,7 +323,8 @@ button:hover {
 		<img src="data:image/png;base64,${visualizations.regional_pattern}" />
 
 		<h3>예측 비교</h3>
-		<img src="data:image/png;base64,${visualizations.prediction_comparison}" /> 
+		<img
+			src="data:image/png;base64,${visualizations.prediction_comparison}" />
 	</c:if>
 
 	<%-- 	<c:if test="${not empty error}">
@@ -258,11 +335,12 @@ button:hover {
 		<p style="color: red;">오류: ${error}</p>
 	</c:if> --%>
 
-	<!-- 	<script>
-		const ctx1 = docu
-	</script> -->
 
+<script>
+	let gasChart = null;
+</script>
 
 </body>
+
 
 </html>

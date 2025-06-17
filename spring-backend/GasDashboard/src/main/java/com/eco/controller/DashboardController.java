@@ -32,6 +32,6 @@ public class DashboardController {
 			model.addAttribute("error", "FastAPI 요청 실패: " + e.getMessage());
 		}
 
-		return "Dashboard";
+		return "userDashboard";
 	}
 }
