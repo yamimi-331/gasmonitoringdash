@@ -47,4 +47,4 @@ def training_xgboost(df):
     
     os.makedirs('models', exist_ok=True)
     joblib.dump(xgb_model, 'models/model_xgboost.pkl')
-    joblib.dump(le, f'models/xgboost_label_encoder.pkl') # 🔹 LabelEncoder 저장
+    joblib.dump(le, f'models/xgboost_label_encoder.pkl')

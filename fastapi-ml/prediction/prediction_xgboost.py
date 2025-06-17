@@ -28,8 +28,6 @@ def prediction_xgboost(df, start_date, end_date, local_name=None):
     # 날짜 범위 지정
     date_range = pd.date_range(start=start_date, end=end_date, freq='MS')
 
-    # locals_encoded = df['Local'].unique() # 인코딩된 지역 코드 사용
-    # le_inverse_map = {v: k for k, v in dict(zip(df['Local'], df['Local'])).items()}
     if local_name is not None:
         region_encoded = le.transform([local_name])[0]
         locals_encoded = [region_encoded]
