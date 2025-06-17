@@ -7,9 +7,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript" src="../../resources/js/test.js"></script>
 </head>
 <body>
-
 	<form method="get" id="cityForm" onsubmit="return false;">
 		<label for="city">지역 선택:</label>
 		<select id="city" name="city" required>
@@ -47,132 +47,9 @@
 		</select>
 		<button type="button" onclick="fetchPrediction()">조회</button>
 	</form>
-	
-	<p>선택된 지역: <span id="selectedCityText">없음</span></p>
-	<p>선택된 모델: <span id="selectedModelText">없음</span></p>
-	
 	<p id="loading" style="display:none;">데이터를 불러오는 중입니다...</p>
 	<p id="xgb-result"></p>
 	<canvas id="gasChart"></canvas>
 	
-	<!-- <img id="localChart" alt="차트 이미지" />
-	<img id="modelChart" alt="차트 이미지" /> -->
-
-
-<script type="text/javascript">
-let gasChart;
-async function fetchPrediction() {
-	const selectedCity = document.getElementById("city").value;
-	const selectedModel = document.getElementById("model").value;
-	const selectedPeriod = document.getElementById("period").value;
-	
-	const selectedCityText = document.getElementById("selectedCityText");
-	const selectedModelText = document.getElementById("selectedModelText");
-	
-	const errorMsg = document.getElementById("xgb-result");
-	errorMsg.textContent = "";
-
-
-	if (!selectedCity) {
-		alert("지역을 선택하세요.");
-		return;
-	}
-	if (!selectedModel) {
-		alert("분석 모델을 선택하세요.");
-		return;
-	}
-
-	// 디버깅용 로그
-	console.log("선택된 타입:", selectedCity);
-	console.log("선택된 모델:", selectedModel);
-	
-	// 기준일
-	const baseDateStr = '2025-03-01';
-	const baseDate = new Date(baseDateStr);
-
-	// start_date: 전년도 1월 1일 (2024-01-01)
-	const startDate = new Date(baseDate.getFullYear() - 1, 0, 1);
-	const startDateStr = startDate.toISOString().slice(0, 10);
-
-	// end_date: 기준일 + period 개월
-	const period = Number(selectedPeriod);
-	const endDate = new Date(baseDate);
-	endDate.setMonth(endDate.getMonth() + period);
-	const endDateStr = endDate.toISOString().slice(0, 10);
-	
-	const queryParams = new URLSearchParams({
-		local_name: selectedCity,
-		start_date: startDateStr,
-		end_date: endDateStr
-	});
-	
-	const loading = document.getElementById("loading");
-	loading.style.display = "inline";
-	
-	try {
-		const response = await fetch('http://localhost:8000/api/gas/xgboost-prediction?'+queryParams);
-		const data = await response.json();
-	    const labels = Object.keys(data);
-        const actual = labels.map(key => data[key].actual);
-        const pastPred = labels.map(key => data[key].past_pred);
-        const futurePred = labels.map(key => data[key].future_pred);
-
-        // 기존 차트 제거
-        if (gasChart) gasChart.destroy();
-
-        const ctx = document.getElementById('gasChart').getContext('2d');
-        gasChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                label: '실제 공급량',
-                data: actual,
-                backgroundColor: 'rgba(54, 162, 235, 0.7)'
-              },
-              {
-                label: '과거 예측',
-                data: pastPred,
-                backgroundColor: 'rgba(255, 206, 86, 0.7)'
-              },
-              {
-                label: '미래 예측',
-                data: futurePred,
-                backgroundColor: 'rgba(75, 192, 192, 0.7)'
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              title: {
-                display: true,
-                text: '가스 공급량 및 수요 예측',
-                font: { size: 18 }
-              },
-              tooltip: {
-                mode: 'index',
-                intersect: false
-              }
-            },
-            scales: {
-              x: {
-                title: { display: true, text: '월' }
-              },
-              y: {
-                title: { display: true, text: '공급량' },
-                beginAtZero: true
-              }
-            }
-          }
-        });
-		} catch (error) {
-			console.error(error);
-		} finally {
-			loading.style.display = "none";
-		}
-	}
-</script>
 </body>
 </html>

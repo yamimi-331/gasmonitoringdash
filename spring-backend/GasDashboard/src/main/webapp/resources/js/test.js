@@ -13,13 +13,16 @@ async function fetchPrediction() {
     alert("분석 모델을 선택하세요.");
     return;
   }
-
+  
+	const loading = document.getElementById("loading");
+	loading.style.display = "inline";
+	
   try {
     let data;
     if (selectedModel === 'LSTM') {
       // LSTM 모델 호출
       const future_months = selectedPeriod;
-      const recent_months = 6;
+      const recent_months = 15;
       const sequence_length = 12;
 
       const queryParams = new URLSearchParams({
@@ -120,5 +123,7 @@ async function fetchPrediction() {
 
   } catch (error) {
     alert("예측 데이터를 가져오는 중 에러 발생: " + error);
+  }finally {
+			loading.style.display = "none";
   }
 }
