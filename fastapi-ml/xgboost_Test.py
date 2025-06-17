@@ -15,8 +15,6 @@ if __name__ == "__main__":
     local_name = "강원특별자치도"
     preds = prediction_xgboost(df, xgb_results, '2020-01-01', '2025-06-01', local_name)
 
-    print(preds.head())
-    
     # ✅ DataFrame이 비어 있지 않은지 확인
     if not preds.empty:
         le = xgb_results['XGBoost']['le']

@@ -25,12 +25,21 @@ def prediction_xgboost(df, results, start_date, end_date, local_name=None):
     # 날짜 범위 지정
     date_range = pd.date_range(start=start_date, end=end_date, freq='MS')
 
-    locals_encoded = df['Local'].unique() # 인코딩된 지역 코드 사용
-    le_inverse_map = {v: k for k, v in dict(zip(df['Local'], df['Local'])).items()}
+    # locals_encoded = df['Local'].unique() # 인코딩된 지역 코드 사용
+    # le_inverse_map = {v: k for k, v in dict(zip(df['Local'], df['Local'])).items()}
+    if local_name is not None:
+        region_encoded = xgb_le.transform([local_name])[0]
+        locals_encoded = [region_encoded]
+    else:
+        locals_encoded = df['Local'].unique()
 
     # 최근 12개월 평균 특성
     recent_data = df[df['Date'] >= (df['Date'].max() - pd.DateOffset(months=11))]
-    monthly_avg = recent_data.groupby(recent_data['Date'].dt.month)[['Temperature', 'Humidity', 'Population']].mean()
+    recent_data['Month'] = recent_data['Date'].dt.month
+    
+    monthly_avg = recent_data.groupby(['Local', 'Month'])[['Temperature', 'Humidity', 'Population']].mean()
+    # 인덱스를 컬럼으로 변환
+    monthly_avg = monthly_avg.reset_index()
 
     X_pred_list = []
     pred_info = []
@@ -39,11 +48,15 @@ def prediction_xgboost(df, results, start_date, end_date, local_name=None):
         date_ord = date_obj.toordinal()
         month = date_obj.month
 
-        temp = monthly_avg.loc[month, 'Temperature']
-        hum = monthly_avg.loc[month, 'Humidity']
-        pop = monthly_avg.loc[month, 'Population']
-
         for local_encoded in locals_encoded:
+            monthly_avg_row = monthly_avg[(monthly_avg['Local'] == local_encoded)&(monthly_avg['Month'] == month)]
+            if monthly_avg_row.empty:
+                temp, hum, pop = 0, 0, 0
+        else:
+            temp = monthly_avg_row['Temperature'].values[0]
+            hum = monthly_avg_row['Humidity'].values[0]
+            pop = monthly_avg_row['Population'].values[0]
+
             X_pred_list.append([date_ord, local_encoded, temp, hum, pop])
             pred_info.append((local_encoded, str(date_obj.to_period('M')), date_obj))
 
@@ -54,10 +67,9 @@ def prediction_xgboost(df, results, start_date, end_date, local_name=None):
 
     pred_df = pd.DataFrame(pred_info, columns=['Local', 'YearMonth', 'Date'])
     pred_df['Predicted_GasSupply'] = y_pred_xgb
+    # 디코딩용 역변환
+    pred_df['LocalName'] = xgb_le.inverse_transform(pred_df['Local'])
 
-    if local_name is not None:
-        region_encoded = xgb_le.transform([local_name])[0]
-        pred_df = pred_df[pred_df['Local'] == region_encoded]
-    
+    print(monthly_avg[(monthly_avg['Month'] == 12)])
     return pred_df
     

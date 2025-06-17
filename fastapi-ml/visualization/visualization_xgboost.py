@@ -37,7 +37,7 @@ def visualization_xgboost(df, pred_df, local_name, le, start_date=None, end_date
     # actual_monthly.rename(columns={'GasSupply': 'Value'}, inplace=True)
 
     # 예측 월별 가스 공급량
-    pred_monthly = pred_local.groupby('YearMonth')['Predicted_GasSupply'].sum().reset_index()
+    pred_monthly = pred_local.groupby('YearMonth')['Predicted_GasSupply'].mean().reset_index()
     # pred_monthly['Type'] = '예측'
     # pred_monthly.rename(columns={'Predicted_GasSupply': 'Value'}, inplace=True)
 
@@ -72,17 +72,8 @@ def visualization_xgboost(df, pred_df, local_name, le, start_date=None, end_date
     plt.legend(title='데이터 유형')
     plt.grid(axis='y', linestyle='--', alpha=0.5)
     plt.tight_layout()
+
     plt.show()
-
-    print(actual_monthly.head())
-    print(pred_monthly.head())
-    print(len(actual_monthly['YearMonth_dt']), len(actual_monthly['GasSupply']))
-    print(len(pred_monthly['YearMonth_dt']), len(pred_monthly['Predicted_GasSupply']))
-    print(actual_monthly.isnull().sum())
-    print(pred_monthly.isnull().sum())
-
-
-
     # # 이미지로 반환
     # buf = io.BytesIO()
     # plt.savefig(buf, format='png')
