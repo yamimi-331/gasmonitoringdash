@@ -93,9 +93,8 @@ def preprocess_lstm_by_region(df, sequence_length=12):
 
     return region_data
 
-# 기존 create_sequences 함수는 그대로 두거나, 학습 데이터 만들 때만 사용
 
-# 새로운 예측 전용 전처리 함수 (혹은 preprocess_lstm을 분기하여 사용)
+# 새로운 예측 전용 전처리 함수 
 def prepare_data_for_single_prediction(df, scaler_X, le,sequence_length=12):
     """
     단일 시점 예측을 위해 12개월 데이터를 LSTM 입력 형태로 변환하는 함수.

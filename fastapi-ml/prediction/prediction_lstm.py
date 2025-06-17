@@ -69,10 +69,6 @@ def predict_lstm_by_region(df, region_name, sequence_length=12, predict_months=3
 
     # 해당 지역 데이터만 필터링
     region_df = df[df['Local'] == region_name].copy()
-    print(df['Local'].unique())
-    print(f"요청 지역: {region_name}")
-    print(f"{region_name} 데이터 개수: {region_df.shape[0]}")
-    print("전체 Date:", region_df['Date'].dt.strftime('%Y-%m').tolist())
 
     if region_df.empty:
         print(f"[오류] {region_name} 지역 데이터 없음")
@@ -96,8 +92,7 @@ def predict_lstm_by_region(df, region_name, sequence_length=12, predict_months=3
         le = joblib.load(le_path)
         # 전처리
         region_df = region_df.sort_values('Date') 
-        print(f"[DEBUG] {region_name} 원본 데이터 개수: {len(region_df)}")
-
+        
         if len(region_df) < sequence_length:
             print(f"[❌ 오류] {region_name} - 데이터가 {sequence_length}개월보다 적음 ({len(region_df)}개월)")
             return None
@@ -109,7 +104,6 @@ def predict_lstm_by_region(df, region_name, sequence_length=12, predict_months=3
          # X_seq는 더 이상 사용하지 않고, initial_X_prepared를 바로 last_sequence_features로 사용합니다.
         last_sequence_features = initial_X_prepared[0] # (sequence_length, features) 형태
 
-        print(f"[DEBUG] {region_name} 초기 시퀀스 생성 완료. 형태: {last_sequence_features.shape}") # 시퀀스 생성 로그 추가
         predictions = []
 
         for _ in range(predict_months):
@@ -265,7 +259,6 @@ def predict_lstm_by_region(df, region_name, sequence_length=12, predict_months=3
 #         }
 
 #     return result
-
 
 
 def is_continuous_monthly(df_dates):

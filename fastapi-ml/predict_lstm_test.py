@@ -20,7 +20,7 @@ if __name__ == "__main__":
     # 엑셀 데이터 로딩
     df = pd.read_excel("./data/GasData.xlsx")
    
-    region_name = "강원특별자치도"
+    region_name = "경기도"
         
     def convert_np_to_builtin(obj):
         if isinstance(obj, (np.int64, np.int32)):
