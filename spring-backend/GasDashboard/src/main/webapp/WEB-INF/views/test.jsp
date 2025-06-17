@@ -6,14 +6,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="../../resources/js/test.js"></script>
 </head>
 <body>
 
-	<h2>가스 예측 데이터 가져오기 (LSTM)</h2>
-
-	<button onclick="fetchPrediction()">예측 데이터 가져오기</button>
-
-	<div id="result">여기에 예측 결과가 표시됩니다...</div>
+	<div class="section">
+		<h2>가스 예측 데이터 가져오기 (LSTM)</h2>
+		<button onclick="fetchPrediction()">예측 데이터 가져오기</button>
+		<canvas id="gasChart"></canvas>
+	</div>
 
 	<h2>XGBoost 예측 데이터 가져오기</h2>
 
@@ -30,55 +33,5 @@
 
 	<div id="xgb-result">여기에 예측 결과가 표시됩니다...</div>
 
-	<script>
-    async function fetchXGBoostPrediction() {
-      const localName = document.getElementById("xgb-local").value;
-      const startDate = document.getElementById("xgb-start").value;
-      const endDate = document.getElementById("xgb-end").value;
-
-      if (!localName || !startDate || !endDate) {
-        alert("모든 입력값을 입력해주세요.");
-        return;
-      }
-
-      const queryParams = new URLSearchParams({
-        local_name: localName,
-        start_date: startDate,
-        end_date: endDate
-      });
-
-      try {
-        const response = await fetch('http://localhost:8000/api/gas/xgboost-prediction?'+queryParams);
-        const data = await response.json();
-        document.getElementById("xgb-result").textContent = JSON.stringify(data, null, 2);
-      } catch (error) {
-        document.getElementById("xgb-result").textContent = "에러 발생: " + error;
-      }
-    }
-
-    async function fetchPrediction() {
-      const region = '서울특별시'; // 원하는 지역명
-      const future_months = 3;
-      const recent_months = 6;
-      const sequence_length = 12;
-
-      const queryParams = new URLSearchParams({
-        region,
-        future_months,
-        recent_months,
-        sequence_length
-      });
-
-      try {
-        const response = await fetch('http://localhost:8000/api/gas/lstm-prediction?'+queryParams);
-        const data = await response.json();
-
-        const resultDiv = document.getElementById("result");
-        resultDiv.textContent = JSON.stringify(data, null, 2);
-      } catch (error) {
-        document.getElementById("result").textContent = "에러 발생: " + error;
-      }
-    }
-  </script>
 </body>
 </html>
