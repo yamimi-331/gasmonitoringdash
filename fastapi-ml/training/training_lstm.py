@@ -65,7 +65,7 @@ def train_lstm_by_region(df, sequence_length=12):
         y_seq = data['y_seq']
         scaler_X = data['scaler_X']
         scaler_y = data['scaler_y']
-
+        le = data['le']
         if len(X_seq) == 0:
             print(f"[Skip] {region} - 데이터 부족")
             continue
@@ -85,5 +85,6 @@ def train_lstm_by_region(df, sequence_length=12):
         model.save(f'models/region/{region}_lstm.h5')
         joblib.dump(scaler_X, f'models/region/{region}_scaler_X.pkl')
         joblib.dump(scaler_y, f'models/region/{region}_scaler_y.pkl')
+        joblib.dump(le, f'models/region/{region}_label_encoder.pkl') # 🔹 LabelEncoder 저장
 
         print(f"{region} 학습 및 저장 완료")

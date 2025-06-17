@@ -56,7 +56,7 @@ def preprocess_lstm(df, sequence_length=12):
     # 5. 시퀀스 생성
     X_seq, y_seq = create_sequences(X_scaled, y_scaled, sequence_length)
 
-    return X_seq, y_seq, scaler_X, scaler_y
+    return X_seq, y_seq, scaler_X, scaler_y, le
 
 
 def preprocess_lstm_by_region(df, sequence_length=12):
@@ -79,15 +79,62 @@ def preprocess_lstm_by_region(df, sequence_length=12):
     for region, region_df in grouped:
         try:
             # 원래 전처리 함수 재사용
-            X_seq, y_seq, scaler_X, scaler_y = preprocess_lstm(region_df, sequence_length)
+            X_seq, y_seq, scaler_X, scaler_y, le = preprocess_lstm(region_df, sequence_length)
             region_data[region] = {
                 'X_seq': X_seq,
                 'y_seq': y_seq,
                 'scaler_X': scaler_X,
-                'scaler_y': scaler_y
+                'scaler_y': scaler_y,
+                'le': le 
             }
             print(f"전처리 완료: {region} (시퀀스 {len(X_seq)}개)")
         except Exception as e:
             print(f"[오류] {region} 지역 전처리 실패: {e}")
 
     return region_data
+
+# 기존 create_sequences 함수는 그대로 두거나, 학습 데이터 만들 때만 사용
+
+# 새로운 예측 전용 전처리 함수 (혹은 preprocess_lstm을 분기하여 사용)
+def prepare_data_for_single_prediction(df, scaler_X, le,sequence_length=12):
+    """
+    단일 시점 예측을 위해 12개월 데이터를 LSTM 입력 형태로 변환하는 함수.
+    이 함수는 이미 학습된 scaler_X를 사용해야 합니다.
+    """
+    df = df.sort_values('Date').reset_index(drop=True)
+
+    if 'Local' in df.columns:
+        try:
+            df['Local_encoded'] = le.transform(df['Local'])
+        except Exception as e:
+            print(f"[경고] LabelEncoder 변환 오류: {e}. 'Local' 값이 학습 데이터에 없거나 le가 잘못됨.")
+            # 오류 발생 시, 0으로 처리하거나 다른 기본값을 할당하는 로직 필요
+            df['Local_encoded'] = 0 # 임시 처리
+    else:
+        df['Local_encoded'] = 0
+
+    feature_cols = ['GasSupply', 'Temperature', 'Humidity', 'Population', 'Local_encoded']
+    X_raw = df[feature_cols].values
+
+    # --- 디버그 포인트 (single_prediction) ---
+    print(f"\n  [prepare_for_single_prediction DEBUG] 입력 X_raw 형태: {X_raw.shape}")
+    print(f"  [prepare_for_single_prediction DEBUG] 입력 X_raw head:\n{X_raw.head() if isinstance(X_raw, pd.DataFrame) else X_raw[:5]}")
+    print(f"  [prepare_for_single_prediction DEBUG] X_raw NaN 존재 여부: {np.isnan(X_raw).any()}")
+
+    if len(X_raw) != sequence_length:
+        print(f"  [❌ 오류] 예측을 위한 데이터 길이 불일치: {len(X_raw)}개 (예상 {sequence_length}개)")
+        return None
+
+    # 이미 학습된 scaler_X로 변환
+    X_scaled = scaler_X.transform(X_raw)
+
+    print(f"  [prepare_for_single_prediction DEBUG] X_scaled 형태: {X_scaled.shape}")
+    print(f"  [prepare_for_single_prediction DEBUG] X_scaled NaN 존재 여부: {np.isnan(X_scaled).any()}")
+
+    # LSTM 모델 입력 형태 (1, sequence_length, features)로 reshape
+    # 1은 샘플 수 (하나의 시퀀스), sequence_length는 시간 스텝, X_scaled.shape[1]은 피처 수
+    X_prepared = X_scaled.reshape(1, sequence_length, X_scaled.shape[1])
+
+    print(f"  [prepare_for_single_prediction DEBUG] 최종 LSTM 입력 형태: {X_prepared.shape}")
+
+    return X_prepared
