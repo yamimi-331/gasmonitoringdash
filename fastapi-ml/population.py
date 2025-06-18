@@ -29,5 +29,18 @@ def populationSupply(df, local_name):
                                         "가스 총 공급량": gas_supply,
                                         "1인당 가스 사용량": round(gas_supply / population, 4)}
 
-    # year_supply = json.dumps(result, indent=4, ensure_ascii=False)
+    year_supply = json.dumps(result, indent=4, ensure_ascii=False)
+    
     return result
+    
+
+if __name__ == "__main__":
+    # 여기에 재학습할 데이터셋 파일 경로 입력
+    excel_path = "./data/GasData.xlsx"
+
+    # 데이터 로드
+    df = pd.read_excel(excel_path)
+
+    # 재학습 실행
+    result = populationSupply(df, "울산광역시")
+    print(result)
