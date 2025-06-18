@@ -58,8 +58,18 @@ async function fetchPrediction() {
       data = await response.json();
 
     }else if(selectedModel === 'Prophet'){
-      alert("아직 덜만들었습니다.");
-      return;     
+      // Prophet 모델 호출
+      const future_predict_months = selectedPeriod;
+      const recent_actual_months = 15;
+
+      const queryParams = new URLSearchParams({
+        local_name: selectedCity,
+        future_predict_months,
+        recent_actual_months
+      });
+
+      const response = await fetch('http://localhost:8000/api/gas/prophet-prediction?' + queryParams);
+      data = await response.json();    
     }
     else {
       alert("지원하지 않는 모델입니다.");
