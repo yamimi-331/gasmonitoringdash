@@ -10,6 +10,8 @@ import numpy as np
 from prediction.prediction_lstm import get_prediction_json
 from prediction.prediction_xgboost import prediction_xgboost
 from prediction.prediction_prophet import predict_prophet
+from yearsupply import yearSupply
+from population import populationSupply
 
 app = FastAPI()
 
@@ -80,6 +82,30 @@ def predict(
         df = pd.read_excel("./data/GasData.xlsx")
         preds = predict_prophet(df, local_name, future_predict_months, recent_actual_months)
         cleaned_result = convert_all_numpy_to_builtin(preds)
+        return JSONResponse(cleaned_result)
+    except ValueError as e:
+        return JSONResponse(status_code=400, content={"error": str(e)})
+    
+@app.get("/api/gas/yearsupply")
+def get_year_supply(
+    year: int = Query(2025, description="선택 연도"),
+):
+    try:
+        df = pd.read_excel("./data/GasData.xlsx")
+        result = yearSupply(df, year)
+        cleaned_result = convert_all_numpy_to_builtin(result)
+        return JSONResponse(cleaned_result)
+    except ValueError as e:
+        return JSONResponse(status_code=400, content={"error": str(e)})
+    
+@app.get("/api/gas/populationsupply")
+def get_population_supply(
+    local_name: str = Query(..., description="선택 지역"),
+):
+    try:
+        df = pd.read_excel("./data/GasData.xlsx")
+        result = populationSupply(df, local_name)
+        cleaned_result = convert_all_numpy_to_builtin(result)
         return JSONResponse(cleaned_result)
     except ValueError as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
