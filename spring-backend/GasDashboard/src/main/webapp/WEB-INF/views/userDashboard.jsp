@@ -13,7 +13,6 @@ body {
 	margin: 0;
 	font-family: sans-serif;
 	background-color: #5c72a5;
-	color: white;
 }
 
 .dashboard {
@@ -61,6 +60,7 @@ body {
 	border-radius: 12px;
 	display: flex;
 	padding: 0;
+	flex: 1 1 300px;
 }
 
 .chart-box img {
@@ -69,6 +69,7 @@ body {
 	object-fit: cover;
 	border-radius: 10px;
 	box-sizing: border-box;
+	object-fit: cover;
 }
 
 .chart-title {
@@ -90,7 +91,7 @@ body {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 20px;
+	/* gap: 20px; */
 }
 
 .controls label {
@@ -125,6 +126,7 @@ body {
 	justify-content: center;
 	box-sizing: border-box;
 	background-color: #f0f0f0;
+	margin: 15px;
 }
 
 .chart-container img {
@@ -156,12 +158,10 @@ button:hover {
 }
 
 .dashboard>h2 {
-	color: white;
+	color: blue;
 	display: flex;
-	margin-bottom: 0;
+	margin-bottom: 10px;
 }
-
-
 </style>
 </head>
 <body>
@@ -175,9 +175,9 @@ button:hover {
 
 
 		<!-- 상단 차트 공간 -->
-
+		<h2>지역별 가스 사용량</h2>
 		<div class="controls">
-			<h2>지역별 가스 사용량</h2>
+
 			<form method="get" id="cityForm" onsubmit="return false;">
 				<label for="city">지역 선택:</label> <select id="city" name="city"
 					required>
@@ -232,21 +232,18 @@ button:hover {
 				<option value="경기도">경기도</option>
 				<option value="부산">부산</option>
 				<option value="울산">울산</option>
-			</select> <label for="model">Select Model:</label> <select id="model"
-				name="model">
-				<option value="" disabled selected>모델을 선택하세요</option>
-				<option value=""></option>
-				<option value=""></option>
-				<option value=""></option>
 			</select>
 		</div>
 
 
 		<div class="charts-bottom">
 			<div class="chart-container">
-				<img
-					src="data:image/png;base64,${visualizations.supply_prediction_timeline_xgboost}" />
+				<imgsrc ="data:image/png;base64,${visualizations.supply_prediction_timeline_xgboost}"
+			/>
 			</div>
+
+		</div>
+		<div class="charts-bottom">
 			<div class="chart-container">
 				<img
 					src="data:image/png;base64,${visualizations.lstm_prediction_timeline}" />
@@ -259,38 +256,14 @@ button:hover {
 					src="data:image/png;base64,${visualizations.prophet_prediction_timeline}" />
 			</div>
 		</div>
-	</div>
 
 
-	<h2>시각화 결과</h2>
-	<c:if test="${not empty visualizations}">
-		<h3>월별 추이</h3>
-		<img src="data:image/png;base64,${visualizations.monthly_trend}" />
-
-		<h3>온도-공급량 관계</h3>
-		<img src="data:image/png;base64,${visualizations.temp_supply}" />
-
-		<h3>지역별 패턴</h3>
-		<img src="data:image/png;base64,${visualizations.regional_pattern}" />
-
-		<h3>예측 비교</h3>
-		<img
-			src="data:image/png;base64,${visualizations.prediction_comparison}" />
-	</c:if>
-
-	<%-- 	<c:if test="${not empty error}">
-
-			src="data:image/png;base64,${visualizations.prediction_comparison}" />
-</c:if>
-	<c:if test="${not empty error}">
-		<p style="color: red;">오류: ${error}</p>
-	</c:if> --%>
 
 
-	<script>
-		let gasChart = null;
-	</script>
 
+		<script>
+			let gasChart = null;
+		</script>
 </body>
 
 
