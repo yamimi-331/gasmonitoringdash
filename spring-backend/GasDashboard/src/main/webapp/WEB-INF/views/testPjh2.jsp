@@ -52,9 +52,9 @@
 let gasChart;
 
 document.addEventListener("DOMContentLoaded", () => {
-	const yearSelect = document.getElementById("year");
-	yearSelect.addEventListener("change", () => {
-		const selectedYear = yearSelect.value;
+	const yearDropdown = document.getElementById("year");
+	yearDropdown.addEventListener("change", () => {
+		const selectedYear = yearDropdown.value;
 		yearSelect(selectedYear);
 	});
 	// 초기 호출
