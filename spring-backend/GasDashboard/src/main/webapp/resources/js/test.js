@@ -18,7 +18,13 @@ async function fetchPrediction() {
 	loading.style.display = "inline";
 	
   try {
+   // 차트용 데이터
     let data;
+    // 평가점수 데이터
+    let rmse;
+	let mae;
+	let mape;
+	
     if (selectedModel === 'LSTM') {
       // LSTM 모델 호출
       const future_months = selectedPeriod;
@@ -26,7 +32,7 @@ async function fetchPrediction() {
       const sequence_length = 12;
 
       const queryParams = new URLSearchParams({
-        region: selectedCity,
+        local_name: selectedCity,
         future_months,
         recent_months,
         sequence_length
@@ -75,12 +81,21 @@ async function fetchPrediction() {
       alert("지원하지 않는 모델입니다.");
       return;
     }
-
-    const labels = Object.keys(data);
-    const actual = labels.map(key => data[key].actual);
-    const pastPred = labels.map(key => data[key].past_pred);
-    const futurePred = labels.map(key => data[key].future_pred);
-
+	
+	// 예측 결과 데이터
+	const predictionResult = data.prediction_result || {};
+	
+	const labels = Object.keys(predictionResult);
+	const actual = labels.map(key => predictionResult[key].actual);
+	const pastPred = labels.map(key => predictionResult[key].past_pred);
+	const futurePred = labels.map(key => predictionResult[key].future_pred);
+	
+	// 평가점수
+	rmse = data.evaluation?.RMSE || null;
+	mae = data.evaluation?.MAE || null;
+	mape = data.evaluation?.["MAPE (%)"] || null;
+	console.log("평가 점수:", { rmse, mae, mape });
+	
     if (gasChart) gasChart.destroy();
 
     const ctx = document.getElementById('gasChart').getContext('2d');
