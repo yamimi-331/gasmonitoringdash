@@ -48,3 +48,14 @@ def training_xgboost(df):
     os.makedirs('models', exist_ok=True)
     joblib.dump(xgb_model, 'models/model_xgboost.pkl')
     joblib.dump(le, f'models/xgboost_label_encoder.pkl')
+
+
+# if __name__ == "__main__":
+#     # 여기에 재학습할 데이터셋 파일 경로 입력
+#     excel_path = "./data/GasData.xlsx"
+
+#     # 데이터 로드
+#     df = pd.read_excel(excel_path)
+
+#     # 재학습 실행
+#     training_xgboost(df)
