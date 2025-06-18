@@ -5,6 +5,7 @@ import joblib
 from tensorflow.keras.models import load_model
 import tensorflow.keras.losses
 from pandas.tseries.offsets import DateOffset
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 import sys
 import os
 
@@ -225,3 +226,43 @@ def get_prediction_json(df, region_name, future_predict_months=3, recent_actual_
         }
 
     return result
+
+
+def evaluate_prediction_results(pred_result_dict):
+    """
+    결과값을 기반으로 평가 지표(RMSE, MAE, MAPE)를 계산합니다.
+    
+    Args:
+        pred_result_dict (dict): get_prediction_json()에서 반환된 예측 결과 딕셔너리
+
+    Returns:
+        dict: {'RMSE': 값, 'MAE': 값, 'MAPE (%)': 값}
+    """
+    y_true = []
+    y_pred = []
+
+    for date, values in pred_result_dict.items():
+        actual = values.get("actual")
+        past_pred = values.get("past_pred")
+        
+        if actual is not None and past_pred is not None:
+            y_true.append(actual)
+            y_pred.append(past_pred)
+
+    if not y_true:
+        return {
+            "RMSE": None,
+            "MAE": None,
+            "MAPE (%)": None,
+            "message": "평가 가능한 데이터 없음 (actual & past_pred 둘 다 필요한 항목이 부족)"
+        }
+
+    rmse = mean_squared_error(y_true, y_pred, squared=False)
+    mae = mean_absolute_error(y_true, y_pred)
+    mape = np.mean(np.abs((np.array(y_true) - np.array(y_pred)) / np.array(y_true))) * 100
+
+    return {
+        "RMSE": round(rmse, 3),
+        "MAE": round(mae, 3),
+        "MAPE (%)": round(mape, 3)
+    }

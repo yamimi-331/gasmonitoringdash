@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import pandas as pd
 import numpy as np
 
-from prediction.prediction_lstm import get_prediction_json
+from prediction.prediction_lstm import get_prediction_json, evaluate_prediction_results
 from prediction.prediction_xgboost import prediction_xgboost
 from prediction.prediction_prophet import predict_prophet
 from yearsupply import yearSupply
@@ -44,16 +44,22 @@ app.add_middleware(
 
 @app.get("/api/gas/lstm-prediction")
 async def get_lstm_prediction(
-    region: str = Query(..., description="지역명"),
+    local_name: str = Query(..., description="지역명"),
     future_months: int = Query(3, description="예측할 미래 개월 수"),
     recent_months: int = Query(6, description="최근 실제 데이터 개월 수"),
     sequence_length: int = Query(12, description="시퀀스 길이"),
 ):
     try:
         df = pd.read_excel("./data/GasData.xlsx")
-        preds = get_prediction_json(df, region, future_months, recent_months, sequence_length)
-        cleaned_result = convert_all_numpy_to_builtin(preds)
-        return JSONResponse(cleaned_result)
+        preds = get_prediction_json(df, local_name, future_months, recent_months, sequence_length)
+        evaluation = evaluate_prediction_results(preds)
+
+        response = {
+            "local_name": local_name,
+            "prediction_result": convert_all_numpy_to_builtin(preds),
+            "evaluation": evaluation
+        }
+        return JSONResponse(response)
     except Exception as e:
        return JSONResponse(status_code=400, content={"error": str(e)})
     
@@ -66,8 +72,14 @@ async def get_xgboost_prediction(
     try:
         df = pd.read_excel("./data/GasData.xlsx")
         preds = prediction_xgboost(df, start_date, end_date, local_name)
-        cleaned_result = convert_all_numpy_to_builtin(preds)
-        return JSONResponse(cleaned_result)
+        evaluation = evaluate_prediction_results(preds)
+
+        response = {
+            "local_name": local_name,
+            "prediction_result": convert_all_numpy_to_builtin(preds),
+            "evaluation": evaluation
+        }
+        return JSONResponse(response)
     except Exception as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
 
@@ -81,8 +93,13 @@ def predict(
     try:
         df = pd.read_excel("./data/GasData.xlsx")
         preds = predict_prophet(df, local_name, future_predict_months, recent_actual_months)
-        cleaned_result = convert_all_numpy_to_builtin(preds)
-        return JSONResponse(cleaned_result)
+        evaluation = evaluate_prediction_results(preds)
+        response = {
+            "local_name": local_name,
+            "prediction_result": convert_all_numpy_to_builtin(preds),
+            "evaluation": evaluation
+        }
+        return JSONResponse(response)
     except ValueError as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
     
