@@ -238,7 +238,7 @@ button:hover {
 
 		<div class="charts-bottom">
 			<div class="chart-container">
-				<imgsrc ="data:image/png;base64,${visualizations.supply_prediction_timeline_xgboost}"
+				<img src ="data:image/png;base64,${visualizations.supply_prediction_timeline_xgboost}"
 			/>
 			</div>
 
