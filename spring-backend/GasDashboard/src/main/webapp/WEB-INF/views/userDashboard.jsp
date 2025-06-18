@@ -12,20 +12,23 @@
 body {
 	margin: 0;
 	font-family: sans-serif;
-	background-color: #f5f5f5;
+	background-color: #5c72a5;
+	color: white;
 }
 
 .dashboard {
 	width: 70vw;
 	margin: 40px auto;
 	padding: 30px;
-	background-color: #1e1e2f;
+	background-color: #ffffff;
 	border-radius: 12px;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0, 1);
 	box-sizing: border-box;
+	border-radius: 12px;
 }
 
 .header {
+	text-align: center;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -33,10 +36,9 @@ body {
 }
 
 .header h2 {
-	color: white;
+	color: black;
 	margin: 0;
 	font-size: 1.8rem;
-	margin: 0;
 }
 
 .charts-top {
@@ -49,16 +51,16 @@ body {
 
 .chart-box {
 	position: relative;
-	width: 45%; /* ✅ 한 줄에 2개 배치 (가로 여백 포함) */
+	width: 100%;
+	height: auto;
+	min-height: 180px;
 	flex: 1 1 300px;
 	aspect-ratio: 4/2.2;
-	background-color: #e6e6e6;
+	background-color: #d6d5d9;
+	color: white;
 	border-radius: 12px;
 	display: flex;
-	justify-content: center;
-	align-items: center;
 	padding: 0;
-	box-sizing: border-box;
 }
 
 .chart-box img {
@@ -78,7 +80,7 @@ body {
 	border-radius: 6px;
 	font-weight: bold;
 	font-size: 1.1rem;
-	color: #333;
+	/* color: #333; */
 	z-index: 2; /* 이미지를 덮도록 */
 }
 
@@ -92,7 +94,7 @@ body {
 }
 
 .controls label {
-	color: white;
+	color: black;
 	font-weight: 500;
 }
 
@@ -148,6 +150,18 @@ button {
 button:hover {
 	background-color: #0056b3;
 }
+
+.chart-top label {
+	color: white;
+}
+
+.dashboard>h2 {
+	color: white;
+	display: flex;
+	margin-bottom: 0;
+}
+
+
 </style>
 </head>
 <body>
@@ -156,108 +170,61 @@ button:hover {
 		<!-- 상단 헤더  -->
 		<div class="header">
 			<h2>📊 Dashboard</h2>
-			<button>편집 완료</button>
+			<button class="haeder-button">Login</button>
 		</div>
-		<h2>내</h2>
+
 
 		<!-- 상단 차트 공간 -->
-		<div class="charts-top">
-			<div class="chart-box">
-				<form method="get" id="cityForm" onsubmit="return false;">
-					<label for="city">지역 선택:</label> <select id="city" name="city"
-						required>
-						<option value="" disabled selected>지역을 선택하세요</option>
-						<option value="서울특별시">서울특별시</option>
-						<option value="인천광역시">인천광역시</option>
-						<option value="경기도">경기도</option>
-						<option value="부산광역시">부산광역시</option>
-						<option value="대구광역시">대구광역시</option>
-						<option value="광주광역시">광주광역시</option>
-						<option value="대전광역시">대전광역시</option>
-						<option value="울산광역시">울산광역시</option>
-						<option value="세종특별자치시">세종특별자치시</option>
-						<option value="강원특별자치도">강원특별자치도</option>
-						<option value="충청북도">충청북도</option>
-						<option value="충청남도">충청남도</option>
-						<option value="전북특별자치도">전북특별자치도</option>
-						<option value="전라남도">전라남도</option>
-						<option value="경상북도">경상북도</option>
-						<option value="경상남도">경상남도</option>
-						<option value="제주특별자치도">제주특별자치도</option>
-					</select> <label for="model">분석 모델 선택:</label> <select id="model"
-						name="model" required>
-						<option value="" disabled selected>모델을 선택하세요</option>
-						<option value="XGBoost">XGBoost</option>
-						<option value="Prophet">Prophet</option>
-						<option value="LSTM">LSTM</option>
-					</select> <label for="period">예측 기간:</label> <select id="period"
-						name="period" required>
-						<option value="3" selected>3개월</option>
-						<option value="6">6개월</option>
-						<option value="12">12개월</option>
-					</select>
-					<button type="button" onclick="fetchPrediction()">조회</button>
-				</form>
-				<p id="loading" style="display: none;">데이터를 불러오는 중입니다...</p>
-				<p id="xgb-result"></p>
-				<canvas id="gasChart"></canvas>
-			</div>
-			<div class="chart-box">
-				<c:if test="${not empty visualizations}">
-					<div class="chart-title">온도-공급량 관계</div>
-					<img src="data:image/png;base64,${visualizations.temp_supply}" />
-				</c:if>
-			</div>
 
-			<%-- 	<div class="chart-box">
-				<c:if test="${not empty visualizations}">
-					<div class="chart-title">지역별 패턴</div>
-					<img src="data:image/png;base64,${visualizations.regional_pattern}" />
-				</c:if>
-			</div> --%>
+		<div class="controls">
+			<h2>지역별 가스 사용량</h2>
+			<form method="get" id="cityForm" onsubmit="return false;">
+				<label for="city">지역 선택:</label> <select id="city" name="city"
+					required>
+					<option value="" disabled selected>지역을 선택하세요</option>
+					<option value="서울특별시">서울특별시</option>
+					<option value="인천광역시">인천광역시</option>
+					<option value="경기도">경기도</option>
+					<option value="부산광역시">부산광역시</option>
+					<option value="대구광역시">대구광역시</option>
+					<option value="광주광역시">광주광역시</option>
+					<option value="대전광역시">대전광역시</option>
+					<option value="울산광역시">울산광역시</option>
+					<option value="세종특별자치시">세종특별자치시</option>
+					<option value="강원특별자치도">강원특별자치도</option>
+					<option value="충청북도">충청북도</option>
+					<option value="충청남도">충청남도</option>
+					<option value="전북특별자치도">전북특별자치도</option>
+					<option value="전라남도">전라남도</option>
+					<option value="경상북도">경상북도</option>
+					<option value="경상남도">경상남도</option>
+					<option value="제주특별자치도">제주특별자치도</option>
+				</select> <label for="model">분석 모델 선택:</label> <select id="model"
+					name="model" required>
+					<option value="" disabled selected>모델을 선택하세요</option>
+					<option value="XGBoost">XGBoost</option>
+					<option value="Prophet">Prophet</option>
+					<option value="LSTM">LSTM</option>
+				</select> <label for="period">예측 기간:</label> <select id="period"
+					name="period" required>
+					<option value="3" selected>3개월</option>
+					<option value="6">6개월</option>
+					<option value="12">12개월</option>
+				</select>
+				<button type="button" onclick="fetchPrediction()">조회</button>
+			</form>
+			<p id="loading" style="display: none;">데이터를 불러오는 중입니다...</p>
+			<p id="xgb-result"></p>
 		</div>
 
-		<%-- 	<form method="get" id="cityForm" onsubmit="return false;">
-		<label for="city">지역 선택:</label>
-		<select id="city" name="city" required>
-			<option value="" disabled selected>지역을 선택하세요</option>
-			<option value="서울특별시">서울특별시</option>
-			<option value="인천광역시">인천광역시</option>
-			<option value="경기도">경기도</option>
-			<option value="부산광역시">부산광역시</option>
-			<option value="대구광역시">대구광역시</option>
-			<option value="광주광역시">광주광역시</option>
-			<option value="대전광역시">대전광역시</option>
-			<option value="울산광역시">울산광역시</option>
-			<option value="세종특별자치시">세종특별자치시</option>
-			<option value="강원특별자치도">강원특별자치도</option>
-			<option value="충청북도">충청북도</option>
-			<option value="충청남도">충청남도</option>
-			<option value="전북특별자치도">전북특별자치도</option>
-			<option value="전라남도">전라남도</option>
-			<option value="경상북도">경상북도</option>
-			<option value="경상남도">경상남도</option>
-			<option value="제주특별자치도">제주특별자치도</option>
-		</select>
-		<label for="model">분석 모델 선택:</label>
-		<select id="model" name="model" required>
-			<option value="" disabled selected>모델을 선택하세요</option>
-			<option value="XGBoost">XGBoost</option>
-			<option value="Prophet">Prophet</option>
-			<option value="LSTM">LSTM</option>
-		</select>
-		<label for="period">예측 기간:</label>
-		<select id="period" name="period" required>
-			<option value="3" selected>3개월</option>
-			<option value="6">6개월</option>
-			<option value="12">12개월</option>
-		</select>
-		<button type="button" onclick="fetchPrediction()">조회</button>
-	</form>
-	<p id="loading" style="display:none;">데이터를 불러오는 중입니다...</p>
-	<p id="xgb-result"></p>
-	<canvas id="gasChart"></canvas> --%>
-		<!-- 선택 컨트롤 -->
+		<div class="charts-top">
+
+			<div class="chart-box">
+				<canvas id="gasChart"></canvas>
+			</div>
+
+		</div>
+		<!-- 입력 영역 2: 하단 체크 앞 -->
 		<div class="controls">
 			<label for="city">Select City:</label> <select id="city" name="city">
 				<option value="" disabled selected>지역을 선택하세요</option>
@@ -274,7 +241,7 @@ button:hover {
 			</select>
 		</div>
 
-		<!-- 하단 차트 3개 -->
+
 		<div class="charts-bottom">
 			<div class="chart-container">
 				<img
@@ -294,22 +261,6 @@ button:hover {
 		</div>
 	</div>
 
-	<!-- 예제 코드 -->
-	<%-- 	<c:if test="${not empty models}">
-		<h3>XGBoost</h3>
-		<ul>
-			<li>MSE: ${models.XGBoost.mse}</li>
-			<li>RMSE: ${models.XGBoost.rmse}</li>
-			<li>R²: ${models.XGBoost.r2}</li>
-		</ul>
-
-		<h3>Prophet</h3>
-		<p>${models.Prophet.model}</p>
-
-		<h3>LSTM</h3>
-		<p>${models.LSTM.model}</p>
-	</c:if>
- --%>
 
 	<h2>시각화 결과</h2>
 	<c:if test="${not empty visualizations}">
@@ -336,9 +287,9 @@ button:hover {
 	</c:if> --%>
 
 
-<script>
-	let gasChart = null;
-</script>
+	<script>
+		let gasChart = null;
+	</script>
 
 </body>
 

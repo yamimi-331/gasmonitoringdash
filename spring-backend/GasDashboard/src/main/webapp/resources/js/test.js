@@ -1,7 +1,7 @@
 let gasChart;
 
 async function fetchPrediction() {
-  const selectedCity = document.getElementById("city").value || '서울특별시'; // 기본값 설정 가능
+  const selectedCity = document.getElementById("city").value;// || '서울특별시'; // 기본값 설정 가능
   const selectedModel = document.getElementById("model").value;
   const selectedPeriod = document.getElementById("period").value || 3; // 기본값 3개월
   
@@ -24,7 +24,6 @@ async function fetchPrediction() {
     let rmse;
 	let mae;
 	let mape;
-	
     if (selectedModel === 'LSTM') {
       // LSTM 모델 호출
       const future_months = selectedPeriod;
