@@ -301,19 +301,13 @@ function populationSupplyChart(canvasId, labels, populations, supplies, city){
 	// 최대, 최소값 계산
     const maxPop = Math.max(...populations);
     const minPop = Math.min(...populations);
-    const maxSup = Math.max(...supplies);
-    const minSup = Math.min(...supplies);
     
     // 여유값 계산 (최대 - 최소의 20%)
-    const popMargin = (maxPop - minPop) * 0.3;
-    const supMargin = (maxSup - minSup) * 0.1;
+    const popMargin = Math.ceil((maxPop - minPop) * 0.3);
 
     // 최소, 최대값에 margin 적용 (음수가 되지 않도록 Math.max(0, ...) 처리)
     const y1Min = Math.max(0, minPop - popMargin);
     const y1Max = maxPop + popMargin;
-
-    const y2Min = Math.max(0, minSup - supMargin);
-    const y2Max = maxSup + supMargin;
 	
 	const ctx = document.getElementById(canvasId).getContext('2d');
 	return new Chart(ctx, {
@@ -362,8 +356,6 @@ function populationSupplyChart(canvasId, labels, populations, supplies, city){
 				y2: {
 					type: 'linear',
 					position: 'right',
-					min: y2Min,
-                    max: y2Max,
 					title: {
 						display: true,
 						text: '총 공급량 (m³)'
@@ -390,7 +382,7 @@ function personalGasUseChart(canvasId, labels, data, city) {
 				borderColor: 'rgba(75, 192, 192, 0.8)',
 				backgroundColor: 'rgba(75, 192, 192, 0.2)',
 				tension: 0.3,
-				fill: false
+				fill: true
 			}]
 		},
 		options: {
