@@ -88,3 +88,13 @@ def train_lstm_by_region(df, sequence_length=12):
         joblib.dump(le, f'models/region/{region}_label_encoder.pkl') # 🔹 LabelEncoder 저장
 
         print(f"{region} 학습 및 저장 완료")
+
+if __name__ == "__main__":
+    # 여기에 재학습할 데이터셋 파일 경로 입력
+    excel_path = "./data/GasData.xlsx"
+
+    # 데이터 로드
+    df = pd.read_excel(excel_path)
+
+    # 재학습 실행
+    train_lstm_by_region(df)
