@@ -117,11 +117,11 @@ def get_year_supply(
     
 @app.get("/api/gas/populationsupply")
 def get_population_supply(
-    local_name: str = Query(..., description="선택 지역"),
+    localname: str = Query(..., description="선택 지역"),
 ):
     try:
         df = pd.read_excel("./data/GasData.xlsx")
-        result = populationSupply(df, local_name)
+        result = populationSupply(df, localname)
         cleaned_result = convert_all_numpy_to_builtin(result)
         return JSONResponse(cleaned_result)
     except ValueError as e:

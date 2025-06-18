@@ -46,19 +46,29 @@
 	</form>
 	<p id="loading" style="display:none;">데이터를 불러오는 중입니다...</p>
 	<p id="xgb-result"></p>
-	<canvas id="gasChart"></canvas>
+	<canvas id="yearLocalSupply"></canvas>
+	<canvas id="populationSupply"></canvas>
+	<canvas id="personalGasUse"></canvas>
 	
 <script>
-let gasChart;
+let yearLocalSupply, populationSupply, personalGasUse;
 
 document.addEventListener("DOMContentLoaded", () => {
 	const yearDropdown = document.getElementById("year");
+	const cidyDropdown = document.getElementById("city");
+	//연도 변경시
 	yearDropdown.addEventListener("change", () => {
 		const selectedYear = yearDropdown.value;
 		yearSelect(selectedYear);
 	});
+	//지역 변경시
+	cidyDropdown.addEventListener("change", () => {
+		const selectedCity = cidyDropdown.value;
+		citySelect(selectedCity);
+	});
 	// 초기 호출
 	yearSelect("2025");
+	citySelect("서울특별시");
 	});
 
 async function yearSelect(year) {
@@ -94,10 +104,10 @@ async function yearSelect(year) {
 		};
 		const backgroundColors = labels.map(label => regionColors[label] || 'rgba(200,200,200,0.7)');
 
-		if (gasChart) gasChart.destroy();
+		if (yearLocalSupply) yearLocalSupply.destroy();
 
-		const ctx = document.getElementById('gasChart').getContext('2d');
-		gasChart = new Chart(ctx, {
+		const ctx = document.getElementById('yearLocalSupply').getContext('2d');
+		yearLocalSupply = new Chart(ctx, {
 			type: 'bar',
 			data: {
 			labels: labels,
@@ -114,7 +124,7 @@ async function yearSelect(year) {
 				plugins: {
 					title: {
 					display: true,
-					text: '지역별 가스 총 공급량',
+					text: year + '년, 지역별 가스 총 공급량',
 					font: { size: 18 }
 					},
 					tooltip: {
@@ -140,6 +150,149 @@ async function yearSelect(year) {
 	}
 }
 
+async function citySelect(city) {
+	const loading = document.getElementById("loading");
+	loading.style.display = "inline";
+	
+	try {
+		const response = await fetch('http://localhost:8000/api/gas/populationsupply?localname=' + city);
+		data = await response.json();
+
+		const cityData = data[city];
+		const years = Object.keys(cityData);
+		const populations = years.map(y => cityData[y]["평균 인구수"]);
+		const supplies = years.map(y => cityData[y]["가스 총 공급량"]);
+		const perPerson = years.map(y => cityData[y]["1인당 가스 사용량"]);
+		
+		if (populationSupply) populationSupply.destroy();
+		if (personalGasUse) personalGasUse.destroy();
+		
+		populationSupply = populationSupplyChart('populationSupply', years, populations, supplies, city)
+		personalGasUse = personalGasUseChart('personalGasUse', years, perPerson, city)
+		
+	} catch (error) {
+		alert("데이터 가져오기 오류: " + error);
+	}finally {
+		loading.style.display = "none";
+	}
+}
+
+function populationSupplyChart(canvasId, labels, populations, supplies, city){
+	// 최대, 최소값 계산
+    const maxPop = Math.max(...populations);
+    const minPop = Math.min(...populations);
+    const maxSup = Math.max(...supplies);
+    const minSup = Math.min(...supplies);
+    
+    // 여유값 계산 (최대 - 최소의 20%)
+    const popMargin = (maxPop - minPop) * 0.3;
+    const supMargin = (maxSup - minSup) * 0.1;
+
+    // 최소, 최대값에 margin 적용 (음수가 되지 않도록 Math.max(0, ...) 처리)
+    const y1Min = Math.max(0, minPop - popMargin);
+    const y1Max = maxPop + popMargin;
+
+    const y2Min = Math.max(0, minSup - supMargin);
+    const y2Max = maxSup + supMargin;
+	
+	const ctx = document.getElementById(canvasId).getContext('2d');
+	return new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: labels,
+			datasets: [
+				{
+					type: 'line',
+					label: '평균 인구수',
+					data: populations,
+					borderColor: 'rgba(54, 162, 235, 0.8)',
+					backgroundColor: 'rgba(54, 162, 235, 0.2)',
+					yAxisID: 'y1',
+					tension: 0.3,
+					fill: false
+				},
+				{
+					type: 'bar',
+					label: '총 공급량',
+					data: supplies,
+					backgroundColor: 'rgba(255, 99, 132, 0.6)',
+					yAxisID: 'y2',
+				}
+			]
+		},
+		options: {
+			responsive: true,
+			plugins: {
+				title: {
+					display: true,
+					text: city + '의 연도별 인구수 및 가스공급량'
+				}
+			},
+			scales: {
+				y1: {
+					type: 'linear',
+					position: 'left',
+					min: y1Min,
+                    max: y1Max,
+					title: {
+						display: true,
+						text: '평균 인구수'
+					}
+				},
+				y2: {
+					type: 'linear',
+					position: 'right',
+					min: y2Min,
+                    max: y2Max,
+					title: {
+						display: true,
+						text: '총 공급량 (m³)'
+					},
+					grid: {
+						drawOnChartArea: false
+					}
+				}
+			}
+		}
+	});
+}
+
+//1인당 가스 사용량 꺾은선 그래프
+function personalGasUseChart(canvasId, labels, data, city) {
+	const ctx = document.getElementById(canvasId).getContext('2d');
+	return new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: labels,
+			datasets: [{
+				label: '1인당 가스 사용량 (m³)',
+				data: data,
+				borderColor: 'rgba(75, 192, 192, 0.8)',
+				backgroundColor: 'rgba(75, 192, 192, 0.2)',
+				tension: 0.3,
+				fill: false
+			}]
+		},
+		options: {
+			responsive: true,
+			plugins: {
+				title: {
+					display: true,
+					text: city + '의 연도별 1인당 가스 사용량'
+				}
+			},
+			scales: {
+				y: {
+					beginAtZero: true,
+					title: {
+						display: true,
+						text: '1인당 가스 사용량 (m³)'
+					}
+				}
+			}
+		}
+	});
+}
 </script>
 </body>
 </html>
