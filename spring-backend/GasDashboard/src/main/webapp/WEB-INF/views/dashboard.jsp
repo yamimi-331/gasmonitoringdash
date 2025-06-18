@@ -283,8 +283,8 @@ button:hover {
 		
 		<!-- 차트 테스트  -->
 		<div id="cityForm">
-			<label for="city">지역 선택:</label>
-			<select id="city" name="city" required>
+			<label for="city_detail">지역 선택:</label>
+			<select id="city_detail" name="city" required>
 				<option value="" disabled selected>지역을 선택하세요</option>
 				<option value="서울특별시">서울특별시</option>
 				<option value="인천광역시">인천광역시</option>
@@ -304,7 +304,7 @@ button:hover {
 				<option value="경상남도">경상남도</option>
 				<option value="제주특별자치도">제주특별자치도</option>
 			</select>
-			<button type="button" onclick="yearSelect()">조회</button>
+			<button type="button" onclick="yearLocalGasChart()">조회</button>
 		</div>
 		<div id="yearForm">
 			<label for="year">연도 선택:</label>

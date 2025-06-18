@@ -8,7 +8,7 @@ let yearLocalSupply, populationSupply, personalGasUse;
 
 document.addEventListener("DOMContentLoaded", () => {
 	const yearDropdown = document.getElementById("year");
-	const cidyDropdown = document.getElementById("city");
+	const cidyDropdown = document.getElementById("city_detail");
 	//연도 변경시
 	yearDropdown.addEventListener("change", () => {
 		const selectedYear = yearDropdown.value;
