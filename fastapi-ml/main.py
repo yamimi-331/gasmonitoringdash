@@ -9,6 +9,7 @@ import numpy as np
 
 from prediction.prediction_lstm import get_prediction_json
 from prediction.prediction_xgboost import prediction_xgboost
+from prediction.prediction_prophet import predict_prophet
 
 app = FastAPI()
 
@@ -48,11 +49,11 @@ async def get_lstm_prediction(
 ):
     try:
         df = pd.read_excel("./data/GasData.xlsx")
-        result = get_prediction_json(df, region, future_months, recent_months, sequence_length)
-        cleaned_result = convert_all_numpy_to_builtin(result)
+        preds = get_prediction_json(df, region, future_months, recent_months, sequence_length)
+        cleaned_result = convert_all_numpy_to_builtin(preds)
         return JSONResponse(cleaned_result)
     except Exception as e:
-        return {"error": str(e)}
+       return JSONResponse(status_code=400, content={"error": str(e)})
     
 @app.get("/api/gas/xgboost-prediction")
 async def get_xgboost_prediction(
@@ -66,4 +67,19 @@ async def get_xgboost_prediction(
         cleaned_result = convert_all_numpy_to_builtin(preds)
         return JSONResponse(cleaned_result)
     except Exception as e:
-        return {"error": str(e)}
+        return JSONResponse(status_code=400, content={"error": str(e)})
+
+
+@app.get("/api/gas/prophet-prediction")
+def predict(
+    local_name: str = Query(..., description="지역명"),
+    future_predict_months: int = Query(3, description="예측 개월 수"),
+    recent_actual_months: int = Query(15, description="과거 보여줄 개월 수")
+):
+    try:
+        df = pd.read_excel("./data/GasData.xlsx")
+        preds = predict_prophet(df, local_name, future_predict_months, recent_actual_months)
+        cleaned_result = convert_all_numpy_to_builtin(preds)
+        return JSONResponse(cleaned_result)
+    except ValueError as e:
+        return JSONResponse(status_code=400, content={"error": str(e)})
