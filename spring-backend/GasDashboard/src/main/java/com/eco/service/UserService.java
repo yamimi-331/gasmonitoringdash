@@ -1,8 +1,10 @@
 package com.eco.service;
 
-import org.springframework.stereotype.Service;
+
+import com.eco.domain.UserVO;
 
 
-@Service
 public interface UserService {
+	// 로그인 함수
+	public UserVO login(UserVO user);
 }
