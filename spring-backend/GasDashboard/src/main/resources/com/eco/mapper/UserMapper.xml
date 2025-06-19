@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eco.mapper.UserMapper">
+	<!-- SELECT -->
+	<select id="getUserSelect" resultType="com.eco.domain.UserVO">
+		<![CDATA[
+		SELECT * FROM t_user
+		WHERE use_yn = 'Y' AND user_id = #{user_id} and user_pw = #{user_pw}
+		]]>
+	</select>
+	
+	<select id="Select" resultType="int">
+		<![CDATA[
+		SELECT count(*) FROM t_user;
+		]]>
+	</select>
+	
+	<select id="findByUserId" resultType="com.eco.domain.UserVO">
+		<![CDATA[
+		SELECT * FROM t_user
+		WHERE user_id = #{user_id};
+		]]>
+	</select>
+	
+	<!-- user_cd 일련번호 조회 -->
+	<select id="findMaxUserCd" resultType="int">
+		SELECT IFNULL(MAX(CAST(SUBSTRING(user_cd, 8, 4) AS UNSIGNED)), 0)
+		FROM t_user
+		WHERE SUBSTRING(user_cd, 1, 4) = #{year}
+	</select>
+	
+	<!-- 지역코드 가져오기 -->
+	<select id="selectLocalList" resultType="com.eco.domain.LocalVO">
+		<![CDATA[
+		SELECT * FROM t_local WHERE use_yn = 'Y'
+		]]>
+	</select>
+	
+	<!-- INSERT -->
+	<insert id="userInsert">
+		<![CDATA[
+		    INSERT INTO t_user(user_cd, user_id, user_pw, user_nm, local_cd, user_addr)
+		    VALUES(#{user_cd}, #{user_id}, #{user_pw}, #{user_nm}, #{local_cd}, #{user_addr})
+	    ]]>
+	</insert>
+
+
+
+</mapper>

@@ -11,13 +11,33 @@
 <link href="../../resources/css/dashboard.css?after" rel="stylesheet"
 	type="text/css">
 </head>
+<script>
+	function logout() {
+		let isLogout = confirm("정말 로그아웃 하시겠습니까?");
+		if (isLogout) {
+			// 확인 눌렀을 때 로그아웃 페이지로 이동
+			window.location.href = "/logout";
+		}
+	}
+</script>
 <body>
 	<!-- 전체 대시보드 컨테이너 -->
 	<div class="dashboard">
 		<!-- 상단 헤더  -->
 		<div class="header">
 			<h2>📊 Dashboard</h2>
-			<button class="header-button">Login</button>
+			<c:choose>
+				<c:when test="${not empty currentUserInfo}">
+					<button class="header-button" onclick="location.href='/myUsage'">myUsage</button>
+					<button class="header-button" onclick="logout()">logout</button>
+				</c:when>
+				<c:otherwise>
+					<button class="header-button" onclick="location.href='/login'">Login</button>
+				</c:otherwise>
+			</c:choose>
+			<c:if test="${ currentUserInfo.admin_yn.toString() eq 'Y' }">
+				<button class="header-button" onclick="location.href='/admin'">admin</button>
+			</c:if>
 		</div>
 		<div id="yearForm">
 			<label for="year">연도 선택:</label> <select id="year" name="year"
@@ -166,5 +186,11 @@
 	</div>
 </body>
 
+<!-- 로그아웃후 메세지 알람(일회성) -->
+<c:if test="${not empty msg}">
+	<script>
+		alert('${msg}');
+	</script>
+</c:if>
 
 </html>
