@@ -31,10 +31,7 @@ public class LoginController {
 	// 로그인 버튼 클릭시 실행
 	@PostMapping("")
 	public String loginPost(UserVO user, HttpSession session, Model model) {
-		log.info(user);
 		UserVO rtnUser = service.login(user);
-		int result = service.usercount();
-		log.info("사용자 조회: " + result);
 		if (rtnUser != null) {
 			// 로그인 성공 처리
 			session.setAttribute("currentUserInfo", rtnUser);

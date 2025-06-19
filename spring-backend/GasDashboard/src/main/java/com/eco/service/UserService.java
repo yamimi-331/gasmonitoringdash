@@ -7,7 +7,6 @@ import com.eco.domain.UserVO;
 public interface UserService {
 	// 로그인 함수
 	public UserVO login(UserVO user);
-	public int usercount();
 	
 	// 회원가입
 	public void signup(UserVO user);

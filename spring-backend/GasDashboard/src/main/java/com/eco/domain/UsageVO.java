@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class UsageVO {
-	private int usageCd;
-	private char userCd;
-	private char localCd;
-	private char usageDt;
-	private int usageAmount;
-	private char useYn;	
+	private int usage_cd;
+	private char user_cd;
+	private char local_cd;
+	private char usage_dt;
+	private int usage_amount;
+	private char use_yn;	
 }

@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class PublicVO {
-	private int publicCd;
-	private char localCd;
-	private char publicDt;
-	private int publicAmount;
-	private char useYn;
+	private int public_cd;
+	private char local_cd;
+	private char public_dt;
+	private int public_amount;
+	private char use_yn;
 }
