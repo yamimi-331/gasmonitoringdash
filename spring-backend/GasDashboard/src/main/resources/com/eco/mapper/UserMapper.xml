@@ -25,10 +25,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- user_cd 일련번호 조회 -->
-	<select id="getMaxUserSeq" resultType="int">
+	<select id="findMaxUserCd" resultType="int">
 		SELECT IFNULL(MAX(CAST(SUBSTRING(user_cd, 8, 4) AS UNSIGNED)), 0)
 		FROM t_user
 		WHERE SUBSTRING(user_cd, 1, 4) = #{year}
+	</select>
+	
+	<!-- 지역코드 가져오기 -->
+	<select id="selectLocalList" resultType="com.eco.domain.LocalVO">
+		<![CDATA[
+		SELECT * FROM t_local WHERE use_yn = 'Y'
+		]]>
 	</select>
 	
 	<!-- INSERT -->

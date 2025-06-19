@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,7 +57,7 @@ function checkDuplicateId() {
             return;
         }
 
-        fetch("/check-id?user_id=" + encodeURIComponent(userId))
+        fetch("/signup/check-id?user_id=" + encodeURIComponent(userId))
             .then(res => res.text())
             .then(result => {
                 if (result === "duplicate") {
@@ -137,8 +138,35 @@ document.addEventListener("DOMContentLoaded", function () {
 				<input type="text" name="user_nm" id="user_nm" autocomplete="off">
 			</div>
 			<div>
-				<label for="user_local">지역</label> 
-				<input type="text" name="user_local" id="user_local" autocomplete="off">
+				<!-- <label for="local_cd">지역</label> 
+				<select id="local_cd" name="local_cd"required>
+					<option value="L01" selected>서울특별시</option>
+					<option value="L02">인천광역시</option>
+					<option value="L03">경기도</option>
+					<option value="L04">부산광역시</option>
+					<option value="L05">대구광역시</option>
+					<option value="L06">광주광역시</option>
+					<option value="L07">대전광역시</option>
+					<option value="L08">울산광역시</option>
+					<option value="L09">세종특별자치시</option>
+					<option value="L10">강원특별자치도</option>
+					<option value="L11">충청북도</option>
+					<option value="L12">충청남도</option>
+					<option value="L13">전북특별자치도</option>
+					<option value="L14">전라남도</option>
+					<option value="L15">경상북도</option>
+					<option value="L16">경상남도</option>
+					<option value="L17">제주특별자치도</option>
+				</select> -->
+				<label for="local_cd">지역</label>
+					<select id="local_cd" name="local_cd" required>
+						<option value="">-- 지역 선택 --</option>
+						<optgroup label="local">
+							<c:forEach var="local" items="${localList}">
+								<option value="${local.local_cd.toString()}">${local.local_nm}</option>
+							</c:forEach>
+						</optgroup>
+					</select>
 			</div>
 			<div>
 				<label for="user_addr">상세주소</label> 

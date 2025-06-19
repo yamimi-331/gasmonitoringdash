@@ -1,7 +1,12 @@
 package com.eco.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.eco.domain.LocalVO;
 import com.eco.domain.UserVO;
 import com.eco.exception.ServiceException;
 import com.eco.mapper.UserMapper;
@@ -27,17 +32,38 @@ public class UserServiceImpl  implements UserService{
 		}
 	}
 	
+	//지역코드 가져오기
+	@Override
+	public List<LocalVO> getLocalList(){
+		return mapper.selectLocalList();
+	}
+	
+	//cd값 찾아오기
+	@Override
+	public String findMaxUserCd(String localCode) {
+		String year = new SimpleDateFormat("yyyy").format(new Date());
+
+        int maxSeq = mapper.findMaxUserCd(year);
+        int nextSeq = maxSeq + 1;
+        String seqStr = String.format("%04d", nextSeq);  // 4자리 0패딩
+
+        return year + localCode + seqStr;
+	}	
+	
 	// 회원가입 
-		@Override
+	@Override
 	public void signup(UserVO user) {
 		try {
+			String localCode = String.valueOf(user.getLocal_cd());  // 회원가입 폼에서 선택한 지역코드
+		    String userCd = findMaxUserCd(localCode);
+		    user.setUser_cd(userCd);
 			mapper.userInsert(user);
 		} catch (Exception e) {
 			throw new ServiceException("회원가입 실패", e);
 		}
 	}
 		
-	// 사용자 ID, Type으로 사용자 정보 반환
+	// 사용자 ID로 사용자 정보 반환
 	@Override
 	public UserVO findByUserId(String user_id) {
 		try {
@@ -46,5 +72,7 @@ public class UserServiceImpl  implements UserService{
 			throw new ServiceException("사용자 조회 실패", e);
 		}
 	}
+
+
 
 }
