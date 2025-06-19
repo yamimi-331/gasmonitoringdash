@@ -12,7 +12,8 @@
 	flex-wrap:wrap;
 	gap:20px;
 	justify-content:center;
-	max-width: 1000px;
+	width: 100%;
+	height: 200px;
 	margin: 0 auto;
 }
 #topLocalSupply canvas {
