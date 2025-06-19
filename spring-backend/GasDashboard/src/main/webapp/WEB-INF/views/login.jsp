@@ -54,6 +54,7 @@
             <div class="form-group">
                <input class="input-submit-area" type="submit" value="로그인"/>
                <input class="input-submit-area" type="button" onclick="location.href='/signup'" value="회원가입"/>
+               <input class="input-submit-area" type="button" onclick="location.href='/'" value="메인페이지"/>
             </div>
 		</form>
 		</div>

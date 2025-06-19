@@ -10,6 +10,9 @@
 <script type="text/javascript" src="../../resources/js/chart.js"></script>
 <link href="../../resources/css/dashboard.css?after" rel="stylesheet" type="text/css">
 </head>
+<script>
+
+</script>
 <body>
 	<!-- 전체 대시보드 컨테이너 -->
 	<div class="dashboard">
@@ -19,11 +22,15 @@
 			<c:choose>
 		        <c:when test="${not empty currentUserInfo}">
 					<button class="header-button" onclick="location.href='/myUsage'">myUsage</button>
+					<button class="header-button" onclick="logout()">logout</button>
 		        </c:when>
 		        <c:otherwise>
 					<button class="header-button" onclick="location.href='/login'">Login</button>
 		        </c:otherwise>
 		    </c:choose>
+		    <c:if test="${ currentUserInfo.admin_yn.toString() eq 'Y' }">
+	    		<button class="header-button" onclick="location.href='/admin'">admin</button>
+		    </c:if>
 		</div>
 		<div id="yearForm">
 			<label for="year">연도 선택:</label> 
@@ -168,5 +175,11 @@
 	</div>
 </body>
 
+<!-- 로그아웃후 메세지 알람(일회성) -->
+<c:if test="${not empty msg}">
+<script>
+    alert('${msg}');
+</script>
+</c:if>
 
 </html>
