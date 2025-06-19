@@ -12,9 +12,9 @@ let isPwdValid = false;  // 비밀번호 확인 완료 여부
 let isEmailVerified = false; // 이메일 인증 완료 여부
 
 function validateForm() {
-    const userIdInput = document.querySelector('input[name="userId"]');
-    const userPwInput = document.querySelector('input[name="userPw"]');
-    const userNmInput = document.querySelector('input[name="userNm"]');
+    const userIdInput = document.querySelector('input[name="user_id"]');
+    const userPwInput = document.querySelector('input[name="user_pw"]');
+    const userNmInput = document.querySelector('input[name="user_nm"]');
         
     const userId = userIdInput.value.trim();
     const userPw = userPwInput.value.trim();
@@ -37,7 +37,7 @@ function validateForm() {
     }
     if (!isPwdValid) {
         alert("비밀번호 확인을 완료해주세요.");
-        document.querySelector("#userPwCk").focus();
+        document.querySelector("#user_pw_ck").focus();
         return false;
     }
     if (userNm === "" || userNm === null) {
@@ -50,13 +50,13 @@ function validateForm() {
 
 // 아이디 중복 확인
 function checkDuplicateId() {
-        const userId = document.querySelector('input[name="userId"]').value;
+        const userId = document.querySelector('input[name="user_id"]').value;
         if (!userId) {
             alert("아이디를 입력하세요.");
             return;
         }
 
-        fetch("/check-id?userId=" + encodeURIComponent(userId))
+        fetch("/check-id?user_id=" + encodeURIComponent(userId))
             .then(res => res.text())
             .then(result => {
                 if (result === "duplicate") {
@@ -75,10 +75,10 @@ function checkDuplicateId() {
 
 // 비밀번호 확인 검사
 function checkPwd() {
-    const pw = document.querySelector("#userPw").value;
-    const pw_ck = document.querySelector("#userPwCk").value;
+    const pw = document.querySelector("#user_pw").value;
+    const pw_ck = document.querySelector("#user_pw_ck").value;
 
-    const pw_ckInput = document.querySelector("#userPwCk");
+    const pw_ckInput = document.querySelector("#user_pw_ck");
     const feedback = document.querySelector(".invalidFeedback");
 
     pw_ckInput.classList.remove("is-valid", "is-invalid");
@@ -98,7 +98,7 @@ function checkPwd() {
 
 // 이벤트 등록 (DOM 로드 이후 실행)
 document.addEventListener("DOMContentLoaded", function () {
-    const pwCkInput = document.querySelector("#userPwCk");
+    const pwCkInput = document.querySelector("#user_pw_ck");
     const form = document.querySelector("#signupForm");
 
     if (pwCkInput) {
@@ -119,30 +119,30 @@ document.addEventListener("DOMContentLoaded", function () {
 	<div>
 		<form action="signup" method="post" onsubmit="return validateForm()">
 			<div>
-				<label for="userId">아이디</label>
-				<input type="text" name="userId" id="userId"autocomplete="off">
+				<label for="user_id">아이디</label>
+				<input type="text" name="user_id" id="user_id"autocomplete="off">
 				<input class="input-btn-area" type="button" onclick="checkDuplicateId()" value="중복확인">
 			</div>
 			<div>
-				<label for="userPw">비밀번호</label>
-				<input type="password" name="userPw" id="userPw" autocomplete="new-password" oninput="checkPwd()">
+				<label for="user_pw">비밀번호</label>
+				<input type="password" name="user_pw" id="user_pw" autocomplete="new-password" oninput="checkPwd()">
 			</div>
 			<div>
-				<label for="userPwCk">비밀번호 확인</label>
-				<input type="password" name="userPwCk" id="userPwCk" autocomplete="new-password" oninput="checkPwd()">
+				<label for="user_pw_ckCk">비밀번호 확인</label>
+				<input type="password" name="user_pw_ck" id="user_pw_ck" autocomplete="new-password" oninput="checkPwd()">
 				<div class="invalidFeedback"></div>
 			</div>
 			<div>
-				<label for="userNm">이름</label>
-				<input type="text" name="userNm" id="userNm" autocomplete="off">
+				<label for="user_nm">이름</label>
+				<input type="text" name="user_nm" id="user_nm" autocomplete="off">
 			</div>
 			<div>
-				<label for="userLocal">지역</label> 
-				<input type="text" name="userLocal" id="userLocal" autocomplete="off">
+				<label for="user_local">지역</label> 
+				<input type="text" name="user_local" id="user_local" autocomplete="off">
 			</div>
 			<div>
-				<label for="userAddr">상세주소</label> 
-				<input type="text" name="userAddr" id="userAddr" autocomplete="off">
+				<label for="user_addr">상세주소</label> 
+				<input type="text" name="user_addr" id="user_addr" autocomplete="off">
 			</div>
 			<input type="submit" value="가입하기">
 		</form>

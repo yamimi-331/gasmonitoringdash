@@ -11,5 +11,5 @@ public interface UserService {
 	// 회원가입
 	public void signup(UserVO user);
 	// 사용자 아이디 존재 여부 확인
-	public UserVO findByUserId(String user_id, String user_type);
+	public UserVO findByUserId(String user_id);
 }

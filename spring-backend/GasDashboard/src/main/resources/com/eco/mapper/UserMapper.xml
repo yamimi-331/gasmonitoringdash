@@ -20,15 +20,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findByUserId" resultType="com.eco.domain.UserVO">
 		<![CDATA[
 		SELECT * FROM t_user
-		WHERE user_id = #{user_id} and user_type = #{user_type};
+		WHERE user_id = #{user_id};
 		]]>
 	</select>
-
+	
+	<!-- user_cd 일련번호 조회 -->
+	<select id="getMaxUserSeq" resultType="int">
+		SELECT IFNULL(MAX(CAST(SUBSTRING(user_cd, 8, 4) AS UNSIGNED)), 0)
+		FROM t_user
+		WHERE SUBSTRING(user_cd, 1, 4) = #{year}
+	</select>
+	
 	<!-- INSERT -->
 	<insert id="userInsert">
 		<![CDATA[
-		INSERT INTO t_user(user_id, user_pw, user_nm, user_type, user_local, user_email) VALUES(#{user_id}, #{user_pw}, #{user_nm}, #{user_type}, #{user_local}, #{user_email})
-		]]>
+		    INSERT INTO t_user(user_cd, user_id, user_pw, user_nm, local_cd, user_addr)
+		    VALUES(#{user_cd}, #{user_id}, #{user_pw}, #{user_nm}, #{user_local}, #{user_addr})
+	    ]]>
 	</insert>
 
 

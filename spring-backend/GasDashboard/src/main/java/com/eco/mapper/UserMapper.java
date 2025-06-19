@@ -12,6 +12,6 @@ public interface UserMapper {
 	// 회원가입
 	public void userInsert(UserVO user);
 	// 가입자 정보
-	public UserVO findByUserId(@Param("user_id") String user_id, @Param("user_type") String user_type);  // 아이디로 사용자 조회
+	public UserVO findByUserId(@Param("user_id") String user_id);  // 아이디로 사용자 조회
 		
 }
