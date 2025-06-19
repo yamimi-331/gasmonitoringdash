@@ -29,14 +29,14 @@ def get_winter_gas_data(df, region, year):
     df_filtered['Month'] = df_filtered['Date'].dt.month
     result = df_filtered[['Month', 'ColdDay', 'GasSupply']].sort_values(by='Month')
 
-    return result
+    return result.to_dict(orient="records")
 
 
 # ✅ 테스트 실행
-if __name__ == "__main__":
-    file_path = "./data/GasData.xlsx"  # 파일명 바꿔주세요
-    region = "강원특별자치도"
-    year = 2021
+# if __name__ == "__main__":
+#     file_path = "./data/GasData.xlsx"  # 파일명 바꿔주세요
+#     region = "강원특별자치도"
+#     year = 2021
 
-    output_json = get_winter_gas_data(file_path, region, year)
-    print(output_json)
+#     output_json = get_winter_gas_data(file_path, region, year)
+#     print(output_json)
