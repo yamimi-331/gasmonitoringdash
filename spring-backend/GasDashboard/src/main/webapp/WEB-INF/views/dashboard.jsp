@@ -227,8 +227,17 @@ button:hover {
 			<h2>📊 Dashboard</h2>
 			<button class="header-button">Login</button>
 		</div>
-<!-- 		<h2>지역별 가스 사용량</h2> -->
-
+		<div id="yearForm">
+			<label for="year">연도 선택:</label> 
+			<select id="year" name="year" required>
+				<option value="2020" >2020</option>
+				<option value="2021">2021</option>
+				<option value="2022">2022</option>
+				<option value="2023">2023</option>
+				<option value="2024">2024</option>
+				<option value="2025" selected>2025</option>
+			</select>
+		</div>
 		<!-- 상단 차트 공간 -->
 		<div class="charts-top">
 			<div id="topLocalSupply"></div>
@@ -306,17 +315,7 @@ button:hover {
 				<option value="제주특별자치도">제주특별자치도</option>
 			</select>
 		</div>
-		<div id="yearForm">
-			<label for="year">연도 선택:</label> 
-			<select id="year" name="year" required>
-				<option value="2020" >2020</option>
-				<option value="2021">2021</option>
-				<option value="2022">2022</option>
-				<option value="2023">2023</option>
-				<option value="2024">2024</option>
-				<option value="2025" selected>2025</option>
-			</select>
-		</div>
+		
 		
 		<p id="loading" style="display: none;">데이터를 불러오는 중입니다...</p>
 		<p id="xgb-result"></p>
