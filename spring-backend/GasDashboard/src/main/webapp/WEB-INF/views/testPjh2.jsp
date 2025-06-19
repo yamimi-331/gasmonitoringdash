@@ -9,8 +9,8 @@
 </head>
 <body>
 	<form method="get" id="cityForm" onsubmit="return false;">
-		<label for="city">지역 선택:</label>
-		<select id="city" name="city" required>
+		<label for="city_detail">지역 선택:</label>
+		<select id="city_detail" name="city_detail" required>
 			<option value="" disabled selected>지역을 선택하세요</option>
 			<option value="서울특별시">서울특별시</option>
 			<option value="인천광역시">인천광역시</option>
@@ -30,7 +30,6 @@
 			<option value="경상남도">경상남도</option>
 			<option value="제주특별자치도">제주특별자치도</option>
 		</select>
-		<button type="button" onclick="yearSelect()">조회</button>
 	</form>
 	<form method="get" id="yearForm" onsubmit="return false;">
 		<label for="year">연도 선택:</label>
@@ -55,23 +54,23 @@ let yearLocalSupply, populationSupply, personalGasUse;
 
 document.addEventListener("DOMContentLoaded", () => {
 	const yearDropdown = document.getElementById("year");
-	const cidyDropdown = document.getElementById("city");
+	const cidyDropdown = document.getElementById("city_detail");
 	//연도 변경시
 	yearDropdown.addEventListener("change", () => {
 		const selectedYear = yearDropdown.value;
-		yearSelect(selectedYear);
+		yearLocalGasChart(selectedYear);
 	});
 	//지역 변경시
 	cidyDropdown.addEventListener("change", () => {
 		const selectedCity = cidyDropdown.value;
-		citySelect(selectedCity);
+		populationChartDraw(selectedCity);
 	});
 	// 초기 호출
-	yearSelect("2025");
-	citySelect("서울특별시");
+	yearLocalGasChart("2025");
+	populationChartDraw("서울특별시");
 	});
 
-async function yearSelect(year) {
+async function yearLocalGasChart(year) {
 	const loading = document.getElementById("loading");
 	loading.style.display = "inline";
 	
@@ -124,7 +123,7 @@ async function yearSelect(year) {
 				plugins: {
 					title: {
 					display: true,
-					text: year + '년, 지역별 가스 총 공급량',
+					text: year+ '년 지역별 가스 총 공급량',
 					font: { size: 18 }
 					},
 					tooltip: {
@@ -150,7 +149,7 @@ async function yearSelect(year) {
 	}
 }
 
-async function citySelect(city) {
+async function populationChartDraw(city) {
 	const loading = document.getElementById("loading");
 	loading.style.display = "inline";
 	
@@ -164,11 +163,13 @@ async function citySelect(city) {
 		const supplies = years.map(y => cityData[y]["가스 총 공급량"]);
 		const perPerson = years.map(y => cityData[y]["1인당 가스 사용량"]);
 		
-		if (populationSupply) populationSupply.destroy();
-		if (personalGasUse) personalGasUse.destroy();
-		
-		populationSupply = populationSupplyChart('populationSupply', years, populations, supplies, city)
-		personalGasUse = personalGasUseChart('personalGasUse', years, perPerson, city)
+		// 기존 차트 파괴
+		destroyIfChartExists("populationSupply");
+		destroyIfChartExists("personalGasUse");
+
+		// 새로 그리기 (반환값 필요 없음)
+		populationSupplyChart('populationSupply', years, populations, supplies, city)
+		personalGasUseChart('personalGasUse', years, perPerson, city)
 		
 	} catch (error) {
 		alert("데이터 가져오기 오류: " + error);
@@ -177,6 +178,12 @@ async function citySelect(city) {
 	}
 }
 
+function destroyIfChartExists(id) {
+	const chartCanvas = Chart.getChart(id);
+	if (chartCanvas) chartCanvas.destroy();
+}
+
+// 각지역의 연도별 인구수 및 가스 공급량
 function populationSupplyChart(canvasId, labels, populations, supplies, city){
 	// 최대, 최소값 계산
     const maxPop = Math.max(...populations);
@@ -190,7 +197,7 @@ function populationSupplyChart(canvasId, labels, populations, supplies, city){
     const y1Max = maxPop + popMargin;
 	
 	const ctx = document.getElementById(canvasId).getContext('2d');
-	return new Chart(ctx, {
+	new Chart(ctx, {
 		type: 'bar',
 		data: {
 			labels: labels,
@@ -251,8 +258,10 @@ function populationSupplyChart(canvasId, labels, populations, supplies, city){
 
 //1인당 가스 사용량 꺾은선 그래프
 function personalGasUseChart(canvasId, labels, data, city) {
+	const maxY = Math.max(...data);
+	
 	const ctx = document.getElementById(canvasId).getContext('2d');
-	return new Chart(ctx, {
+	new Chart(ctx, {
 		type: 'line',
 		data: {
 			labels: labels,
