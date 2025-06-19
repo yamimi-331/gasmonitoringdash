@@ -35,7 +35,7 @@ public class LoginController {
 		if (rtnUser != null) {
 			// 로그인 성공 처리
 			session.setAttribute("currentUserInfo", rtnUser);
-			return "redirect: /";
+			return "redirect: /myUsage";
 		} else {
 			// 로그인 실패 처리
 			model.addAttribute("errorMessage", "아이디 및 비밀번호가 틀립니다.");
