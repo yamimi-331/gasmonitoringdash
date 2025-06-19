@@ -1,11 +1,7 @@
 /**
  *
  */
-
-// 가스차트를 담을 변수
-let gasChart;
-let yearLocalSupply, populationSupply, personalGasUse;
-
+// 돔 로드시
 document.addEventListener("DOMContentLoaded", () => {
 	const yearDropdown = document.getElementById("year");
 	const cidyDropdown = document.getElementById("city_detail");
@@ -130,10 +126,12 @@ async function fetchPrediction() {
     mape = data.evaluation?.["MAPE (%)"] || null;
     console.log("평가 점수:", { rmse, mae, mape });
 
-    if (gasChart) gasChart.destroy();
-    // 차트 그리기
+	// 차트가 존재하면 제거후 생성
+	destroyIfChartExists("gasChart");
+
+	// 차트 그리기
     const ctx = document.getElementById("gasChart").getContext("2d");
-    gasChart = new Chart(ctx, {
+    new Chart(ctx, {
       type: "bar",
       data: {
         labels: labels,
@@ -221,10 +219,11 @@ async function yearLocalGasChart(year) {
 		};
 		const backgroundColors = labels.map(label => regionColors[label] || 'rgba(200,200,200,0.7)');
 
-		if (yearLocalSupply) yearLocalSupply.destroy();
+		// 기존 차트 파괴
+		destroyIfChartExists("yearLocalSupply");
 
 		const ctx = document.getElementById('yearLocalSupply').getContext('2d');
-		yearLocalSupply = new Chart(ctx, {
+		new Chart(ctx, {
 			type: 'bar',
 			data: {
 			labels: labels,
