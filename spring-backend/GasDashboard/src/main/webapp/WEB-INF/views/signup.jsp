@@ -158,6 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				<input type="text" name="user_addr" id="user_addr" autocomplete="off">
 			</div>
 			<input type="submit" value="가입하기">
+			<input type="button" onclick="location.href='/'" value="메인페이지"/>
 		</form>
 	</div>
 </body>
