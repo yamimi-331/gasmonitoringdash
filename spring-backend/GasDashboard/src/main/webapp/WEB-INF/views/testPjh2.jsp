@@ -6,6 +6,19 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+#topLocalSupply{
+	display:flex;
+	flex-wrap:wrap;
+	gap:20px;
+	justify-content:center;
+	margin: 0 auto;
+}
+#topLocalSupply canvas {
+  max-width: 20%;
+
+}
+</style>
 </head>
 <body>
 	<form method="get" id="cityForm" onsubmit="return false;">
@@ -45,12 +58,13 @@
 	</form>
 	<p id="loading" style="display:none;">데이터를 불러오는 중입니다...</p>
 	<p id="xgb-result"></p>
+	<div id="topLocalSupply"></div>
 	<canvas id="yearLocalSupply"></canvas>
 	<canvas id="populationSupply"></canvas>
 	<canvas id="personalGasUse"></canvas>
 	
 <script>
-let yearLocalSupply, populationSupply, personalGasUse;
+let topLocalSupply, yearLocalSupply, populationSupply, personalGasUse;
 
 document.addEventListener("DOMContentLoaded", () => {
 	const yearDropdown = document.getElementById("year");
@@ -58,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	//연도 변경시
 	yearDropdown.addEventListener("change", () => {
 		const selectedYear = yearDropdown.value;
-		yearLocalGasChart(selectedYear);
+		yearLocalChartDraw(selectedYear);
 	});
 	//지역 변경시
 	cidyDropdown.addEventListener("change", () => {
@@ -66,87 +80,176 @@ document.addEventListener("DOMContentLoaded", () => {
 		populationChartDraw(selectedCity);
 	});
 	// 초기 호출
-	yearLocalGasChart("2025");
+	yearLocalChartDraw("2025");
 	populationChartDraw("서울특별시");
 	});
 
-async function yearLocalGasChart(year) {
+// 기존 차트 제거
+function destroyIfChartExists(id) {
+	const chartCanvas = Chart.getChart(id);
+	if (chartCanvas) chartCanvas.destroy();
+}
+
+// 막대그래프, 도넛그래프 그리기 호출
+async function yearLocalChartDraw(year) {
 	const loading = document.getElementById("loading");
 	loading.style.display = "inline";
 	
 	try {
 		const response = await fetch('http://localhost:8000/api/gas/yearsupply?year=' + year);
 		data = await response.json();
-
 		const yearData = data[year];
-		const labels = Object.keys(yearData);
-		const supplyValues = Object.values(yearData);
 		
-		const regionColors = {
-			"서울특별시": "rgba(54, 162, 235, 0.7)",
-			"경기도": "rgba(75, 192, 192, 0.7)",
-			"인천광역시": "rgba(255, 159, 64, 0.7)",
-			"부산광역시": "rgba(153, 102, 255, 0.7)",
-			"대구광역시": "rgba(255, 99, 132, 0.7)",
-			"광주광역시": "rgba(255, 206, 86, 0.7)",
-			"대전광역시": "rgba(201, 203, 207, 0.7)",
-			"울산광역시": "rgba(100, 149, 237, 0.7)",
-			"세종특별자치시": "rgba(255, 105, 180, 0.7)",
-			"강원특별자치도": "rgba(139, 195, 74, 0.7)",
-			"충청북도": "rgba(255, 193, 7, 0.7)",
-			"충청남도": "rgba(121, 85, 72, 0.7)",
-			"전북특별자치도": "rgba(96, 125, 139, 0.7)",
-			"전라남도": "rgba(0, 188, 212, 0.7)",
-			"경상북도": "rgba(255, 87, 34, 0.7)",
-			"경상남도": "rgba(63, 81, 181, 0.7)",
-			"제주특별자치도": "rgba(0, 150, 136, 0.7)"
-		};
-		const backgroundColors = labels.map(label => regionColors[label] || 'rgba(200,200,200,0.7)');
+		// 기존 차트 파괴
+		destroyIfChartExists("yearLocalSupply");
 
-		if (yearLocalSupply) yearLocalSupply.destroy();
-
-		const ctx = document.getElementById('yearLocalSupply').getContext('2d');
-		yearLocalSupply = new Chart(ctx, {
-			type: 'bar',
-			data: {
-			labels: labels,
-			datasets: [
-					{
-					label: '총 공급량',
-					data: supplyValues,
-					backgroundColor: backgroundColors
-					}
-				]
-			},
-			options: {
-				responsive: true,
-				plugins: {
-					title: {
-					display: true,
-					text: year+ '년 지역별 가스 총 공급량',
-					font: { size: 18 }
-					},
-					tooltip: {
-					mode: 'index',
-					intersect: false
-					}
-				},
-				scales: {
-					x: {
-						title: { display: true, text: '지역' }
-					},
-					y: {
-						title: { display: true, text: '총 공급량(m³)' },
-						beginAtZero: true
-					}
-				}
-			}
-		});
-	} catch (error) {
+		// 새로 그리기 (반환값 필요 없음)
+		topLocalSupplyChart(yearData, year);
+		yearLocalGasChart('yearLocalSupply', yearData, year);
+	} catch(error) {
 		alert("데이터 가져오기 오류: " + error);
-	}finally {
+	} finally {
 		loading.style.display = "none";
 	}
+}
+
+const regionColors = {
+		"서울특별시": "rgba(54, 162, 235, 0.7)",
+		"경기도": "rgba(75, 192, 192, 0.7)",
+		"인천광역시": "rgba(255, 159, 64, 0.7)",
+		"부산광역시": "rgba(153, 102, 255, 0.7)",
+		"대구광역시": "rgba(255, 99, 132, 0.7)",
+		"광주광역시": "rgba(255, 206, 86, 0.7)",
+		"대전광역시": "rgba(201, 203, 207, 0.7)",
+		"울산광역시": "rgba(100, 149, 237, 0.7)",
+		"세종특별자치시": "rgba(255, 105, 180, 0.7)",
+		"강원특별자치도": "rgba(139, 195, 74, 0.7)",
+		"충청북도": "rgba(255, 193, 7, 0.7)",
+		"충청남도": "rgba(121, 85, 72, 0.7)",
+		"전북특별자치도": "rgba(96, 125, 139, 0.7)",
+		"전라남도": "rgba(0, 188, 212, 0.7)",
+		"경상북도": "rgba(255, 87, 34, 0.7)",
+		"경상남도": "rgba(63, 81, 181, 0.7)",
+		"제주특별자치도": "rgba(0, 150, 136, 0.7)"
+	};
+
+function yearLocalGasChart(canvasId, yearData, year) {
+	const labels = Object.keys(yearData);
+	const supplyValues = Object.values(yearData);
+
+	const backgroundColors = labels.map(label => regionColors[label] || 'rgba(200,200,200,0.7)');
+
+	const ctx = document.getElementById(canvasId).getContext('2d');
+	yearLocalSupply = new Chart(ctx, {
+		type: 'bar',
+		data: {
+		labels: labels,
+		datasets: [
+				{
+				label: '총 공급량',
+				data: supplyValues,
+				backgroundColor: backgroundColors
+				}
+			]
+		},
+		options: {
+			responsive: true,
+			plugins: {
+				title: {
+				display: true,
+				text: year+ '년 지역별 가스 총 공급량',
+				font: { size: 18 }
+				},
+				tooltip: {
+				mode: 'index',
+				intersect: false
+				}
+			},
+			scales: {
+				x: {
+					title: { display: true, text: '지역' }
+				},
+				y: {
+					title: { display: true, text: '총 공급량(m³)' },
+					beginAtZero: true
+				}
+			}
+		}
+	});
+}
+
+//도넛 차트 가운데 텍스트 표시 플러그인
+const donutCenterText = {
+  id: 'donutCenterText',
+  afterDraw(chart) {
+    const { ctx, chartArea: { top, bottom, left, right, width, height } } = chart;
+    ctx.save();
+
+    const centerX = (left + right) / 2;
+    const centerY = (top + bottom) / 2;
+
+    const text = chart.options.plugins.donutCenterText?.text || '';
+    const color = chart.options.plugins.donutCenterText?.color || '#000';
+
+    ctx.fillStyle = color;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = 'bold 20px Arial';
+    ctx.fillText(text, centerX, centerY);
+
+    ctx.restore();
+  }
+};
+
+function topLocalSupplyChart(yearData, year){
+	const container = document.getElementById('topLocalSupply');
+	container.innerHTML = ""; // 기존 차트 제거
+	
+	//상위 5개 도시 추출
+	const entries = Object.entries(yearData);
+	const top5 = entries.slice(0, 5);
+	//전체 공급량 총 합 계산
+	const totalSupply = Object.values(yearData).reduce((sum, val) => sum + val, 0);
+	
+	//top5차트 도넛형으로 생성
+	top5.forEach(([city, supply], index) => {
+		const canvasId = `donutChart${index}`;
+		const canvas = document.createElement("canvas");
+		canvas.id = canvasId;
+		canvas.width = 200;
+	    canvas.height = 200;
+	    canvas.style.display = "block"
+	    canvas.style.margin = "10px";
+		container.appendChild(canvas);
+
+		const ctx = canvas.getContext("2d");
+		const percentage = ((supply / totalSupply) * 100).toFixed(1) + "%";
+		new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				datasets: [{
+					data: [supply, totalSupply - supply],
+					backgroundColor: [
+						regionColors[city] || "rgba(75, 192, 192, 0.7)",
+						"rgba(200, 200, 200, 0.3)"
+					]
+				}]
+			},
+			options: {
+				plugins: {
+					title: {
+						display: true,
+						text: city+ '의 공급량 점유율'
+					},
+                    donutCenterText: {
+                        text: percentage,
+                        color: "#333"
+                    }
+				}
+			},
+			plugins: [donutCenterText]
+		});
+	});
 }
 
 async function populationChartDraw(city) {
@@ -176,11 +279,6 @@ async function populationChartDraw(city) {
 	}finally {
 		loading.style.display = "none";
 	}
-}
-
-function destroyIfChartExists(id) {
-	const chartCanvas = Chart.getChart(id);
-	if (chartCanvas) chartCanvas.destroy();
 }
 
 // 각지역의 연도별 인구수 및 가스 공급량
