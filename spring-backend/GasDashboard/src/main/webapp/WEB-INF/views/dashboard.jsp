@@ -16,6 +16,10 @@ body {
 	background-color: #5c72a5;
 }
 
+.dashboard .controls {
+	justify-content: flex-end;
+}
+
 .dashboard {
 	width: 70vw;
 	margin: 40px auto;
@@ -25,6 +29,7 @@ body {
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 	box-sizing: border-box;
 	border-radius: 12px;
+	/* 	justify-content: flex-end; */
 }
 
 .header {
@@ -58,7 +63,6 @@ body {
 	min-height: 180px;
 	flex: 1 1 300px;
 	aspect-ratio: 4/2.2;
-	background-color: #d6d5d9;
 	border-radius: 12px;
 	display: flex;
 	padding: 0;
@@ -74,7 +78,6 @@ body {
 	min-height: 180px;
 	flex: 1 1 300px;
 	aspect-ratio: 4/2.2;
-	background-color: #d6d5d9;
 	color: white;
 	border-radius: 12px;
 	display: flex;
@@ -85,7 +88,15 @@ body {
 #gasChart {
 	width: 100%;
 	height: 100%;
-	background-color: #d6d5d9;
+	object-fit: cover;
+	border-radius: 10px;
+	box-sizing: border-box;
+	object-fit: cover;
+}
+
+#gasChart2 {
+	width: 100%;
+	height: 100%;
 	object-fit: cover;
 	border-radius: 10px;
 	box-sizing: border-box;
@@ -248,24 +259,14 @@ button:hover {
 		</div>
 
 		<div class="charts-top">
-
+			<div class="charts-box">
+				<canvas id="yearLocalSupply"></canvas>
+			</div>
 			<div class="charts-box">
 				<canvas id="gasChart"></canvas>
 			</div>
-			<div class="charts-box2">
-				<canvas id="gasChart2"></canvas>
-			</div>
 		</div>
-		<!-- 입력 영역 2: 하단 체크 앞 -->
-		<div class="controls">
-			<label for="city">Select City:</label> <select id="city2" name="city">
-				<option value="" disabled selected>지역을 선택하세요</option>
-				<option value="서울">서울</option>
-				<option value="경기도">경기도</option>
-				<option value="부산">부산</option>
-				<option value="울산">울산</option>
-			</select>
-		</div>
+
 
 		<div class="charts-bottom">
 			<div class="chart-container">
@@ -280,11 +281,11 @@ button:hover {
 					src="data:image/png;base64,${visualizations.prophet_prediction_timeline}" />
 			</div>
 		</div>
-		
+
 		<!-- 차트 테스트  -->
 		<div id="cityForm">
-			<label for="city_detail">지역 선택:</label>
-			<select id="city_detail" name="city" required>
+			<label for="city_detail">지역 선택:</label> <select id="city_detail"
+				name="city" required>
 				<option value="" disabled selected>지역을 선택하세요</option>
 				<option value="서울특별시">서울특별시</option>
 				<option value="인천광역시">인천광역시</option>
@@ -304,11 +305,10 @@ button:hover {
 				<option value="경상남도">경상남도</option>
 				<option value="제주특별자치도">제주특별자치도</option>
 			</select>
-			<button type="button" onclick="yearLocalGasChart()">조회</button>
 		</div>
 		<div id="yearForm">
-			<label for="year">연도 선택:</label>
-			<select id="year" name="year" required>
+			<label for="year">연도 선택:</label> <select id="year" name="year"
+				required>
 				<option value="" disabled>연도를 선택하세요</option>
 				<option value="2020">2020</option>
 				<option value="2021">2021</option>
@@ -318,14 +318,14 @@ button:hover {
 				<option value="2025" selected>2025</option>
 			</select>
 		</div>
-			<p id="loading" style="display:none;">데이터를 불러오는 중입니다...</p>
-			<p id="xgb-result"></p>
-	
+		<p id="loading" style="display: none;">데이터를 불러오는 중입니다...</p>
+		<p id="xgb-result"></p>
+
 		<div class="charts-top">
 
-			<div class="charts-box">
+			<%-- 		<div class="charts-box">
 				<canvas id="yearLocalSupply"></canvas>
-			</div>
+			</div> --%>
 			<div class="charts-box2">
 				<canvas id="populationSupply"></canvas>
 			</div>
