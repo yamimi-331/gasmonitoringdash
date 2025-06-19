@@ -12,10 +12,11 @@ from prediction.prediction_xgboost import prediction_xgboost
 from prediction.prediction_prophet import predict_prophet
 from yearsupply import yearSupply
 from population import populationSupply
-
-app = FastAPI()
-
+from coldDaySupply import get_winter_gas_data
 from fastapi.responses import JSONResponse
+
+# FastAPI 사용
+app = FastAPI()
 
 # JSON 타입 변환
 def convert_all_numpy_to_builtin(obj):
@@ -42,6 +43,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 지역별 가스공급량 수요 예측 데이터 반환 lstm
 @app.get("/api/gas/lstm-prediction")
 async def get_lstm_prediction(
     local_name: str = Query(..., description="지역명"),
@@ -63,6 +65,7 @@ async def get_lstm_prediction(
     except Exception as e:
        return JSONResponse(status_code=400, content={"error": str(e)})
     
+# 지역별 가스공급량 수요 예측 데이터 반환 xgboost
 @app.get("/api/gas/xgboost-prediction")
 async def get_xgboost_prediction(
     local_name: str = Query(..., description="지역명"),
@@ -83,7 +86,7 @@ async def get_xgboost_prediction(
     except Exception as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
 
-
+# 지역별 가스공급량 수요 예측 데이터 반환 Prophet
 @app.get("/api/gas/prophet-prediction")
 def predict(
     local_name: str = Query(..., description="지역명"),
@@ -102,7 +105,8 @@ def predict(
         return JSONResponse(response)
     except ValueError as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
-    
+
+# 년도별 지역별 공급량 데이터 반환(JSON)
 @app.get("/api/gas/yearsupply")
 def get_year_supply(
     year: int = Query(2025, description="선택 연도"),
@@ -115,6 +119,7 @@ def get_year_supply(
     except ValueError as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
     
+# 인구수 & 공급량 데이터 반환(JSON)
 @app.get("/api/gas/populationsupply")
 def get_population_supply(
     localname: str = Query(..., description="선택 지역"),
@@ -122,6 +127,20 @@ def get_population_supply(
     try:
         df = pd.read_excel("./data/GasData.xlsx")
         result = populationSupply(df, localname)
+        cleaned_result = convert_all_numpy_to_builtin(result)
+        return JSONResponse(cleaned_result)
+    except ValueError as e:
+        return JSONResponse(status_code=400, content={"error": str(e)})
+
+# 한파일수 & 공급량 데이터 반환(JSON)
+@app.get("/api/gas/coldDaySupply")
+def get_coldDay_supply(
+    localname: str = Query(..., description="선택 지역"),
+    year: int = Query(2025, description="선택 연도")
+):
+    try:
+        df = pd.read_excel("./data/GasData.xlsx")
+        result = get_winter_gas_data(df, localname, year)
         cleaned_result = convert_all_numpy_to_builtin(result)
         return JSONResponse(cleaned_result)
     except ValueError as e:
