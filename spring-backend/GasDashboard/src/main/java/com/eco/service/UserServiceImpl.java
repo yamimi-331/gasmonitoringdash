@@ -21,8 +21,7 @@ public class UserServiceImpl  implements UserService{
 	@Override
 	public UserVO login(UserVO user) {
 		try {
-			/* return mapper.getUserSelect(user); */
-			return user;
+			return mapper.getUserSelect(user);
 		} catch (Exception e) {
 			throw new ServiceException("로그인 실패", e);
 		}
