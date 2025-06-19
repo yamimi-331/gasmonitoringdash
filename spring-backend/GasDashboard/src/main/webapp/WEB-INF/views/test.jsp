@@ -48,8 +48,8 @@
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {
-	  const citySelect = document.getElementById("city_detail");
-	  const yearSelect = document.getElementById("year");
+	  const citySelect = document.getElementById("cold_city");
+	  const yearSelect = document.getElementById("cold_year");
 
 	  citySelect.addEventListener("change", handleSelectChange);
 	  yearSelect.addEventListener("change", handleSelectChange);
@@ -79,9 +79,9 @@ async function loadWinterCorrelation(localName, year) {
     const coldDays = data.map(item => item.ColdDay);
     const gasSupply = data.map(item => item.GasSupply);
      
-    destroyIfChartExists("correlationChart");
+    destroyIfChartExists("coldDayChart");
     
-    const ctx = document.getElementById("correlationChart").getContext("2d");
+    const ctx = document.getElementById("coldDayChart").getContext("2d");
     new Chart(ctx, {
     	  data: {
     	    labels: labels,

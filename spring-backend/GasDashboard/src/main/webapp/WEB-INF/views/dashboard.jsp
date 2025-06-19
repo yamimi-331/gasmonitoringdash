@@ -204,6 +204,19 @@ button:hover {
 	display: flex;
 	margin-bottom: 10px;
 }
+
+#topLocalSupply{
+	display:flex;
+	flex-wrap:wrap;
+	gap:20px;
+	justify-content:center;
+	width: 100%;
+	height: 200px;
+	margin: 0 auto;
+}
+#topLocalSupply canvas {
+	max-width: 15%;
+}
 </style>
 </head>
 <body>
@@ -257,35 +270,24 @@ button:hover {
 			<p id="xgb-result"></p>
 
 		</div>
-
 		<div class="charts-top">
+			<div id="topLocalSupply"></div>
+		</div>
+		
+		<div class="charts-top">
+			<!-- 연도별 전국 가스 공급량 차트 -->
 			<div class="charts-box">
 				<canvas id="yearLocalSupply"></canvas>
 			</div>
+			<!-- 가스 공급량 및 수요예측 차트 -->
 			<div class="charts-box">
 				<canvas id="gasChart"></canvas>
 			</div>
 		</div>
 
-
-		<div class="charts-bottom">
-			<div class="chart-container">
-				<img
-					src="data:image/png;base64,${visualizations.lstm_prediction_timeline}" />
-			</div>
-			<div class="chart-container">
-				<img src="data:image/png;base64,${visualizations.regional_pattern}" />
-			</div>
-			<div class="chart-container">
-				<img
-					src="data:image/png;base64,${visualizations.prophet_prediction_timeline}" />
-			</div>
-		</div>
-
-		<!-- 차트 테스트  -->
-		<div id="cityForm">
-			<label for="city_detail">지역 선택:</label> <select id="city_detail"
-				name="city" required>
+		<div>
+			<label for="city_detail">지역 선택:</label> 
+			<select id="city_detail" name="city" required>
 				<option value="" disabled selected>지역을 선택하세요</option>
 				<option value="서울특별시">서울특별시</option>
 				<option value="인천광역시">인천광역시</option>
@@ -307,32 +309,68 @@ button:hover {
 			</select>
 		</div>
 		<div id="yearForm">
-			<label for="year">연도 선택:</label> <select id="year" name="year"
-				required>
-				<option value="" disabled>연도를 선택하세요</option>
+			<label for="year">연도 선택:</label> 
+			<select id="year" name="year" required>
+				<option value="" disabled selected>연도를 선택하세요</option>
 				<option value="2020">2020</option>
 				<option value="2021">2021</option>
 				<option value="2022">2022</option>
 				<option value="2023">2023</option>
 				<option value="2024">2024</option>
-				<option value="2025" selected>2025</option>
+				<option value="2025" >2025</option>
 			</select>
 		</div>
+		
 		<p id="loading" style="display: none;">데이터를 불러오는 중입니다...</p>
 		<p id="xgb-result"></p>
 
+		<!-- 하단 차트 3개 -->
 		<div class="charts-top">
-
-			<%-- 		<div class="charts-box">
-				<canvas id="yearLocalSupply"></canvas>
-			</div> --%>
-			<div class="charts-box2">
+			<!-- 지역/년도별 인구수 및 가스 공급량 차트 -->
+			<div class="charts-box">
 				<canvas id="populationSupply"></canvas>
 			</div>
+			<!-- 지역별 1인당 가스 사용량 차트 -->
 			<div class="charts-box">
 				<canvas id="personalGasUse"></canvas>
 			</div>
 		</div>
+			<div>
+				<h2>동계 한파일수 vs 가스사용량</h2>
+				<select id="cold_year" name="cold_year" required>
+					<option value="2020" >2020</option>
+					<option value="2021">2021</option>
+					<option value="2022">2022</option>
+					<option value="2023">2023</option>
+					<option value="2024">2024</option>
+					<option value="2025" selected>2025</option>
+				</select>
+				<select id="cold_city" name="cold_city" required>
+					<option value="서울특별시" selected>서울특별시</option>
+					<option value="인천광역시">인천광역시</option>
+					<option value="경기도">경기도</option>
+					<option value="부산광역시">부산광역시</option>
+					<option value="대구광역시">대구광역시</option>
+					<option value="광주광역시">광주광역시</option>
+					<option value="대전광역시">대전광역시</option>
+					<option value="울산광역시">울산광역시</option>
+					<option value="세종특별자치시">세종특별자치시</option>
+					<option value="강원특별자치도">강원특별자치도</option>
+					<option value="충청북도">충청북도</option>
+					<option value="충청남도">충청남도</option>
+					<option value="전북특별자치도">전북특별자치도</option>
+					<option value="전라남도">전라남도</option>
+					<option value="경상북도">경상북도</option>
+					<option value="경상남도">경상남도</option>
+					<option value="제주특별자치도">제주특별자치도</option>
+				</select>
+			</div>
+			<br>
+			<!-- 한파일수 & 공급량 차트 -->
+		<div class="charts-box">
+			<canvas id="coldDayChart" width="600" height="300"></canvas>		
+		</div>
+		
 	</div>
 </body>
 
