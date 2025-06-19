@@ -16,7 +16,14 @@
 		<!-- 상단 헤더  -->
 		<div class="header">
 			<h2>📊 Dashboard</h2>
-			<button class="header-button" onclick="location.href='/login'">Login</button>
+			<c:choose>
+		        <c:when test="${not empty currentUserInfo}">
+					<button class="header-button" onclick="location.href='/myUsage'">myUsage</button>
+		        </c:when>
+		        <c:otherwise>
+					<button class="header-button" onclick="location.href='/login'">Login</button>
+		        </c:otherwise>
+		    </c:choose>
 		</div>
 		<div id="yearForm">
 			<label for="year">연도 선택:</label> 
