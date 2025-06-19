@@ -227,15 +227,23 @@ button:hover {
 			<h2>📊 Dashboard</h2>
 			<button class="header-button">Login</button>
 		</div>
+<!-- 		<h2>지역별 가스 사용량</h2> -->
 
 		<!-- 상단 차트 공간 -->
-		<h2>지역별 가스 사용량</h2>
+		<div class="charts-top">
+			<div id="topLocalSupply"></div>
+		</div>
+		<!-- 연도별 전국 가스 공급량 차트 -->
+		<div class="charts-top">
+			<div class="charts-box">
+				<canvas id="yearLocalSupply"></canvas>
+			</div>
+		</div>
 		<div class="controls">
 			<div id="cityForm">
 				<label for="city">지역 선택:</label> <select id="city" name="city"
 					required>
-					<option value="" disabled selected>지역을 선택하세요</option>
-					<option value="서울특별시">서울특별시</option>
+					<option value="서울특별시" selected>서울특별시</option>
 					<option value="인천광역시">인천광역시</option>
 					<option value="경기도">경기도</option>
 					<option value="부산광역시">부산광역시</option>
@@ -254,8 +262,7 @@ button:hover {
 					<option value="제주특별자치도">제주특별자치도</option>
 				</select> <label for="model">분석 모델 선택:</label> <select id="model"
 					name="model" required>
-					<option value="" disabled selected>모델을 선택하세요</option>
-					<option value="XGBoost">XGBoost</option>
+					<option value="XGBoost" selected>XGBoost</option>
 					<option value="Prophet">Prophet</option>
 					<option value="LSTM">LSTM</option>
 				</select> <label for="period">예측 기간:</label> <select id="period"
@@ -268,28 +275,19 @@ button:hover {
 			</div>
 			<p id="loading" style="display: none;">데이터를 불러오는 중입니다...</p>
 			<p id="xgb-result"></p>
-
-		</div>
-		<div class="charts-top">
-			<div id="topLocalSupply"></div>
 		</div>
 		
+
+		<!-- 가스 공급량 및 수요예측 차트 -->
 		<div class="charts-top">
-			<!-- 연도별 전국 가스 공급량 차트 -->
-			<div class="charts-box">
-				<canvas id="yearLocalSupply"></canvas>
-			</div>
-			<!-- 가스 공급량 및 수요예측 차트 -->
 			<div class="charts-box">
 				<canvas id="gasChart"></canvas>
 			</div>
 		</div>
-
 		<div>
 			<label for="city_detail">지역 선택:</label> 
 			<select id="city_detail" name="city" required>
-				<option value="" disabled selected>지역을 선택하세요</option>
-				<option value="서울특별시">서울특별시</option>
+				<option value="서울특별시"selected>서울특별시</option>
 				<option value="인천광역시">인천광역시</option>
 				<option value="경기도">경기도</option>
 				<option value="부산광역시">부산광역시</option>
@@ -311,13 +309,12 @@ button:hover {
 		<div id="yearForm">
 			<label for="year">연도 선택:</label> 
 			<select id="year" name="year" required>
-				<option value="" disabled selected>연도를 선택하세요</option>
-				<option value="2020">2020</option>
+				<option value="2020" >2020</option>
 				<option value="2021">2021</option>
 				<option value="2022">2022</option>
 				<option value="2023">2023</option>
 				<option value="2024">2024</option>
-				<option value="2025" >2025</option>
+				<option value="2025" selected>2025</option>
 			</select>
 		</div>
 		

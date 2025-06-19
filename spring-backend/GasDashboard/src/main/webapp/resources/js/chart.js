@@ -212,7 +212,7 @@ async function fetchPrediction() {
         plugins: {
           title: {
             display: true,
-            text: "가스 공급량 및 수요 예측",
+            text: selectedCity+"의 가스 공급량 및 수요 예측 ("+selectedModel+")",
             font: { size: 18 },
           },
           tooltip: {
@@ -225,7 +225,12 @@ async function fetchPrediction() {
             title: { display: true, text: "월" },
           },
           y: {
-            title: { display: true, text: "공급량" },
+            title: { display: true, text: "공급량 (백만 m³)" },
+			ticks:{
+				callback: function(value){
+					return (value / 1000000).toFixed(0)
+				}
+			},
             beginAtZero: true,
           },
         },
@@ -342,7 +347,7 @@ function yearLocalGasChart(canvasId, yearData, year) {
 			plugins: {
 				title: {
 				display: true,
-				text: year+ '년 지역별 가스 총 공급량',
+				text: year+ '년 전국 가스 총 공급량',
 				font: { size: 18 }
 				},
 				tooltip: {
@@ -355,7 +360,12 @@ function yearLocalGasChart(canvasId, yearData, year) {
 					title: { display: true, text: '지역' }
 				},
 				y: {
-					title: { display: true, text: '총 공급량(m³)' },
+					title: { display: true, text: '총 공급량(백만 m³)' },
+					ticks:{
+						callback: function(value){
+							return (value / 1000000).toFixed(0)
+						}
+					},
 					beginAtZero: true
 				}
 			}
@@ -451,23 +461,33 @@ function populationSupplyChart(canvasId, labels, populations, supplies, city){
 			scales: {
 				y1: {
 					type: 'linear',
-					position: 'left',
+					position: 'right',
 					min: y1Min,
                     max: y1Max,
 					title: {
 						display: true,
-						text: '평균 인구수'
+						text: '평균 인구수 (천 명)'
+					},
+					ticks:{
+						callback: function(value){
+							return (value / 1000).toFixed(0)
+						}
+					},
+					grid: {
+						drawOnChartArea: false
 					}
 				},
 				y2: {
 					type: 'linear',
-					position: 'right',
+					position: 'left',
 					title: {
 						display: true,
-						text: '총 공급량 (m³)'
+						text: '총 공급량 (백만 m³)'
 					},
-					grid: {
-						drawOnChartArea: false
+					ticks:{
+						callback: function(value){
+							return (value / 1000000).toFixed(0)
+						}
 					}
 				}
 			}
@@ -578,21 +598,32 @@ async function loadWinterCorrelation(localName, year) {
     	    plugins: {
     	      title: {
     	        display: true,
-    	        text: "동계한파일수 vs 가스사용량"
+    	        text: localName+"의 "+ year + "년 동계 한파 일 수 & 가스 사용량 차트"
     	      }
     	    },
     	    scales: {
     	      y1: {
     	        type: 'linear',
-    	        position: 'left',
+    	        position: 'right',
     	        title: { display: true, text: '동계한파일수' },
+				ticks:{
+					precision:0,
+					stageSize: 1
+				},
+				grid:{
+					drawOnChartArea: false
+				},
     	        beginAtZero: true
-    	      
     	      },
     	      y2: {
     	        type: 'linear',
-    	        position: 'right',
-    	        title: { display: true, text: '가스사용량' },
+    	        position: 'left',
+    	        title: { display: true, text: '가스사용량 (백만 m³)' },
+				ticks:{
+					callback: function(value){
+						return (value / 1000000).toFixed(0)
+					}
+				},
     	        beginAtZero: true
     	      }
     	    }
