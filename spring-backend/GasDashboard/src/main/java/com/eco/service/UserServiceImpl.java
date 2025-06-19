@@ -26,5 +26,25 @@ public class UserServiceImpl  implements UserService{
 			throw new ServiceException("로그인 실패", e);
 		}
 	}
+	
+	// 회원가입 
+		@Override
+	public void signup(UserVO user) {
+		try {
+			mapper.userInsert(user);
+		} catch (Exception e) {
+			throw new ServiceException("회원가입 실패", e);
+		}
+	}
+		
+	// 사용자 ID, Type으로 사용자 정보 반환
+	@Override
+	public UserVO findByUserId(String user_id, String user_type) {
+		try {
+			return mapper.findByUserId(user_id, user_type);
+		} catch (Exception e) {
+			throw new ServiceException("사용자 조회 실패", e);
+		}
+	}
 
 }

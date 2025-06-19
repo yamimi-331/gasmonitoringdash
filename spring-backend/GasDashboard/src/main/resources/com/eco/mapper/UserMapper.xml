@@ -10,8 +10,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE use_yn = 'Y' AND user_id = #{userId} and user_pw = #{userPw};
 		]]>
 	</select>
+	
+	<select id="findByUserId" resultType="com.eco.domain.UserVO">
+		<![CDATA[
+		SELECT * FROM t_user
+		WHERE user_id = #{user_id} and user_type = #{user_type};
+		]]>
+	</select>
 
-
+	<!-- INSERT -->
+	<insert id="userInsert">
+		<![CDATA[
+		INSERT INTO t_user(user_id, user_pw, user_nm, user_type, user_local, user_email) VALUES(#{user_id}, #{user_pw}, #{user_nm}, #{user_type}, #{user_local}, #{user_email})
+		]]>
+	</insert>
 
 
 
