@@ -12,10 +12,11 @@
 	flex-wrap:wrap;
 	gap:20px;
 	justify-content:center;
+	max-width: 1000px;
 	margin: 0 auto;
 }
 #topLocalSupply canvas {
-  max-width: 20%;
+	max-width: 15%;
 }
 </style>
 </head>
@@ -63,8 +64,6 @@
 	<canvas id="personalGasUse"></canvas>
 	
 <script>
-let topLocalSupply, yearLocalSupply, populationSupply, personalGasUse;
-
 document.addEventListener("DOMContentLoaded", () => {
 	const yearDropdown = document.getElementById("year");
 	const cidyDropdown = document.getElementById("city_detail");
@@ -89,7 +88,9 @@ function destroyIfChartExists(id) {
 	if (chartCanvas) chartCanvas.destroy();
 }
 
-// 막대그래프, 도넛그래프 그리기 호출
+//연도별 각 지역의 가스 총 공급량 json 받아오기
+//topLocalSupplyChart = "상위 5개 지역 가스 공급량 점유율 차트"
+//yearLocalGasChart = "연도별 전국 가스 공급량 차트"
 async function yearLocalChartDraw(year) {
 	const loading = document.getElementById("loading");
 	loading.style.display = "inline";
@@ -112,6 +113,7 @@ async function yearLocalChartDraw(year) {
 	}
 }
 
+// 각 지역의 그래프 색상 코드
 const regionColors = {
 		"서울특별시": "rgba(54, 162, 235, 0.7)",
 		"경기도": "rgba(75, 192, 192, 0.7)",
@@ -132,6 +134,83 @@ const regionColors = {
 		"제주특별자치도": "rgba(0, 150, 136, 0.7)"
 	};
 
+//도넛 차트 가운데 텍스트 표시 플러그인
+const donutCenterText = {
+  id: 'donutCenterText',
+  afterDraw(chart) {
+    const { ctx, chartArea: { top, bottom, left, right, width, height } } = chart;
+    ctx.save();
+
+    const centerX = (left + right) / 2;
+    const centerY = (top + bottom) / 2;
+
+    const text = chart.options.plugins.donutCenterText?.text || '';
+    const color = chart.options.plugins.donutCenterText?.color || '#000';
+
+    ctx.fillStyle = color;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = 'bold 18px Arial';
+    ctx.fillText(text, centerX, centerY);
+
+    ctx.restore();
+  }
+};
+
+// "상위 5개 지역 가스 공급량 점유율 차트"
+function topLocalSupplyChart(yearData, year){
+	const container = document.getElementById('topLocalSupply');
+	container.innerHTML = ""; // 기존 차트 제거
+	
+	//상위 5개 도시 추출
+	const entries = Object.entries(yearData);
+	const top5 = entries.slice(0, 5);
+	//전체 공급량 총 합 계산
+	const totalSupply = Object.values(yearData).reduce((sum, val) => sum + val, 0);
+	
+	//top5차트 도넛형으로 생성
+	top5.forEach(([city, supply], index) => {
+		const canvasId = `donutChart${index}`;
+		const canvas = document.createElement("canvas");
+		canvas.id = canvasId;
+		canvas.style.width = "15%"
+		canvas.style.height = "120px";
+		canvas.style.flex = "0 0 auto"
+		container.appendChild(canvas);
+
+		const ctx = canvas.getContext("2d");
+		const percentage = ((supply / totalSupply) * 100).toFixed(1) + "%";
+		new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				datasets: [{
+					data: [supply, totalSupply - supply],
+					backgroundColor: [
+						regionColors[city] || "rgba(75, 192, 192, 0.7)",
+						"rgba(200, 200, 200, 0.3)"
+					]
+				}]
+			},
+			options: {
+				plugins: {
+					responsive: true,
+					aspectRatio: 1,
+					title: {
+						display: true,
+						text: city+ '의 공급량 점유율'
+					},
+                    donutCenterText: {
+                        text: percentage,
+                        color: "#333"
+                    }
+				}
+			},
+			plugins: [donutCenterText]
+		});
+	});
+}
+
+//"연도별 전국 가스 공급량 차트"
 function yearLocalGasChart(canvasId, yearData, year) {
 	const labels = Object.keys(yearData);
 	const supplyValues = Object.values(yearData);
@@ -177,80 +256,9 @@ function yearLocalGasChart(canvasId, yearData, year) {
 	});
 }
 
-//도넛 차트 가운데 텍스트 표시 플러그인
-const donutCenterText = {
-  id: 'donutCenterText',
-  afterDraw(chart) {
-    const { ctx, chartArea: { top, bottom, left, right, width, height } } = chart;
-    ctx.save();
-
-    const centerX = (left + right) / 2;
-    const centerY = (top + bottom) / 2;
-
-    const text = chart.options.plugins.donutCenterText?.text || '';
-    const color = chart.options.plugins.donutCenterText?.color || '#000';
-
-    ctx.fillStyle = color;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.font = 'bold 20px Arial';
-    ctx.fillText(text, centerX, centerY);
-
-    ctx.restore();
-  }
-};
-
-function topLocalSupplyChart(yearData, year){
-	const container = document.getElementById('topLocalSupply');
-	container.innerHTML = ""; // 기존 차트 제거
-	
-	//상위 5개 도시 추출
-	const entries = Object.entries(yearData);
-	const top5 = entries.slice(0, 5);
-	//전체 공급량 총 합 계산
-	const totalSupply = Object.values(yearData).reduce((sum, val) => sum + val, 0);
-	
-	//top5차트 도넛형으로 생성
-	top5.forEach(([city, supply], index) => {
-		const canvasId = `donutChart${index}`;
-		const canvas = document.createElement("canvas");
-		canvas.id = canvasId;
-		canvas.width = 200;
-	    canvas.height = 200;
-	    canvas.style.display = "block"
-	    canvas.style.margin = "10px";
-		container.appendChild(canvas);
-
-		const ctx = canvas.getContext("2d");
-		const percentage = ((supply / totalSupply) * 100).toFixed(1) + "%";
-		new Chart(ctx, {
-			type: 'doughnut',
-			data: {
-				datasets: [{
-					data: [supply, totalSupply - supply],
-					backgroundColor: [
-						regionColors[city] || "rgba(75, 192, 192, 0.7)",
-						"rgba(200, 200, 200, 0.3)"
-					]
-				}]
-			},
-			options: {
-				plugins: {
-					title: {
-						display: true,
-						text: city+ '의 공급량 점유율'
-					},
-                    donutCenterText: {
-                        text: percentage,
-                        color: "#333"
-                    }
-				}
-			},
-			plugins: [donutCenterText]
-		});
-	});
-}
-
+//평균 인구수,가스 총 공급량,1인당 가스 사용량 json 받아오기
+//populationSupplyChart = "지역/년도별 인구수 및 가스 공급량 차트"
+//personalGasUseChart = "지역별 1인당 가스 사용량 차트"
 async function populationChartDraw(city) {
 	const loading = document.getElementById("loading");
 	loading.style.display = "inline";
@@ -280,7 +288,7 @@ async function populationChartDraw(city) {
 	}
 }
 
-// 각지역의 연도별 인구수 및 가스 공급량
+//"지역/년도별 인구수 및 가스 공급량 차트"
 function populationSupplyChart(canvasId, labels, populations, supplies, city){
 	// 최대, 최소값 계산
     const maxPop = Math.max(...populations);
@@ -353,7 +361,7 @@ function populationSupplyChart(canvasId, labels, populations, supplies, city){
 	});
 }
 
-//1인당 가스 사용량 꺾은선 그래프
+//"지역별 1인당 가스 사용량 차트"
 function personalGasUseChart(canvasId, labels, data, city) {
 	const maxY = Math.max(...data);
 	
