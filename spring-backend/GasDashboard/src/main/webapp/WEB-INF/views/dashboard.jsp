@@ -8,10 +8,17 @@
 <title>대시보드</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript" src="../../resources/js/chart.js"></script>
-<link href="../../resources/css/dashboard.css?after" rel="stylesheet" type="text/css">
+<link href="../../resources/css/dashboard.css?after" rel="stylesheet"
+	type="text/css">
 </head>
 <script>
-
+	function logout() {
+		let isLogout = confirm("정말 로그아웃 하시겠습니까?");
+		if (isLogout) {
+			// 확인 눌렀을 때 로그아웃 페이지로 이동
+			window.location.href = "/logout";
+		}
+	}
 </script>
 <body>
 	<!-- 전체 대시보드 컨테이너 -->
@@ -20,22 +27,22 @@
 		<div class="header">
 			<h2>📊 Dashboard</h2>
 			<c:choose>
-		        <c:when test="${not empty currentUserInfo}">
+				<c:when test="${not empty currentUserInfo}">
 					<button class="header-button" onclick="location.href='/myUsage'">myUsage</button>
 					<button class="header-button" onclick="logout()">logout</button>
-		        </c:when>
-		        <c:otherwise>
+				</c:when>
+				<c:otherwise>
 					<button class="header-button" onclick="location.href='/login'">Login</button>
-		        </c:otherwise>
-		    </c:choose>
-		    <c:if test="${ currentUserInfo.admin_yn.toString() eq 'Y' }">
-	    		<button class="header-button" onclick="location.href='/admin'">admin</button>
-		    </c:if>
+				</c:otherwise>
+			</c:choose>
+			<c:if test="${ currentUserInfo.admin_yn.toString() eq 'Y' }">
+				<button class="header-button" onclick="location.href='/admin'">admin</button>
+			</c:if>
 		</div>
 		<div id="yearForm">
-			<label for="year">연도 선택:</label> 
-			<select id="year" name="year" required>
-				<option value="2020" >2020</option>
+			<label for="year">연도 선택:</label> <select id="year" name="year"
+				required>
+				<option value="2020">2020</option>
 				<option value="2021">2021</option>
 				<option value="2022">2022</option>
 				<option value="2023">2023</option>
@@ -90,7 +97,7 @@
 			<p id="loading" style="display: none;">데이터를 불러오는 중입니다...</p>
 			<p id="xgb-result"></p>
 		</div>
-		
+
 
 		<!-- 가스 공급량 및 수요예측 차트 -->
 		<div class="charts-top">
@@ -99,9 +106,9 @@
 			</div>
 		</div>
 		<div>
-			<label for="city_detail">지역 선택:</label> 
-			<select id="city_detail" name="city" required>
-				<option value="서울특별시"selected>서울특별시</option>
+			<label for="city_detail">지역 선택:</label> <select id="city_detail"
+				name="city" required>
+				<option value="서울특별시" selected>서울특별시</option>
 				<option value="인천광역시">인천광역시</option>
 				<option value="경기도">경기도</option>
 				<option value="부산광역시">부산광역시</option>
@@ -120,8 +127,8 @@
 				<option value="제주특별자치도">제주특별자치도</option>
 			</select>
 		</div>
-		
-		
+
+
 		<p id="loading" style="display: none;">데이터를 불러오는 중입니다...</p>
 		<p id="xgb-result"></p>
 
@@ -136,50 +143,49 @@
 				<canvas id="personalGasUse"></canvas>
 			</div>
 		</div>
-			<div>
-				<h2>동계 한파일수 vs 가스사용량</h2>
-				<select id="cold_year" name="cold_year" required>
-					<option value="2020" >2020</option>
-					<option value="2021">2021</option>
-					<option value="2022">2022</option>
-					<option value="2023">2023</option>
-					<option value="2024">2024</option>
-					<option value="2025" selected>2025</option>
-				</select>
-				<select id="cold_city" name="cold_city" required>
-					<option value="서울특별시" selected>서울특별시</option>
-					<option value="인천광역시">인천광역시</option>
-					<option value="경기도">경기도</option>
-					<option value="부산광역시">부산광역시</option>
-					<option value="대구광역시">대구광역시</option>
-					<option value="광주광역시">광주광역시</option>
-					<option value="대전광역시">대전광역시</option>
-					<option value="울산광역시">울산광역시</option>
-					<option value="세종특별자치시">세종특별자치시</option>
-					<option value="강원특별자치도">강원특별자치도</option>
-					<option value="충청북도">충청북도</option>
-					<option value="충청남도">충청남도</option>
-					<option value="전북특별자치도">전북특별자치도</option>
-					<option value="전라남도">전라남도</option>
-					<option value="경상북도">경상북도</option>
-					<option value="경상남도">경상남도</option>
-					<option value="제주특별자치도">제주특별자치도</option>
-				</select>
-			</div>
-			<br>
-			<!-- 한파일수 & 공급량 차트 -->
-		<div class="charts-box">
-			<canvas id="coldDayChart" width="600" height="300"></canvas>		
+		<div>
+			<h2>동계 한파일수 vs 가스사용량</h2>
+			<select id="cold_year" name="cold_year" required>
+				<option value="2020">2020</option>
+				<option value="2021">2021</option>
+				<option value="2022">2022</option>
+				<option value="2023">2023</option>
+				<option value="2024">2024</option>
+				<option value="2025" selected>2025</option>
+			</select> <select id="cold_city" name="cold_city" required>
+				<option value="서울특별시" selected>서울특별시</option>
+				<option value="인천광역시">인천광역시</option>
+				<option value="경기도">경기도</option>
+				<option value="부산광역시">부산광역시</option>
+				<option value="대구광역시">대구광역시</option>
+				<option value="광주광역시">광주광역시</option>
+				<option value="대전광역시">대전광역시</option>
+				<option value="울산광역시">울산광역시</option>
+				<option value="세종특별자치시">세종특별자치시</option>
+				<option value="강원특별자치도">강원특별자치도</option>
+				<option value="충청북도">충청북도</option>
+				<option value="충청남도">충청남도</option>
+				<option value="전북특별자치도">전북특별자치도</option>
+				<option value="전라남도">전라남도</option>
+				<option value="경상북도">경상북도</option>
+				<option value="경상남도">경상남도</option>
+				<option value="제주특별자치도">제주특별자치도</option>
+			</select>
 		</div>
-		
+		<br>
+		<!-- 한파일수 & 공급량 차트 -->
+		<div class="charts-box">
+			<canvas id="coldDayChart" width="600" height="300"></canvas>
+		</div>
+
 	</div>
 </body>
 
 <!-- 로그아웃후 메세지 알람(일회성) -->
 <c:if test="${not empty msg}">
-<script>
-    alert('${msg}');
-</script>
+	<script>
+		alert('${msg}');
+	</script>
 </c:if>
 
 </html>

@@ -6,6 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+	function logout() {
+		let isLogout = confirm("정말 로그아웃 하시겠습니까?");
+		if (isLogout) {
+			// 확인 눌렀을 때 로그아웃 페이지로 이동
+			window.location.href = "/logout";
+		}
+	}
+</script>
 </head>
 <body>
 <div class="container">
@@ -21,7 +30,7 @@
 					</div>
 					<!-- 아래쪽 버튼 -->
 					<div class="header-inner-container">
-						<button class="green-btn-2" onclick='location.href="/logout"'>로그아웃</button>
+						<button class="green-btn-2" onclick="logout()">로그아웃</button>
 						<c:if test="${currentUserInfo.admin_yn.toString() eq 'Y'}">
 							<button class="green-btn-2" onclick="location.href='/admin'">관리자 기능</button>
 						</c:if>
