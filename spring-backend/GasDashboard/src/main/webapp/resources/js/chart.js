@@ -283,17 +283,25 @@ async function populationChartDraw(city) {
 		const supplies = years.map(y => cityData[y]["가스 총 공급량"]);
 		const perPerson = years.map(y => cityData[y]["1인당 가스 사용량"]);
 		
-		if (populationSupply) populationSupply.destroy();
-		if (personalGasUse) personalGasUse.destroy();
-		
-		populationSupply = populationSupplyChart('populationSupply', years, populations, supplies, city)
-		personalGasUse = personalGasUseChart('personalGasUse', years, perPerson, city)
+		// 기존 차트 파괴
+		destroyIfChartExists("populationSupply");
+		destroyIfChartExists("personalGasUse");
+
+		// 새로 그리기 (반환값 필요 없음)
+		populationSupplyChart('populationSupply', years, populations, supplies, city)
+		personalGasUseChart('personalGasUse', years, perPerson, city)
 		
 	} catch (error) {
 		alert("데이터 가져오기 오류: " + error);
 	}finally {
 		loading.style.display = "none";
 	}
+}
+
+// chart를 생성하기 전에 기존 차트가 있으면 파괴
+function destroyIfChartExists(id) {
+	const chartCanvas = Chart.getChart(id);
+	if (chartCanvas) chartCanvas.destroy();
 }
 
 //인구수 및 가스 공급량 추이 복합 그래프
@@ -310,7 +318,7 @@ function populationSupplyChart(canvasId, labels, populations, supplies, city){
     const y1Max = maxPop + popMargin;
 	
 	const ctx = document.getElementById(canvasId).getContext('2d');
-	return new Chart(ctx, {
+	new Chart(ctx, {
 		type: 'bar',
 		data: {
 			labels: labels,
@@ -372,7 +380,7 @@ function populationSupplyChart(canvasId, labels, populations, supplies, city){
 //1인당 가스 사용량 꺾은선 그래프
 function personalGasUseChart(canvasId, labels, data, city) {
 	const ctx = document.getElementById(canvasId).getContext('2d');
-	return new Chart(ctx, {
+	new Chart(ctx, {
 		type: 'line',
 		data: {
 			labels: labels,
