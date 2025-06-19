@@ -101,16 +101,21 @@ function checkPwd() {
 document.addEventListener("DOMContentLoaded", function () {
     const pwCkInput = document.querySelector("#user_pw_ck");
     const form = document.querySelector("#signupForm");
+    const userIdInput = document.querySelector('input[name="user_id"]');
 
     if (pwCkInput) {
         pwCkInput.addEventListener("input", checkPwd);
     }
-
     if (form) {
         form.addEventListener("submit", function (event) {
             if (!validateForm()) {
                 event.preventDefault();
             }
+        });
+    }
+    if (userIdInput) {
+        userIdInput.addEventListener("input", function () {
+            isIdChecked = false;
         });
     }
 });
@@ -138,26 +143,6 @@ document.addEventListener("DOMContentLoaded", function () {
 				<input type="text" name="user_nm" id="user_nm" autocomplete="off">
 			</div>
 			<div>
-				<!-- <label for="local_cd">지역</label> 
-				<select id="local_cd" name="local_cd"required>
-					<option value="L01" selected>서울특별시</option>
-					<option value="L02">인천광역시</option>
-					<option value="L03">경기도</option>
-					<option value="L04">부산광역시</option>
-					<option value="L05">대구광역시</option>
-					<option value="L06">광주광역시</option>
-					<option value="L07">대전광역시</option>
-					<option value="L08">울산광역시</option>
-					<option value="L09">세종특별자치시</option>
-					<option value="L10">강원특별자치도</option>
-					<option value="L11">충청북도</option>
-					<option value="L12">충청남도</option>
-					<option value="L13">전북특별자치도</option>
-					<option value="L14">전라남도</option>
-					<option value="L15">경상북도</option>
-					<option value="L16">경상남도</option>
-					<option value="L17">제주특별자치도</option>
-				</select> -->
 				<label for="local_cd">지역</label>
 					<select id="local_cd" name="local_cd" required>
 						<option value="">-- 지역 선택 --</option>
