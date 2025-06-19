@@ -16,7 +16,6 @@
 }
 #topLocalSupply canvas {
   max-width: 20%;
-
 }
 </style>
 </head>
