@@ -60,6 +60,25 @@ body {
 	flex: 1 1 300px;
 }
 
+
+.chart-title {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+  z-index: 10;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+
+
 .charts-box2 {
 	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* 기존보다 저 진하고 넓은 그림자 */
 	transition: box-shadow 0.3s ease;
@@ -94,18 +113,6 @@ body {
 	object-fit: cover;
 }
 
-.chart-title {
-	position: absolute;
-	top: 12px;
-	left: 12px;
-	background-color: rgba(255, 255, 255, 0.7); /* 배경 흰색 반투명 */
-	padding: 6px 12px;
-	border-radius: 6px;
-	font-weight: bold;
-	font-size: 1.1rem;
-	/* color: #333; */
-	z-index: 2; /* 이미지를 덮도록 */
-}
 
 /* 드롭다운 컨트롤 */
 .controls {
@@ -113,7 +120,7 @@ body {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	/* gap: 20px; */
+	gap: 20px;
 }
 
 .controls label {
