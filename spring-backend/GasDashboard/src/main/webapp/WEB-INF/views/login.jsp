@@ -9,8 +9,8 @@
 	
 <script>
     function validateForm() {
-    	const userIdInput = document.querySelector('input[name="userId"]');
-		const userPwInput = document.querySelector('input[name="userPw"]');
+    	const userIdInput = document.querySelector('input[name="user_id"]');
+		const userPwInput = document.querySelector('input[name="user_pw"]');
 			
 		const userId = userIdInput.value.trim();
 		const userPw = userPwInput.value.trim();
@@ -40,14 +40,14 @@
 			<div class="form-group">
 			 	<label for="userId">아이디</label>
                 <div class="id-check-group">
-                    <input class="input-area" type="text" name="userId" id="userId" autocomplete="off">
+                    <input class="input-area" type="text" name="user_id" id="user_id" autocomplete="off">
                 </div>
 			</div>
 			
 			<!-- 비밀번호 입력 그룹 --> 
 			<div class="form-group">
                 <label for="userPw">비밀번호</label>
-                <input  class="input-area" type="password" name="userPw" id="userPw" autocomplete="new-password">
+                <input  class="input-area" type="password" name="user_pw" id="user_pw" autocomplete="new-password">
             </div>
             
             <!-- 로그인 회원가입 버튼 그룹 -->

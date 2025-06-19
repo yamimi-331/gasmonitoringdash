@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class UserVO {
-	private char userCd;
-	private String userId;
-	private String userPw;
-	private String userNm;
-	private char localCd;
-	private String userAddr;
-	private char adminYn;
-	private char useYn;
+	private char user_cd;
+	private String user_id;
+	private String user_pw;
+	private String user_nm;
+	private char local_cd;
+	private String user_addr;
+	private char admin_yn;
+	private char use_yn;
 }

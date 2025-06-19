@@ -26,6 +26,14 @@ public class UserServiceImpl  implements UserService{
 			throw new ServiceException("로그인 실패", e);
 		}
 	}
+	@Override
+	public int usercount() {
+		try {
+			return mapper.Select();
+		} catch (Exception e) {
+			throw new ServiceException("로그인 실패", e);
+		}
+	}
 	
 	// 회원가입 
 		@Override

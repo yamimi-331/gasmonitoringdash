@@ -7,7 +7,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getUserSelect" resultType="com.eco.domain.UserVO">
 		<![CDATA[
 		SELECT * FROM t_user
-		WHERE use_yn = 'Y' AND user_id = #{userId} and user_pw = #{userPw};
+		WHERE use_yn = 'Y' AND user_id = #{user_id} and user_pw = #{user_pw}
+		]]>
+	</select>
+	
+	<select id="Select" resultType="int">
+		<![CDATA[
+		SELECT count(*) FROM t_user;
 		]]>
 	</select>
 	

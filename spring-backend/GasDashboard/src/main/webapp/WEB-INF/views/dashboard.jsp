@@ -16,7 +16,7 @@
 		<!-- 상단 헤더  -->
 		<div class="header">
 			<h2>📊 Dashboard</h2>
-			<button class="header-button">Login</button>
+			<button class="header-button" onclick="location.href='/login'">Login</button>
 		</div>
 		<div id="yearForm">
 			<label for="year">연도 선택:</label> 
