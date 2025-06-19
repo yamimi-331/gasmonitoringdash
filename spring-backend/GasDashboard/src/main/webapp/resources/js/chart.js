@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 //#region  차트생성함수
-// 가스 공급량 및 수요예측 차트 생성 함수
+// "가스 공급량 및 수요예측 차트" 생성 함수
 async function fetchPrediction() {
   const selectedCity = document.getElementById("city").value || "서울특별시"; // 지역
   const selectedModel = document.getElementById("model").value || "XGBoost"; // 예측모델
@@ -185,7 +185,7 @@ async function fetchPrediction() {
   }
 }
 
-// 연도별 각 지역의 가스 공급량 막대 그래프
+// "연도별 전국 가스 공급량 차트"
 async function yearLocalGasChart(year) {
 	const loading = document.getElementById("loading");
 	loading.style.display = "inline";
@@ -267,7 +267,8 @@ async function yearLocalGasChart(year) {
 }
 
 // 평균 인구수,가스 총 공급량,1인당 가스 사용량 json 받아오기
-// populationSupplyChart, personalGasUseChart 실행
+// populationSupplyChart = "지역/년도별 인구수 및 가스 공급량 차트"
+// personalGasUseChart = "지역별 1인당 가스 사용량 차트"
 async function populationChartDraw(city) {
 	const loading = document.getElementById("loading");
 	loading.style.display = "inline";
@@ -303,7 +304,7 @@ function destroyIfChartExists(id) {
 	if (chartCanvas) chartCanvas.destroy();
 }
 
-//인구수 및 가스 공급량 추이 복합 그래프
+// "지역/년도별 인구수 및 가스 공급량 차트"
 function populationSupplyChart(canvasId, labels, populations, supplies, city){
 	// 최대, 최소값 계산
     const maxPop = Math.max(...populations);
@@ -376,7 +377,7 @@ function populationSupplyChart(canvasId, labels, populations, supplies, city){
 	});
 }
 
-//1인당 가스 사용량 꺾은선 그래프
+// "지역별 1인당 가스 사용량 차트"
 function personalGasUseChart(canvasId, labels, data, city) {
 	const ctx = document.getElementById(canvasId).getContext('2d');
 	new Chart(ctx, {
