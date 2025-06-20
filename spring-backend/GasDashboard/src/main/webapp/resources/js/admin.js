@@ -1,13 +1,13 @@
 
-let selectedUserId = null;
+let selectedUserAddr = null;
 let selectedUserCd = null;
 let selectedUsageCd = null;
 
 // 사용자 검색 함수
 function searchUser() {
-	selectedUserId = null;
+	selectedUserAddr = null;
 	const keyword = jQuery("#searchKeyword").val();
-	if (!keyword) return alert("사용자 이름을 입력하세요.");
+	if (!keyword) return alert("주소를 입력하세요.");
 
 	jQuery.ajax({
 		url: "/admin/search-users",
@@ -29,7 +29,7 @@ function searchUser() {
 				users.forEach(user => {
 					 // 각 항목을 안전하게 문자열로 변환
 					  const rowHtml =
-						  '<tr onclick="selectUser(\'' + user.user_id + '\', \'' + user.user_cd + '\')">' +
+						  '<tr onclick="selectUser(\'' + user.user_addr + '\', \'' + user.user_cd + '\')">' +
 						    '<td>' + user.user_id + '</td>' +
 						    '<td>' + user.user_nm + '</td>' +
 						    '<td>' + user.local_nm + '</td>' +
@@ -48,10 +48,10 @@ function searchUser() {
 }
 
 // 사용자 선택 함수
-function selectUser(userId, userCd) {
+function selectUser(userAddr, userCd) {
     // 이미 선택된 사용자를 다시 클릭하면 선택 해제
-    if (selectedUserId === userId) {
-        selectedUserId = null;
+    if (selectedUserAddr === userAddr) {
+        selectedUserAddr = null;
         selectedUserCd = null; // 선택 해제
         // 모든 <tr> 태그에서 'selected' 클래스 제거
         document.querySelectorAll("#userTable tbody tr").forEach(tr => {
@@ -64,7 +64,7 @@ function selectUser(userId, userCd) {
         return; // 함수 종료
     }
 
-    selectedUserId = userId;
+    selectedUserAddr = userAddr;
     selectedUserCd = userCd;
 
     // 모든 <tr> 태그에서 'selected' 클래스 제거
@@ -184,10 +184,10 @@ function showUsageModal(mode) {
     jQuery("#modal_usage_cd").val(''); // usageCd 초기화 (수정 아닐 시 비워둠)
 
     jQuery("#modal_mode").val(mode); // 모드 설정 ('add' 또는 'edit')
-    jQuery("#modal_user_id").val(selectedUserId); // 현재 선택된 사용자 코드 설정
+    jQuery("#modal_user_id").val(selectedUserAddr); // 현재 선택된 사용자 코드 설정
 
     if (mode === 'add') {
-        if (!selectedUserId) {
+        if (!selectedUserAddr) {
             alert('사용자를 선택해주세요.');
             hideUsageModal(); // 모달 띄우지 않고 바로 닫기
             return;

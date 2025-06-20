@@ -36,6 +36,19 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     font-size: 20px;
 }
+.result-inner-container {
+	display: flex;
+	width: 100%;
+	overflow-y: auto;
+	flex-direction: column;
+	align-items: center;
+	min-height: 200px;
+	max-height: 500px;
+	border: 1px solid #82cd2b;
+	border-radius: 4px;
+	padding: 10px;
+	box-sizing: border-box;
+}
 </style>
 </head>
 <body>
@@ -62,15 +75,19 @@
 				<!-- 페이지 이동 버튼 -->
 				<a class="page-tab-a" href="/">▶ 메인페이지</a>
 			</div>
+			<div class="main-container">
+				<!-- 페이지 이동 버튼 -->
+				<a class="page-tab-a" href="/">▶ 사용자 계정 관리</a>
+			</div>
 		</div>
 
 		<!-- 사용자 검색 영역 start------------------------------ -->
 		<div class="inner-container">
 			<div class="search-container">
-				<h2>사용자 검색</h2>
+				<h2>주소 검색</h2>
 				<div class="search-inner-container">
 					<div class="search-area">
-						<input type="text" id="searchKeyword" placeholder="사용자명 입력" autocomplete="off" />
+						<input type="text" id="searchKeyword" placeholder="주소 입력" autocomplete="off" />
 						<button class="green-btn" onclick="searchUser()">검색</button>
 					</div>
 					<table id="userTable">
@@ -84,7 +101,7 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td colspan="4">조회된 사용자가 없습니다.</td>
+								<td colspan="4">해당하는 주소에 데이터가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

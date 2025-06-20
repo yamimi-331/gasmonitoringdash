@@ -21,8 +21,8 @@ public class AdminServiceImpl implements AdminService{
 	
 	// 사용자 조회
 	@Override
-	public List<AdminDTO> searchUsers(String user_nm) {
-		return mapper.selectUsers(user_nm);
+	public List<AdminDTO> searchUsers(String keyword) {
+		return mapper.selectUsers(keyword);
 	}
 
 	// 사용량 조회

@@ -9,7 +9,7 @@ import com.eco.domain.UsageVO;
 
 public interface AdminMapper {
 	// 사용자 조회
-	public List<AdminDTO> selectUsers(@Param("user_nm") String user_nm);
+	public List<AdminDTO> selectUsers(@Param("keyword") String user_nm);
 	
 	// 사용량 조회
 	public List<UsageVO> selectUsageByUser(@Param("user_cd") String user_cd);

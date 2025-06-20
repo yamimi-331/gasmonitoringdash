@@ -7,7 +7,7 @@ import com.eco.domain.UsageVO;
 
 public interface AdminService {
 	// 사용자 조회
-	public List<AdminDTO> searchUsers(String user_nm);
+	public List<AdminDTO> searchUsers(String keyword);
 	
 	// 사용량 조회
 	public List<UsageVO> getUsageByUser(String user_cd);
