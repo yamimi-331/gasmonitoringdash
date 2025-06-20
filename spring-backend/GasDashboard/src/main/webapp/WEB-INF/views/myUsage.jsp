@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 <script>
 	function logout() {
@@ -45,10 +46,10 @@
 		
 		<!-- 고객님의 최근 (12개월) 월별 사용량 추이 & 가스사용량 비교 Start ----------------- -->
 		<div class="inner-container">
-			<table border="1">
+			<table>
 				<tr><th colspan="2">고객님의 최근 (12개월) 월별 사용량 추이</th><th>가스사용량 비교</th></tr>
-				<tr><td>당월 사용량</td><td>{사용량값}M^3</td><td>지역: {}</td></tr>
-				<tr><td colspan="2"><canvas id="recentUsageChart"></canvas></td><td><canvas id="localUsageComparison"></canvas></td></tr>
+				<tr><td>당월 사용량</td><td>${localUsage.currentMonthUsage}M^3</td><td>지역: ${localUsage.localNm}</td></tr>
+				<tr><td colspan="2"><canvas id="recentUsageChart" width="500" height="250"></canvas></td><td><canvas id="localUsageComparison" width="500" height="250"></canvas></td></tr>
 			</table>
 		</div>
 		<!-- 고객님의 최근 (12개월) 월별 사용량 추이 & 가스사용량 비교 End   ----------------- -->
@@ -58,62 +59,23 @@
 	<!-- 여긴 높이 보정용 푸터 입니다. -->
 	<footer></footer>
 
-
 <script>
-  // Java에서 전달된 데이터를 JS 배열로 변환
-  const recentUsage = [
-    <c:forEach var="usage" items="${recentUsage}">
-      { date: '${usage.usage_dt}', amount: ${usage.usage_amount} },
-    </c:forEach>
-  ];
-
-  // 날짜와 값만 추출
-  const labels = recentUsage.map(item => item.date);
-  const data = recentUsage.map(item => item.amount);
-
-  // 차트 생성
-  const ctx = document.getElementById('recentUsageChart').getContext('2d');
-  const chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: '최근 12개월 가스 사용량',
-        data: data,
-        fill: false,
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        tension: 0.2
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'top'
-        },
-        title: {
-          display: true,
-          text: '최근 12개월 월별 가스 사용량'
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: '사용량 (단위: ?)'
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: '사용월'
-          }
-        }
-      }
-    }
-  });
+	// 응답받은 데이터 EL 형식으로 저장
+	const recentUsageData = [
+	    <c:forEach var="usage" items="${recentUsage}" varStatus="status">
+	      {
+	        date: '${usage.usage_dt}',
+	        amount: ${usage.usage_amount}
+	      }<c:if test="${!status.last}">,</c:if>
+	    </c:forEach>
+	  ];
+	const localUsageData = {
+  		avgCurrentMonthUsage: ${localUsage.avgCurrentMonthUsage},
+  		currentMonthUsage: ${localUsage.currentMonthUsage},
+ 	 	lastYearSameMonthUsage: ${localUsage.lastYearSameMonthUsage},
+  		yearlyAvgUsage: ${localUsage.yearlyAvgUsage}
+	};
 </script>
+<script src="../resources/js/usage.js"></script>
 </body>
 </html>

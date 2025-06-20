@@ -4,6 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eco.mapper.UsageMapper">
 	<!-- SELECT -->
+	<!-- 최근(12개월) 사용자의 사용량 조회 -->
 	<select id="selectRecentUsage" resultType="com.eco.domain.UsageVO">
 		<![CDATA[
 		SELECT 
@@ -19,4 +20,47 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    usage_dt ASC;
 		]]>
 	</select>
+	<!-- 사용자의 전기사용량 비교 데이터 -->
+	<select id="selectLocalComparison" resultType="com.eco.domain.LocalComparisonDTO">
+	<![CDATA[
+       SELECT 
+        l.local_nm AS localNm,
+
+        (SELECT AVG(u.usage_amount)
+         FROM t_usage u
+         JOIN t_user tu ON u.user_cd = tu.user_cd
+         WHERE u.usage_dt = DATE_FORMAT(CURDATE(), '%Y-%m')
+           AND tu.local_cd = tu2.local_cd
+           AND u.use_yn = 'Y'
+        ) AS avgCurrentMonthUsage,
+
+        (SELECT u1.usage_amount
+         FROM t_usage u1
+         WHERE u1.user_cd = #{user_cd}
+           AND u1.usage_dt = DATE_FORMAT(CURDATE(), '%Y-%m')
+           AND u1.use_yn = 'Y'
+         LIMIT 1
+        ) AS currentMonthUsage,
+
+        (SELECT u2.usage_amount
+         FROM t_usage u2
+         WHERE u2.user_cd = #{user_cd}
+           AND u2.usage_dt = DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 YEAR), '%Y-%m')
+           AND u2.use_yn = 'Y'
+         LIMIT 1
+        ) AS lastYearSameMonthUsage,
+
+        (SELECT AVG(u3.usage_amount)
+			FROM t_usage u3
+			WHERE u3.user_cd = #{user_cd}
+			  AND u3.usage_dt BETWEEN CONCAT(YEAR(CURDATE()), '-01') AND DATE_FORMAT(CURDATE(), '%Y-%m')
+			  AND u3.use_yn = 'Y'
+        ) AS yearlyAvgUsage
+
+    FROM t_user tu2
+    JOIN t_local l ON tu2.local_cd = l.local_cd
+    WHERE tu2.user_cd = #{user_cd};
+    ]]>
+	</select>
+		
 </mapper>
