@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Eco</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/resources/js/adminUsage.js"></script>
 <script>
 	const isLoggedIn = ${not empty sessionScope.currentUserInfo};
 </script>
@@ -34,13 +35,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="green-line"></div>
 			<div class="main-container">
 				<!-- 페이지 이동 버튼 -->
 				<a class="page-tab-a" href="/">▶ 메인페이지</a>
-				<a href="javascript:void(0);" class="page-tab-a" onclick="goToMyUsagePage()">▶ 내 사용량 조회</a>
 			</div>
-			<div class="green-line"></div>			
 		</div>
 
 		<!-- 사용자 검색 영역 start------------------------------ -->
@@ -116,26 +114,35 @@
 					id="modal_usage_cd"> <input type="hidden"
 					id="modal_user_cd">
 				<div class="modal-field">
-					<label for="modal_date">사용 일자:</label>
-					<input type="date" id="modal_date" class="modal-input" required>
+					<fieldset>
+						<legend>사용 일자:</legend>
+						<select id="modal_year" name="modal_year">
+							<option value="">-- 연도 선택 --</option>
+							<option value="2020">2020년</option>
+							<option value="2021">2021년</option>
+							<option value="2022">2022년</option>
+							<option value="2023">2023년</option>
+							<option value="2024">2024년</option>
+							<option value="2025">2025년</option>
+						</select>
+						<select id="modal_month" name="modal_month">
+							<option value="">-- 월 선택 --</option>
+							<option value="01">1월</option>
+							<option value="02">2월</option>
+							<option value="03">3월</option>
+							<option value="04">4월</option>
+							<option value="05">5월</option>
+							<option value="06">6월</option>
+							<option value="07">7월</option>
+							<option value="08">8월</option>
+							<option value="09">9월</option>
+							<option value="10">10월</option>
+							<option value="11">11월</option>
+							<option value="12">12월</option>
+						</select>
+					</fieldset>
 				</div>
 
-				<div class="modal-field">
-					<label for="modal_type_select">타입 선택:</label>
-					<select id="modal_type_select" class="modal-select" required>
-						<option value="">-- 타입 선택 --</option>
-						<optgroup label="가스 타입">
-							<c:forEach var="gas" items="${gasList}">
-								<option value="${gas.gas_cd}" data-energy-type="GAS">${gas.type}</option>
-							</c:forEach>
-						</optgroup>
-						<optgroup label="전기 타입">
-							<c:forEach var="elec" items="${elecList}">
-								<option value="${elec.elec_cd}" data-energy-type="ELEC">${elec.type}</option>
-							</c:forEach>
-						</optgroup>
-					</select>
-				</div>
 
 				<div class="modal-field" style="margin-bottom: 20px;">
 					<label for="modal_usage_input">사용량:</label>

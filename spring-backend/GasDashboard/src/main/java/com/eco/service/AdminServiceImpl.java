@@ -1,0 +1,45 @@
+package com.eco.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.eco.domain.AdminDTO;
+import com.eco.domain.UsageVO;
+import com.eco.exception.ServiceException;
+import com.eco.mapper.AdminMapper;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@Service
+@AllArgsConstructor
+@Log4j
+public class AdminServiceImpl implements AdminService{
+	
+	private AdminMapper mapper;
+	
+	// 사용자 조회
+	@Override
+	public List<AdminDTO> searchUsers(String user_nm) {
+		return mapper.selectUsers(user_nm);
+	}
+
+	// 사용량 조회
+	@Override
+	public List<UsageVO> getUsageByUser(String user_cd) {
+		return mapper.selectUsage(user_cd);
+	}
+
+	// 사용량 등록
+	@Override
+	public boolean insertUsage(UsageVO usage) {
+		try {
+			int rows = mapper.insertUsage(usage);
+			return rows > 0;
+		} catch (Exception e) {
+			throw new ServiceException("가스 사용량 등록 실패", e);
+		}
+	}
+
+}

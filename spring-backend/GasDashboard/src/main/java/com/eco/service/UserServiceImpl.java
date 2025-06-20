@@ -67,7 +67,16 @@ public class UserServiceImpl  implements UserService{
 	@Override
 	public UserVO findByUserId(String user_id) {
 		try {
-			return mapper.findByUserId(user_id);
+			return mapper.selectByUserId(user_id);
+		} catch (Exception e) {
+			throw new ServiceException("사용자 조회 실패", e);
+		}
+	}
+	// 사용자 CD로 사용자 정보 반환
+	@Override
+	public UserVO findByUserCd(String user_cd) {
+		try {
+			return mapper.selectByUserCd(user_cd);
 		} catch (Exception e) {
 			throw new ServiceException("사용자 조회 실패", e);
 		}

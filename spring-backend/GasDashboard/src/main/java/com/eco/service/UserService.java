@@ -15,6 +15,8 @@ public interface UserService {
 	public void signup(UserVO user);
 	// 사용자 아이디 존재 여부 확인
 	public UserVO findByUserId(String user_id);
+	// 사용량 등록시 사용자 지역코드 조회
+	public UserVO findByUserCd(String user_cd);
 	// cd값 조회
 	public String findMaxUserCd(String year);
 	// 지역코드 조회

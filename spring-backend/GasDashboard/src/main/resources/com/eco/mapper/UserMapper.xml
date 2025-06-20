@@ -13,14 +13,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="Select" resultType="int">
 		<![CDATA[
-		SELECT count(*) FROM t_user;
+		SELECT count(*) FROM t_user and use_yn = 'Y'
 		]]>
 	</select>
 	
-	<select id="findByUserId" resultType="com.eco.domain.UserVO">
+	<select id="selectByUserId" resultType="com.eco.domain.UserVO">
 		<![CDATA[
 		SELECT * FROM t_user
-		WHERE user_id = #{user_id};
+		WHERE user_id = #{user_id} and use_yn = 'Y'
+		]]>
+	</select>
+	<select id="selectByUserCd" resultType="com.eco.domain.UserVO">
+		<![CDATA[
+		SELECT * FROM t_user
+		WHERE user_cd = #{user_cd} and use_yn = 'Y'
 		]]>
 	</select>
 	
