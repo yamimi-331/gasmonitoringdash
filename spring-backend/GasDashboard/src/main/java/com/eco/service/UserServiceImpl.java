@@ -32,24 +32,6 @@ public class UserServiceImpl  implements UserService{
 		}
 	}
 	
-	//지역코드 가져오기
-	@Override
-	public List<LocalVO> getLocalList(){
-		return mapper.selectLocalList();
-	}
-	
-	//cd값 찾아서 다음 cd 만들기
-	@Override
-	public String findMaxUserCd(String localCode) {
-		String year = new SimpleDateFormat("yyyy").format(new Date());
-
-        int maxSeq = mapper.findMaxUserCd(year);
-        int nextSeq = maxSeq + 1;
-        String seqStr = String.format("%04d", nextSeq);  // 4자리 0패딩
-
-        return year + localCode + seqStr;
-	}	
-	
 	// 회원가입 
 	@Override
 	public void signup(UserVO user) {
@@ -65,15 +47,41 @@ public class UserServiceImpl  implements UserService{
 		
 	// 사용자 ID로 사용자 CD 반환
 	@Override
-	public boolean findByUserId(String user_id) {
+	public UserVO findByUserId(String user_id) {
 		try {
-			String result = mapper.selectUserCdByUserId(user_id);
-			return result != null;
+			return mapper.selectCdDataByUserId(user_id);
 		} catch (Exception e) {
 			throw new ServiceException("사용자 조회 실패", e);
 		}
 	}
+	
+	//cd값 찾아서 다음 cd 만들기
+	@Override
+	public String findMaxUserCd(String localCode) {
+		try {
+			String year = new SimpleDateFormat("yyyy").format(new Date());
 
+	        int maxSeq = mapper.selectMaxUserCd(year);
+	        int nextSeq = maxSeq + 1;
+	        String seqStr = String.format("%04d", nextSeq);  // 4자리 0패딩
+	
+	        return year + localCode + seqStr;
+		} catch(Exception e) {
+			throw new ServiceException("user_cd 생성 실패", e);
+		}
+		
+	}	
+	
+	//지역코드 가져오기
+	@Override
+	public List<LocalVO> getLocalList(){
+		try {
+			return mapper.selectLocalList();
+		} catch(Exception e) {
+			throw new ServiceException("지역코드 가져오기 실패", e);
+		}
+		
+	}
 
 
 }

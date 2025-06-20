@@ -61,22 +61,28 @@ public class AdminController {
 	@PostMapping("/gas/insert")
 	@ResponseBody
 	public Map<String, Object> insertGasUsage(@RequestParam("modal_year") String year,
-			@RequestParam("modal_month") String month, @ModelAttribute UsageVO usage) {
+			@RequestParam("modal_month") String month,
+			@RequestParam("user_id") String userId,
+			@ModelAttribute UsageVO usage) {
 		if (year == null || month == null || year.isEmpty() || month.isEmpty()) {
 		    return Map.of("success", false, "message", "사용 일자를 선택해주세요.");
 		}
-		if (usage.getUser_cd() == null || usage.getUser_cd().isEmpty()) {
+		if (userId == null || userId.isEmpty()) {
 	        return Map.of("success", false, "message", "사용자를 선택해주세요.");
 	    }
+		
+		// 사용자 cd값 반환
+		UserVO user = userService.findByUserId(userId);
+		if (user == null) {
+	        return Map.of("success", false, "message", "사용자를 찾을 수 없습니다.");
+	    }
+		usage.setUser_cd(user.getUser_cd());
+		usage.setLocal_cd(user.getLocal_cd());
+		
+		// 날짜 문자열 변환
 		String date = year + "-" + month;
 	    usage.setUsage_dt(date);
 	    
-	    UserVO user = userService.findByUserCd(usage.getUser_cd());
-	    if (user == null || user.getLocal_cd() == null) {
-	        return Map.of("success", false, "message", "사용자의 지역코드를 찾을 수 없습니다.");
-	    }
-	    usage.setLocal_cd(user.getLocal_cd());
-		
 		boolean result = adminService.insertUsage(usage);
 		return Map.of("success", result);
 	}

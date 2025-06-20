@@ -14,9 +14,11 @@ public interface UserMapper {
 	public int Select();
 	// 회원가입
 	public void userInsert(UserVO user);
-	// 가입자 정보
-	public String selectUserCdByUserId(@Param("user_id") String user_id);  // 아이디로 사용자 조회
-	public int findMaxUserCd(@Param("year") String year);
-	//지역코드
+	
+	// 가입자 정보 조회
+	public UserVO selectCdDataByUserId(@Param("user_id") String user_id);
+	// user_cd의 일련번호 조회
+	public int selectMaxUserCd(@Param("year") String year);
+	// 지역코드 전체 가져오기
 	public List<LocalVO> selectLocalList();
 }

@@ -17,28 +17,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</select>
 	
-	<select id="selectUserCdByUserId" resultType="com.eco.domain.UserVO">
+	<!-- 사용자 아이디로 cd data 조회 -->
+	<select id="selectCdDataByUserId" resultType="com.eco.domain.UserVO">
 		<![CDATA[
-		SELECT user_cd FROM t_user
+		SELECT user_cd, local_cd FROM t_user
 		WHERE user_id = #{user_id} and use_yn = 'Y'
 		]]>
 	</select>
 	
 	<!-- user_cd 일련번호 조회 -->
-	<select id="findMaxUserCd" resultType="int">
+	<select id="selectMaxUserCd" resultType="int">
 		SELECT IFNULL(MAX(CAST(SUBSTRING(user_cd, 8, 4) AS UNSIGNED)), 0)
 		FROM t_user
 		WHERE SUBSTRING(user_cd, 1, 4) = #{year}
 	</select>
 	
-	<!-- 지역코드 가져오기 -->
+	<!-- 지역코드 전체 가져오기 -->
 	<select id="selectLocalList" resultType="com.eco.domain.LocalVO">
 		<![CDATA[
 		SELECT * FROM t_local WHERE use_yn = 'Y'
 		]]>
 	</select>
 	
+	
 	<!-- INSERT -->
+	<!-- 회원가입 -->
 	<insert id="userInsert">
 		<![CDATA[
 		    INSERT INTO t_user(user_cd, user_id, user_pw, user_nm, local_cd, user_addr)
