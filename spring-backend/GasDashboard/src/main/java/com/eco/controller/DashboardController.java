@@ -9,7 +9,7 @@ import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@RequestMapping("/")
+@RequestMapping("/dashboard")
 public class DashboardController {
 //	private final RestTemplate restTemplate = new RestTemplate();
 //	private final String fastApiUrl = "http://localhost:8000/api/gas/prediction";
