@@ -1,6 +1,3 @@
-/**
- * 
- */
 
 let selectedUserId = null;
 let selectedUserCd = null;
@@ -121,7 +118,7 @@ function renderUsageTable(data) {
             const timeStr = row.usage_dt;
 
             const trHtml =
-                '<tr data-id="' + row.usage_cd + '" data-type-cd="' + typeCd + '" onclick="selectRow(this, ' + row.usage_cd + ')">' +
+                '<tr data-id="' + row.usage_cd + '" onclick="selectRow(this, ' + row.usage_cd + ')">' +
                     '<td><input type="radio" name="selectUsage" value="' + row.usage_cd + '" onclick="event.stopPropagation(); selectRow(this.closest(\'tr\'), ' + row.usage_cd + ')"></td>' + 
                     '<td class="date">' + timeStr + '</td>' +
                     '<td class="usage">' + usage + '</td>' +
@@ -169,7 +166,7 @@ function deleteUsage() {
 		data: JSON.stringify({ usage_cd: selectedUsageCd }),
 		success: function() {
 			alert("가스 사용내역이 삭제되었습니다.");
-			loadGasUsageData();
+			loadUsageData();
 		},
         error: function(xhr) {
 			alert("삭제 중 오류가 발생했습니다: " + xhr.statusText);
@@ -181,23 +178,13 @@ function deleteUsage() {
 //새로운 모달 관련 함수
 function showUsageModal(mode) {
     // 공통 필드 초기화 (취소 후 다시 열었을 때 데이터 남아있는 것 방지)
-    jQuery("#modal_date").val('');
+    jQuery("#modal_year").val('');
+    jQuery("#modal_month").val('');
     jQuery("#modal_usage_input").val('');
-    jQuery("#modal_type_select").val(''); // 타입 선택 초기화
-    jQuery("#modal_date").prop('readonly', false); // 기본적으로는 활성화 (등록 시)
-    jQuery("#modal_type_select").prop('disabled', false); // 기본적으로는 활성화 (등록 시)
     jQuery("#modal_usage_cd").val(''); // usageCd 초기화 (수정 아닐 시 비워둠)
 
     jQuery("#modal_mode").val(mode); // 모드 설정 ('add' 또는 'edit')
     jQuery("#modal_user_id").val(selectedUserId); // 현재 선택된 사용자 코드 설정
-
-    // 모든 옵션(optgroup 포함)을 기본적으로 숨긴다
-    // 이렇게 하면 '타입 선택' 옵션만 남기고 모두 숨긴 상태에서 시작합니다.
-    jQuery("#modal_type_select option").hide(); 
-    jQuery("#modal_type_select optgroup").hide(); // optgroup 자체도 숨김
-
-    // '-- 타입 선택 --' 옵션은 항상 보이도록 설정
-    jQuery("#modal_type_select option[value='']").show();
 
     if (mode === 'add') {
         if (!selectedUserId) {
@@ -205,21 +192,6 @@ function showUsageModal(mode) {
             hideUsageModal(); // 모달 띄우지 않고 바로 닫기
             return;
         }
-        jQuery("#modalTitle").text("사용량 등록");
-        
-        // 현재 선택된 energyType에 따라 해당하는 optgroup과 그 안의 option만 보이게 한다
-        if (energyType === 'GAS') {
-            jQuery("#modal_type_select optgroup[label='가스 타입']").show(); // 가스 optgroup 보이기
-            jQuery("#modal_type_select optgroup[label='가스 타입'] option").show(); // 가스 optgroup 내의 option 보이기
-        } else if (energyType === 'ELEC') {
-            jQuery("#modal_type_select optgroup[label='전기 타입']").show(); // 전기 optgroup 보이기
-            jQuery("#modal_type_select optgroup[label='전기 타입'] option").show(); // 전기 optgroup 내의 option 보이기
-        }
-        
-        // '타입 선택'으로 기본 선택되도록 설정
-        jQuery("#modal_type_select option[value='']").prop('selected', true);
-
-
     } else if (mode === 'edit') {
         if (!selectedUsageCd) {
             alert("수정할 행을 선택하세요.");
@@ -231,25 +203,23 @@ function showUsageModal(mode) {
         const row = jQuery("tr[data-id='" + selectedUsageCd + "']");
         const dateStr = row.find(".date").text();
         const usageVal = row.find(".usage").text();
-        const typeCdFromRow = row.data('type-cd'); // renderUsageTable에서 추가한 data-type-cd 값 가져오기
+
+        const [year, month] = dateStr.split('-');
+        jQuery("#modal_year").val(year);
+        jQuery("#modal_month").val(month);
+        // 날짜는 수정 불가하게 비활성화
+        jQuery("#modal_year").prop('disabled', true);
+        jQuery("#modal_month").prop('disabled', true);
 
         jQuery("#modal_usage_cd").val(selectedUsageCd);
-        jQuery("#modal_date").val(dateStr);
-        jQuery("#modal_date").prop('readonly', true); // 날짜 수정 불가능하게
-
         jQuery("#modal_usage_input").val(usageVal);
-        
-        // 수정 모드에서는 모든 optgroup과 그 안의 option을 보이게 한 후 선택 값을 설정
-        jQuery("#modal_type_select optgroup").show(); // 모든 optgroup 보이기
-        jQuery("#modal_type_select option").show(); // 모든 option 보이기 (숨겨진 것 포함)
-        jQuery("#modal_type_select").val(typeCdFromRow); // 가져온 typeCd를 셀렉트 박스에 설정
-        jQuery("#modal_type_select").prop('disabled', true); // 타입 선택 비활성화
+    } else {
+        alert("알 수 없는 모드입니다.");
+        return;
     }
     jQuery("#usageModal").show();
     jQuery("#modalOverlay").show();
 }
-
-
 
 function hideUsageModal() {
     jQuery("#usageModal").hide();
@@ -258,79 +228,8 @@ function hideUsageModal() {
     jQuery("#modal_usage_cd").val('');
     jQuery("#modal_date").val('');
     jQuery("#modal_usage_input").val('');
-    jQuery("#modal_type_select").val('');
-    jQuery("#modal_date").prop('readonly', false); // 다시 활성화
-    jQuery("#modal_type_select").prop('disabled', false); // 다시 활성화
-}
-
-// 모달 내 '저장' 버튼 클릭 시 호출될 함수
-function saveUsageData2() {
-    const mode = jQuery("#modal_mode").val();
-    const userCd = jQuery("#modal_user_cd").val();
-    const usageCd = jQuery("#modal_usage_cd").val(); // 수정 시에만 사용
-    const year = $("#modal_year").val();
-    const month = $("#modal_month").val();
-    const usage = parseFloat($("#modal_usage_input").val());
-    
-    if (!userCd) {
-        alert("사용자가 선택되지 않았습니다.");
-        return;
-    }
-    if (!year || !month || isNaN(usage) || usage < 0) { 
-        alert("모든 필드를 올바르게 입력해주세요.");
-        return;
-    }
-
-    let url;
-    let data;
-
-    if (mode === 'add') {
-        url = 'gas/insert';
-        data = {
-            user_cd: userCd,
-            modal_year: year,
-            modal_month: month,
-            usage_amount: usage
-        }
-    } else if (mode === 'edit') {
-        // 수정 시에는 usageCd가 필수
-        if (!usageCd) {
-            alert("수정할 사용량 데이터가 선택되지 않았습니다. 다시 선택해주세요.");
-            return;
-        }
-        url = 'gas/update';
-        data = {
-            user_cd: userCd,
-            usage_amount: usage
-        }
-    } else {
-        alert("알 수 없는 모드입니다.");
-        return;
-    }
-    
-    jQuery.ajax({
-        url: url,
-        method: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        dataType: 'json',
-        success: function (response) {
-            if (response.success  === true || response === 'true') {
-                alert(mode === 'add' ? '사용량 등록 성공' : '사용량 수정 성공');
-                loadUsageData(); // 데이터 새로고침
-                hideUsageModal(); // 모달 닫기
-            } else {
-                alert(mode === 'add' ? '사용량 등록 실패' : '사용량 수정 실패 (서버 응답 오류)');
-            }
-        },
-        error: function (xhr, status, error) {
-            alert('서버 통신 오류가 발생했습니다. 개발자 도구 콘솔을 확인해주세요.');
-            console.error('AJAX Error Status:', status);
-            console.error('AJAX Error:', error);
-            console.error('AJAX Response Text:', xhr.responseText);
-            console.error('AJAX XHR Object:', xhr);
-        }
-    });
+    jQuery("#modal_year").prop('disabled', false);
+    jQuery("#modal_month").prop('disabled', false);// 다시 활성화
 }
 
 // 모달 내 '저장' 버튼 클릭 시 호출될 함수
@@ -355,7 +254,7 @@ function saveUsageData() {
     let data;
 
     if (mode === 'add') {
-        url = 'gas/insert';
+        url = '/admin/gas/insert';
         data = {
             user_id: userId,
             modal_year: year,
@@ -368,8 +267,9 @@ function saveUsageData() {
             alert("수정할 사용량 데이터가 선택되지 않았습니다. 다시 선택해주세요.");
             return;
         }
-        url = 'gas/update';
+        url = '/admin/gas/update';
         data = {
+            usage_cd: usageCd,
             user_id: userId,
             usage_amount: usage
         }

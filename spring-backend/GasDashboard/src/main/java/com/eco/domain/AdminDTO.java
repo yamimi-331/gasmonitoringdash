@@ -14,4 +14,12 @@ public class AdminDTO {
 	private char use_yn;
 	
 	private String local_nm;
+	
+	private String modal_year;
+    private String modal_month;
+    private Double usage_amount;
+
+   
+    private String usage_dt;
+    private Integer usage_cd;
 }

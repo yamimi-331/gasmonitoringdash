@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,8 +35,11 @@ public class AdminController {
 	// 관리자 페이지 이동
 	@GetMapping("")
 	public String adminPage(Model model, HttpSession session) {
-		UserVO user = (UserVO) session.getAttribute("currentUserInfo");
-		model.addAttribute("currentUserInfo", user);
+		String userId = (String) session.getAttribute("currentUserId");
+	    String userNm = (String) session.getAttribute("currentUserNm");
+
+	    model.addAttribute("userId", userId);
+	    model.addAttribute("userNm", userNm);
 		return "admin";
 	}
 	
@@ -61,30 +63,20 @@ public class AdminController {
 	// 가스 사용량 등록
 	@PostMapping("/gas/insert")
 	@ResponseBody
-	public Map<String, Object> insertGasUsage(@RequestParam("modal_year") String year,
-			@RequestParam("modal_month") String month,
-			@RequestParam("user_id") String userId,
-			@ModelAttribute UsageVO usage) {
-		if (year == null || month == null || year.isEmpty() || month.isEmpty()) {
-		    return Map.of("success", false, "message", "사용 일자를 선택해주세요.");
-		}
-		if (userId == null || userId.isEmpty()) {
-	        return Map.of("success", false, "message", "사용자를 선택해주세요.");
-	    }
-		
-		// 사용자 cd값 반환
-		UserVO user = userService.findByUserId(userId);
+	public Map<String, Object> insertGasUsage(@RequestBody AdminDTO admin) {
+
+		UserVO user = userService.findByUserId(admin.getUser_id());
 		if (user == null) {
 	        return Map.of("success", false, "message", "사용자를 찾을 수 없습니다.");
 	    }
-		usage.setUser_cd(user.getUser_cd());
-		usage.setLocal_cd(user.getLocal_cd());
+		admin.setUser_cd(user.getUser_cd());
+		admin.setLocal_cd(user.getLocal_cd());
 		
 		// 날짜 문자열 변환
-		String date = year + "-" + month;
-	    usage.setUsage_dt(date);
+		String date = admin.getModal_year() + "-" + admin.getModal_month();
+		admin.setUsage_dt(date);
 	    
-		boolean result = adminService.registerUsage(usage);
+		boolean result = adminService.registerUsage(admin);
 		return Map.of("success", result);
 	}
 	

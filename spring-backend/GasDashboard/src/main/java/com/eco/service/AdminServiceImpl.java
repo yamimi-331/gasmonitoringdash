@@ -28,14 +28,14 @@ public class AdminServiceImpl implements AdminService{
 	// 사용량 조회
 	@Override
 	public List<UsageVO> getUsageByUser(String user_cd) {
-		return mapper.selectUsage(user_cd);
+		return mapper.selectUsageByUser(user_cd);
 	}
 
 	// 사용량 등록
 	@Override
-	public boolean registerUsage(UsageVO usage) {
+	public boolean registerUsage(AdminDTO admin) {
 		try {
-			int rows = mapper.insertUsage(usage);
+			int rows = mapper.insertUsage(admin);
 			return rows > 0;
 		} catch (Exception e) {
 			throw new ServiceException("가스 사용량 등록 실패", e);

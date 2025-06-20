@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- INSERT -->
 	<!-- 사용량 등록 -->
 	<insert id="insertUsage"
-		parameterType="com.eco.domain.UsageVO">
+		parameterType="com.eco.domain.AdminDTO">
 		<![CDATA[
 		INSERT INTO t_usage(user_cd, local_cd, usage_dt, usage_amount) 
 		VALUES(#{user_cd}, #{local_cd}, #{usage_dt}, #{usage_amount})

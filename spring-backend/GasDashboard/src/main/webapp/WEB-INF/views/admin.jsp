@@ -7,17 +7,24 @@
 <meta charset="UTF-8">
 <title>Eco</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="/resources/js/adminUsage.js"></script>
+<script src="../resources/js/admin.js"></script>
 <script>
 	const isLoggedIn = ${not empty sessionScope.currentUserInfo};
+
+	function logout() {
+		let isLogout = confirm("정말 로그아웃 하시겠습니까?");
+		if (isLogout) {
+			// 확인 눌렀을 때 로그아웃 페이지로 이동
+			window.location.href = "/logout";
+		}
+	}
+
 </script>
 </head>
 <body>
 	<div class="container">
 		<div class="inner-container">
 			<div class="head-box">
-				<!-- 아이콘 -->
-				<a href="/"><img src="/resources/img/icon2.png" class="icon"></a>
 				<!-- 메인화면 글씨 -->
 				<div class="title-container">
 					<h2>관리자 페이지</h2>
@@ -26,12 +33,11 @@
 				<div class="header-container">
 					<!-- 위쪽 텍스트 -->
 					<div class="header-inner-container">
-						<span>${currentUserInfo.user_nm} 님, 환영합니다.</span>
+						<span>${currentUserNm} 님, 환영합니다.</span>
 					</div>
 					<!-- 아래쪽 버튼 -->
 					<div class="header-inner-container">
-						<button class="green-btn-2"
-							onclick='location.href="/login/logout"'>로그아웃</button>
+						<button class="green-btn-2" onclick="logout()">로그아웃</button>
 					</div>
 				</div>
 			</div>
@@ -73,14 +79,6 @@
 
 		<!-- 사용자별 에너지 사용량 관리 영역 start ------------------------ -->
 		<div class="inner-container">
-			<!-- 에너지 타입 선택 -->
-			<div class="type-tab">
-				<button id="gasBtn" class="type-tab-btn active"
-					onclick="selectEnergyType('GAS')">가스 사용량</button>
-				<button id="elecBtn" class="type-tab-btn"
-					onclick="selectEnergyType('ELEC')">전기 사용량</button>
-			</div>
-
 			<div id="usageSection" class="result-container">
 				<div class="search-area">
 					<h3 id="usageTitle">가스 사용내역</h3>

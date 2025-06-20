@@ -12,10 +12,10 @@ public interface AdminMapper {
 	public List<AdminDTO> selectUsers(@Param("user_nm") String user_nm);
 	
 	// 사용량 조회
-	public List<UsageVO> selectUsage(@Param("user_cd") String user_cd);
+	public List<UsageVO> selectUsageByUser(@Param("user_cd") String user_cd);
 	
 	// 사용량 등록
-	public int insertUsage(UsageVO usage);
+	public int insertUsage(AdminDTO admin);
 	
 	// 사용량 수정
 	public int updateUsage(UsageVO usage);
