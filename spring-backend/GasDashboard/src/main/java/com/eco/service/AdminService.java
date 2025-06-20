@@ -13,5 +13,11 @@ public interface AdminService {
 	public List<UsageVO> getUsageByUser(String user_cd);
 	
 	// 사용량 등록
-	public boolean insertUsage(UsageVO usage);
+	public boolean registerUsage(UsageVO usage);
+	
+	// 사용량 수정
+	public boolean modifyUsage(UsageVO usage);
+	
+	// 사용량 삭제
+	public boolean removeUsage(int usage_cd);
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -83,7 +84,25 @@ public class AdminController {
 		String date = year + "-" + month;
 	    usage.setUsage_dt(date);
 	    
-		boolean result = adminService.insertUsage(usage);
+		boolean result = adminService.registerUsage(usage);
+		return Map.of("success", result);
+	}
+	
+	// 가스 사용량 수정
+	@PostMapping("/gas/update")
+	@ResponseBody
+	public Map<String, Object> updateGas(@RequestBody UsageVO usage) {
+		boolean result = adminService.modifyUsage(usage);
+		// 서비스 결과에 따라 "success" 키와 함께 boolean 값을 JSON 응답으로 반환
+		return Map.of("success", result);
+	}
+	
+	// 가스 삭제
+	@PostMapping("/gas/delete")
+	@ResponseBody
+	public Map<String, Object> deleteGas(@RequestBody UsageVO usage) {
+		boolean result = adminService.removeUsage(usage.getUsage_cd());
+		// 서비스 결과에 따라 "success" 키와 함께 boolean 값을 JSON 응답으로 반환
 		return Map.of("success", result);
 	}
 }

@@ -33,12 +33,34 @@ public class AdminServiceImpl implements AdminService{
 
 	// 사용량 등록
 	@Override
-	public boolean insertUsage(UsageVO usage) {
+	public boolean registerUsage(UsageVO usage) {
 		try {
 			int rows = mapper.insertUsage(usage);
 			return rows > 0;
 		} catch (Exception e) {
 			throw new ServiceException("가스 사용량 등록 실패", e);
+		}
+	}
+	
+	// 사용량 수정
+	@Override
+	public boolean modifyUsage(UsageVO usage) {
+		try {
+			int rows = mapper.updateUsage(usage);
+			return rows > 0;
+		} catch (Exception e) {
+			throw new ServiceException("가스 사용량 수정 실패", e);
+		}
+	}
+	
+	// 사용량 삭제
+	@Override
+	public boolean removeUsage(int usage_cd) {
+		try {
+			int rows = mapper.deleteUsage(usage_cd);
+			return rows > 0;
+		} catch (Exception e) {
+			throw new ServiceException("가스 사용량 삭제 실패", e);
 		}
 	}
 

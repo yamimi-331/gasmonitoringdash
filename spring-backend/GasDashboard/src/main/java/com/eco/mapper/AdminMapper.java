@@ -16,4 +16,10 @@ public interface AdminMapper {
 	
 	// 사용량 등록
 	public int insertUsage(UsageVO usage);
+	
+	// 사용량 수정
+	public int updateUsage(UsageVO usage);
+	
+	// 사용량 삭제
+	public int deleteUsage(int usage_cd);
 }

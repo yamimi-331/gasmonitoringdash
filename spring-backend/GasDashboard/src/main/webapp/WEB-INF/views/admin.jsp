@@ -53,10 +53,10 @@
 					<table id="userTable">
 						<thead>
 							<tr>
-								<th style="width: 25%">사용자 번호</th>
-								<th style="width: 25%">사용자 아이디</th>
+								<th style="width: 25%">아이디</th>
 								<th style="width: 25%">이름</th>
 								<th style="width: 25%">지역</th>
+								<th style="width: 25%">상세주소</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -112,7 +112,7 @@
 				<h3 id="modalTitle">사용량 관리</h3>
 				<input type="hidden" id="modal_mode"> <input type="hidden"
 					id="modal_usage_cd"> <input type="hidden"
-					id="modal_user_cd">
+					id="modal_user_id">
 				<div class="modal-field">
 					<fieldset>
 						<legend>사용 일자:</legend>
