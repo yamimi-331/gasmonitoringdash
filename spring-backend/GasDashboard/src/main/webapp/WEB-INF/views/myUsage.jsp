@@ -38,6 +38,7 @@
 					<div class="header-inner-container">
 						<button class="green-btn-2" onclick="logout()">로그아웃</button>
 						<button class="green-btn-2" onclick="location.href='/'">메인페이지</button>
+						<button class="green-btn-2" onclick="location.href='/profileEdit'">회원정보수정</button>
 					</div>
 				</div>
 			</div>
@@ -53,14 +54,33 @@
 			</table>
 		</div>
 		<!-- 고객님의 최근 (12개월) 월별 사용량 추이 & 가스사용량 비교 End   ----------------- -->
-	
+		
+		<!-- 내 사용량에 관한 코멘트 Start ----------------- -->
+		<div class="inner-container">
+		    <c:choose>
+		        <%-- 사용량이 평균보다 낮은 경우 --%>
+		        <c:when test="${localUsage.currentMonthUsage lt localUsage.avgCurrentMonthUsage}">
+		            <p>이번 달 사용량이 지역 평균보다 낮습니다.</p>
+		        </c:when>
+		
+		        <%-- 사용량이 평균보다 높은 경우 --%>
+		        <c:when test="${localUsage.currentMonthUsage gt localUsage.avgCurrentMonthUsage}">
+		            <p>이번 달 사용량이 지역 평균보다 높습니다.</p>
+		        </c:when>
+		
+		        <%-- 사용량이 평균과 같은 경우 --%>
+		        <c:otherwise>
+		            <p>이번 달 사용량이 지역 평균과 같습니다.</p>
+		        </c:otherwise>
+		    </c:choose>
+		</div>
+		<!-- 내 사용량에 관한 코멘트 End ----------------- -->
 	</div>
 		
 	<!-- 여긴 높이 보정용 푸터 입니다. -->
 	<footer></footer>
 
 <script>
-	// 응답받은 데이터 EL 형식으로 저장
 	const recentUsageData = [
 	    <c:forEach var="usage" items="${recentUsage}" varStatus="status">
 	      {
