@@ -17,9 +17,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</select>
 	
-	<select id="selectByUserId" resultType="com.eco.domain.UserVO">
+	<select id="selectUserCdByUserId" resultType="com.eco.domain.UserVO">
 		<![CDATA[
-		SELECT * FROM t_user
+		SELECT user_cd FROM t_user
 		WHERE user_id = #{user_id} and use_yn = 'Y'
 		]]>
 	</select>
