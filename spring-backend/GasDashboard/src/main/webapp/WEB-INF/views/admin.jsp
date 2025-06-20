@@ -20,6 +20,23 @@
 	}
 
 </script>
+<style>
+.modal-container {
+    width: 30%;
+    display: none; /* Controlled by JS */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border: 1px solid #82cd2b;
+    border-radius: 8px;
+    z-index: 1000;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+}
+</style>
 </head>
 <body>
 	<div class="container">
