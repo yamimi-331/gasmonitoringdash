@@ -35,7 +35,7 @@
 					<button class="header-button" onclick="location.href='/login'">Login</button>
 				</c:otherwise>
 			</c:choose>
-			<c:if test="${IsAdmin != null and IsAdmin.toString() == 'Y'}">
+			<c:if test="${currentUserType != null and (currentUserType == 'admin' or currentUserType == 'manager')}">
 				<button class="header-button" onclick="location.href='/admin'">admin</button>
 			</c:if>
 		</div>

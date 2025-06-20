@@ -10,6 +10,6 @@ public class UserVO {
 	private String user_nm;
 	private String local_cd;
 	private String user_addr;
-	private char admin_yn;
+	private String user_type;
 	private char use_yn;
 }

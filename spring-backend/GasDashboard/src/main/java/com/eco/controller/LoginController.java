@@ -36,7 +36,7 @@ public class LoginController {
 			// 로그인 성공 처리
 			session.setAttribute("currentUserId", rtnUser.getUser_id());
 			session.setAttribute("currentUserNm", rtnUser.getUser_nm());
-			session.setAttribute("IsAdmin", rtnUser.getAdmin_yn());
+			session.setAttribute("currentUserType", rtnUser.getUser_type());
 			session.setAttribute("Local", rtnUser.getLocal_cd());
 			return "redirect: /";
 		} else {
