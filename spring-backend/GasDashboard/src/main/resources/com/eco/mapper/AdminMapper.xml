@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectUsageByUser"
 		resultType="com.eco.domain.UsageVO">
 		<![CDATA[
-		select * from t_usage where user_cd = #{user_cd} and use_yn = 'Y'
+		select * from t_usage where user_cd = #{user_cd} and use_yn = 'Y' ORDER BY usage_cd DESC
 		]]>
 	</select>
 
