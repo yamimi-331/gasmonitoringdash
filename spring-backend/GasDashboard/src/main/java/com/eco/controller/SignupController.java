@@ -42,7 +42,6 @@ public class SignupController {
 	@GetMapping("/check-id")
 	@ResponseBody
 	public String checkUserId(@RequestParam("user_id") String userId) {
-	    // 일반회원(user_type = "B") 기준으로만 중복 확인
 	    UserVO user = service.findByUserId(userId);
 	    return (user != null) ? "duplicate" : "available";
 	}

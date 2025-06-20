@@ -38,7 +38,7 @@ public class UserServiceImpl  implements UserService{
 		return mapper.selectLocalList();
 	}
 	
-	//cd값 찾아오기
+	//cd값 찾아서 다음 cd 만들기
 	@Override
 	public String findMaxUserCd(String localCode) {
 		String year = new SimpleDateFormat("yyyy").format(new Date());
@@ -63,20 +63,12 @@ public class UserServiceImpl  implements UserService{
 		}
 	}
 		
-	// 사용자 ID로 사용자 정보 반환
+	// 사용자 ID로 사용자 CD 반환
 	@Override
-	public UserVO findByUserId(String user_id) {
+	public boolean findByUserId(String user_id) {
 		try {
-			return mapper.selectByUserId(user_id);
-		} catch (Exception e) {
-			throw new ServiceException("사용자 조회 실패", e);
-		}
-	}
-	// 사용자 CD로 사용자 정보 반환
-	@Override
-	public UserVO findByUserCd(String user_cd) {
-		try {
-			return mapper.selectByUserCd(user_cd);
+			String result = mapper.selectUserCdByUserId(user_id);
+			return result != null;
 		} catch (Exception e) {
 			throw new ServiceException("사용자 조회 실패", e);
 		}

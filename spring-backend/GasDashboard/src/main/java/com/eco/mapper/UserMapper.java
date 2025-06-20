@@ -15,8 +15,7 @@ public interface UserMapper {
 	// 회원가입
 	public void userInsert(UserVO user);
 	// 가입자 정보
-	public UserVO selectByUserId(@Param("user_id") String user_id);  // 아이디로 사용자 조회
-	public UserVO selectByUserCd(@Param("user_cd") String user_cd);  // cd로 사용자 조회
+	public String selectUserCdByUserId(@Param("user_id") String user_id);  // 아이디로 사용자 조회
 	public int findMaxUserCd(@Param("year") String year);
 	//지역코드
 	public List<LocalVO> selectLocalList();

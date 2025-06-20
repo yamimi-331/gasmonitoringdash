@@ -23,12 +23,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE user_id = #{user_id} and use_yn = 'Y'
 		]]>
 	</select>
-	<select id="selectByUserCd" resultType="com.eco.domain.UserVO">
-		<![CDATA[
-		SELECT * FROM t_user
-		WHERE user_cd = #{user_cd} and use_yn = 'Y'
-		]]>
-	</select>
 	
 	<!-- user_cd 일련번호 조회 -->
 	<select id="findMaxUserCd" resultType="int">
