@@ -36,10 +36,7 @@ public class MyUsageController {
 	    }
 	    
 	    // 사용자의 최근 (12개월) 월별 사용량 추이 
-		// 필요 데이터 :  당월 사용량, 월별 가스사용량 최근(12개월)  
-		// 리턴 타입 UsageVO
 		List<UsageVO> recentUsage = service.getRecentUsage(userId);
-		log.info(recentUsage);
 		model.addAttribute("recentUsage", recentUsage);
 		
 		// 가스사용량 비교 
