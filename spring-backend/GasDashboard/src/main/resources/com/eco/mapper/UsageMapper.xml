@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eco.mapper.UsageMapper">
+	<!-- SELECT -->
+	<select id="selectRecentUsage" resultType="com.eco.domain.UsageVO">
+		<![CDATA[
+		SELECT 
+		    usage_dt,
+		    usage_amount
+		FROM 
+		    t_usage
+		WHERE 
+		    user_cd = #{user_cd}
+		    AND use_yn = 'Y'
+		    AND usage_dt >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 12 MONTH), '%Y-%m')
+		ORDER BY 
+		    usage_dt ASC;
+		]]>
+	</select>
+</mapper>

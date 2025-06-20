@@ -6,6 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 	function logout() {
 		let isLogout = confirm("정말 로그아웃 하시겠습니까?");
@@ -17,162 +20,100 @@
 </script>
 </head>
 <body>
-<div class="container">
+	<div class="container">
+	
+		<!-- 상단 정보표시 헤더 Start ------------------------- -->
 		<div class="inner-container">
 			<div class="head-box">
 				<!-- 메인화면 글씨 -->
 				<div class="title-container"><h2>마이 페이지</h2></div>
 				<!-- 버튼 내비게이션 -->
 				<div class="header-container">
-					<!-- 위쪽 텍스트 -->
+					<!-- 사용자 소개 -->
 					<div class="header-inner-container">
-						<span>${currentUserInfo.user_nm} 님, 환영합니다.</span> 
+						<span>${currentUserNm} 님, 환영합니다.</span> 
 					</div>
-					<!-- 아래쪽 버튼 -->
+					<!-- 로그아웃 및 기능 버튼 -->
 					<div class="header-inner-container">
 						<button class="green-btn-2" onclick="logout()">로그아웃</button>
-						<c:if test="${currentUserInfo.admin_yn.toString() eq 'Y'}">
-							<button class="green-btn-2" onclick="location.href='/admin'">관리자 기능</button>
-						</c:if>
+						<button class="green-btn-2" onclick="location.href='/'">메인페이지</button>
 					</div>
 				</div>
 			</div>
-			<div class="green-line"></div>
-			<div class="main-container">
-				<!-- 내 정보 보기 버튼 (로그인 안 되어 있으면 로그인 페이지로 이동) -->
-				<a class="page-tab-a" href="/simplelookup">▶ 간편 요금 조회</a> 
-				<a class="page-tab-a" href="/">▶ 메인페이지</a> 
-			</div>
-			<div class="green-line"></div>
 		</div>
+		<!-- 상단 정보표시 헤더 end   ------------------------- -->
+		
+		<!-- 고객님의 최근 (12개월) 월별 사용량 추이 & 가스사용량 비교 Start ----------------- -->
 		<div class="inner-container">
-			<div class="select-box">
-				<a href="/usage" class="box1">사용량</a>
-				<a href="/charge" class="box2">요금</a>
-			</div>
-			<div class="data-box">
-				<div class="title">이번 달 냉/난방 사용 현황</div>
-				<div class="table-box">
-					<table>
-						<colgroup>
-							<col width="50%">
-							<col width="50%">
-						</colgroup>
-						<tr>
-							<th>도시가스</th>
-							<th>전기</th>
-						</tr>
-						<tr>
-							<td>
-								<c:choose>
-							        <c:when test="${not empty gasUsage}">
-							            ${gasUsage.gasUsageAmount} ㎥
-							        </c:when>
-							        <c:otherwise>
-							            ${gasUsageMsg}
-							        </c:otherwise>
-							    </c:choose>
-							</td>
-							<td>
-								<c:choose>
-							        <c:when test="${not empty elecUsage}">
-							            ${elecUsage.elecUsageAmount} kWh
-							        </c:when>
-							        <c:otherwise>
-							            ${elecUsageMsg}
-							        </c:otherwise>
-							    </c:choose>
-							</td>
-						</tr>
-					</table>
-				</div>
-				<div class="title">냉/난방 사용 이력</div>
-				<div class="chart-box">
-					<div class="chart-container">
-						<canvas class="usageChart" id="monthChart"></canvas>
-					</div>
-				</div>
-				<div class="title">냉/난방 사용 이력</div>
-				<form method="get" action="/usage/period" onsubmit="return validateDates(this)" class="form-box">
-					<div class="inner-form-box">
-						<span>기간 : </span>
-						<input type="date" name="startDate" id="startDate" value="${not empty param.startDate ? param.startDate : firstDayStr}" pattern="yyyy-MM-dd">
-						 ~ <input type="date" name="endDate" id="endDate" value="${not empty param.endDate ? param.endDate : lastDayStr}" pattern="yyyy-MM-dd">
-						<input type="submit" class="green-btn-2" value="조회">
-					</div>
-					<div>* 최대 24개월 분의 자료만 조회가 가능합니다.</div>
-				</form>				
-				<div class="table-box">
-					<table>
-						<caption class="text-bold">가스 사용 상세 내역</caption>
-						<colgroup>
-							<col width="25%">
-							<col width="25%">
-							<col width="25%">
-							<col width="25%">
-						</colgroup>
-						<tr>
-							<th>용도</th>
-							<th>표준원가</th>
-							<th>사용량</th>
-							<th>날짜</th>
-						</tr>
-						<c:choose>
-							<c:when test="${not empty gasUse}">
-								<c:forEach var="item" items="${gasUse}">
-									<tr>
-										<td>${item.usageType}</td>
-										<td>${item.unitCharge}</td>
-										<td>${item.gas_usage} ㎥</td>
-										<td><fmt:formatDate pattern="yyyy-MM-dd" value="${ item.gas_time }"/></td>
-									</tr>
-								</c:forEach>
-							</c:when>
-							<c:otherwise>
-								<tr>
-									<td colspan="4">${ gasUsageDetailMsg }</td>
-								</tr>
-							</c:otherwise>
-						</c:choose>
-					</table>
-					<table>
-						<caption class="text-bold">전기 사용 상세 내역</caption>
-						<colgroup>
-							<col width="25%">
-							<col width="25%">
-							<col width="25%">
-							<col width="25%">
-						</colgroup>
-						<tr>
-							<th>타입</th>
-							<th>표준원가</th>
-							<th>사용량</th>
-							<th>날짜</th>
-						</tr>
-						<c:choose>
-							<c:when test="${not empty elecUse}">
-								<c:forEach var="item" items="${elecUse}">
-									<tr>
-										<td>${item.usageType}</td>
-										<td>${item.unitCharge}</td>
-										<td>${item.elec_usage} kWh</td>
-										<td><fmt:formatDate pattern="yyyy-MM-dd" value="${ item.elec_time }"/></td>
-									</tr>
-								</c:forEach>
-							</c:when>
-							<c:otherwise>
-								<tr>
-									<td colspan="4">${ elecUsageDetailMsg }</td>
-								</tr>
-							</c:otherwise>
-						</c:choose>
-					</table>
-				</div>
-			</div>
+			<table border="1">
+				<tr><th colspan="2">고객님의 최근 (12개월) 월별 사용량 추이</th><th>가스사용량 비교</th></tr>
+				<tr><td>당월 사용량</td><td>{사용량값}M^3</td><td>지역: {}</td></tr>
+				<tr><td colspan="2"><canvas id="recentUsageChart"></canvas></td><td><canvas id="localUsageComparison"></canvas></td></tr>
+			</table>
 		</div>
+		<!-- 고객님의 최근 (12개월) 월별 사용량 추이 & 가스사용량 비교 End   ----------------- -->
+	
 	</div>
 		
 	<!-- 여긴 높이 보정용 푸터 입니다. -->
 	<footer></footer>
+
+
+<script>
+  // Java에서 전달된 데이터를 JS 배열로 변환
+  const recentUsage = [
+    <c:forEach var="usage" items="${recentUsage}">
+      { date: '${usage.usage_dt}', amount: ${usage.usage_amount} },
+    </c:forEach>
+  ];
+
+  // 날짜와 값만 추출
+  const labels = recentUsage.map(item => item.date);
+  const data = recentUsage.map(item => item.amount);
+
+  // 차트 생성
+  const ctx = document.getElementById('recentUsageChart').getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '최근 12개월 가스 사용량',
+        data: data,
+        fill: false,
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        tension: 0.2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top'
+        },
+        title: {
+          display: true,
+          text: '최근 12개월 월별 가스 사용량'
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: '사용량 (단위: ?)'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: '사용월'
+          }
+        }
+      }
+    }
+  });
+</script>
 </body>
 </html>

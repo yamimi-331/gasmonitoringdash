@@ -27,7 +27,7 @@
 		<div class="header">
 			<h2>📊 Dashboard</h2>
 			<c:choose>
-				<c:when test="${not empty currentUserInfo}">
+				<c:when test="${not empty currentUserId}">
 					<button class="header-button" onclick="location.href='/myUsage'">myUsage</button>
 					<button class="header-button" onclick="logout()">logout</button>
 				</c:when>
@@ -35,7 +35,7 @@
 					<button class="header-button" onclick="location.href='/login'">Login</button>
 				</c:otherwise>
 			</c:choose>
-			<c:if test="${ currentUserInfo.admin_yn.toString() eq 'Y' }">
+			<c:if test="${IsAdmin != null and IsAdmin.toString() == 'Y'}">
 				<button class="header-button" onclick="location.href='/admin'">admin</button>
 			</c:if>
 		</div>
