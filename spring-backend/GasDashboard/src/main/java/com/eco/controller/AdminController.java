@@ -71,7 +71,7 @@ public class AdminController {
 		String date = year + "-" + month;
 	    usage.setUsage_dt(date);
 	    
-	    UserVO user = userService.getUserByCd(usage.getUser_cd());
+	    UserVO user = userService.findByUserCd(usage.getUser_cd());
 	    if (user == null || user.getLocal_cd() == null) {
 	        return Map.of("success", false, "message", "사용자의 지역코드를 찾을 수 없습니다.");
 	    }
