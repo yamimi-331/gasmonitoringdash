@@ -139,3 +139,7 @@ main.board-page {
 /*
 내비게이션 스타일
 */
+.header-title{
+	margin: 0;
+	text-align: center;
+}
