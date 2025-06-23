@@ -3,28 +3,6 @@
 .controls {
 	justify-content: flex-end;
 }
-/* dashboard.css */
-nav {
-	width: 250px;
-	border: 2px solid black;
-	box-sizing: border-box;
-}
-
-main {
-	flex: 1 1 auto;
-	display: flex;
-	justify-content: center;
-	align-items: flex-start;
-	border: 2px solid black;
-	box-sizing: border-box;
-	overflow: hidden;
-}
-
-.container {
-  display: flex;         /* nav와 main을 가로 배치 */
-  height: 100vh;         /* 화면 높이 꽉 채우기 (선택사항) */
-  box-sizing: border-box;
-}
 /* 내부 스크롤 감싸기 */
 .dashboard-scroll-wrapper {
   overflow-x: auto;

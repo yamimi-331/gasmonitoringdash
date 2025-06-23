@@ -21,7 +21,7 @@
 	<!-- nav와 main을 가로로 나란히 배치하기위한 컨테이너 -->
 	<div class="container">
 		<!-- 좌측 네비게이션 start ============================= -->
-		<nav>
+		<nav class="board-page">
 			<c:choose>
 				<c:when test="${not empty currentUserInfo}">
 					<button class="header-button" onclick="location.href='/myUsage'">myUsage</button>
@@ -48,7 +48,7 @@
 		</nav> <!-- 좌측 네비게이션 end ============================= -->
 
 		<!-- main start ============================= -->
-		<main>
+		<main class="board-page">
 			<!-- 대시보드 스크롤용 감싸는 div start =============================== -->
 			<div class="dashboard-scroll-wrapper">
 				<!-- 대시보드를 담은 컨테이너 start -------------------------------------- -->
