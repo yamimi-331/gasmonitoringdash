@@ -12,7 +12,7 @@
 </head>
 <body>
 	<header></header>
-	<main>
+	<main class="user-page">
 		<div class="form-container">
 			<div class="form-title">
 				<h2 class="text-center">로그인</h2>
