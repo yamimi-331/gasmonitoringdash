@@ -34,10 +34,7 @@ public class LoginController {
 		UserVO rtnUser = service.login(user);
 		if (rtnUser != null) {
 			// 로그인 성공 처리
-			session.setAttribute("currentUserId", rtnUser.getUser_id());
-			session.setAttribute("currentUserNm", rtnUser.getUser_nm());
-			session.setAttribute("currentUserType", rtnUser.getUser_type());
-			session.setAttribute("Local", rtnUser.getLocal_cd());
+			session.setAttribute("currentUserInfo", rtnUser);
 			return "redirect: /";
 		} else {
 			// 로그인 실패 처리
