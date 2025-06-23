@@ -17,7 +17,6 @@
   display: flex;
   justify-content: center;  /* 가로 가운데 정렬 */
   align-items: center;      /* 세로 가운데 정렬 */
-  border: 2px solid black;
   box-sizing: border-box;
   padding: 20px;
 }
@@ -38,6 +37,7 @@ table td{
 }
 table td[colspan="2"]{
 	text-align: center;
+	font-size: 0.9em;
 }
 </style>
 <script>
@@ -52,25 +52,25 @@ table td[colspan="2"]{
 </head>
 <body>
 	<header>
-		<h2 class="header-title">마이 페이지</h2>
+		<h2 class="header-title">마이페이지</h2>
 	</header>
 	<div class="container">
 		<!-- 좌측 네비게이션 Start ------------------------- -->
-		<nav class="board-page">
-			<div class="head-box">
+		<nav class="sidebar-nav">
+			<div class="nav-header">
 				<!-- 버튼 내비게이션 -->
-				<div>
-					<!-- 사용자 소개 -->
-					<div>
-						<span>${currentUserInfo.user_nm} 님, 환영합니다.</span> 
-					</div>
-					<!-- 로그아웃 및 기능 버튼 -->
-					<div>
-						<button onclick="logout()">로그아웃</button>
-						<button onclick="location.href='/'">메인페이지</button>
-						<button onclick="location.href='/profileEdit'">회원정보수정</button>
-					</div>
+				<!-- 사용자 소개 -->
+				<div class="nav-user-info">
+					<span class="user-welcome-text">${currentUserInfo.user_nm} 님, 환영합니다.</span> 
 				</div>
+				<!-- 로그아웃 및 기능 버튼 -->
+				<div class="nav-logout">
+					<button class="btn btn-logout" onclick="logout()">로그아웃</button>
+				</div>
+			</div>
+			<div class="nav-menu">
+				<a class="nav-link" href="/">메인페이지</a>
+				<a class="nav-link" href="/profileEdit">회원정보수정</a>
 			</div>
 		</nav>
 		<!-- 좌측 네비게이션 end   ------------------------- -->
@@ -93,25 +93,25 @@ table td[colspan="2"]{
 						<td>지역: ${localUsage.localNm}</td>
 					</tr>
 					<tr>
-						<td><canvas id="recentUsageChart" width="700" height="350"></canvas></td>
-						<td><canvas id="localUsageComparison" width="700" height="350"></canvas></td>
+						<td><canvas id="recentUsageChart" width="740" height="370"></canvas></td>
+						<td><canvas id="localUsageComparison" width="740" height="370"></canvas></td>
 					</tr>
 					<tr>
 						<td colspan="2">
 							<c:choose>
 						        <%-- 사용량이 평균보다 낮은 경우 --%>
 						        <c:when test="${localUsage.currentMonthUsage lt localUsage.avgCurrentMonthPublicUsage}">
-						            <p>이번 달 사용량이 지역 평균보다 낮습니다.</p>
+						            <h2>이번 달 사용량이 지역 평균보다 낮습니다.</h2>
 						        </c:when>
 						
 						        <%-- 사용량이 평균보다 높은 경우 --%>
 						        <c:when test="${localUsage.currentMonthUsage gt localUsage.avgCurrentMonthPublicUsage}">
-						            <p>이번 달 사용량이 지역 평균보다 높습니다.</p>
+						            <h2>이번 달 사용량이 지역 평균보다 높습니다.</h2>
 						        </c:when>
 						
 						        <%-- 사용량이 평균과 같은 경우 --%>
 						        <c:otherwise>
-						            <p>이번 달 사용량이 지역 평균과 같습니다.</p>
+						            <h2>이번 달 사용량이 지역 평균과 같습니다.</h2>
 						        </c:otherwise>
 						    </c:choose>
 						</td>
