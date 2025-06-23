@@ -26,4 +26,7 @@ public interface AdminMapper {
 	
 	// 관리자 권한 요청 계정 조회
 	public List<UserVO> selectPreAccount();
+
+	// 사용자 권한 변경 위한 계정 조회
+	public List<UserVO> selectAccount(@Param("user_nm") String user_nm, @Param("user_type") String user_type);
 }

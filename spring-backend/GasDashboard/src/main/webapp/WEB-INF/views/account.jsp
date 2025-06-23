@@ -6,38 +6,135 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../resources/js/account.js"></script>
+<style>
+.modal-container {
+    width: 30%;
+    display: none; /* Controlled by JS */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border: 1px solid #82cd2b;
+    border-radius: 8px;
+    z-index: 1000;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+}
+.result-inner-container {
+	display: flex;
+	width: 100%;
+	overflow-y: auto;
+	flex-direction: column;
+	align-items: center;
+	min-height: 200px;
+	max-height: 500px;
+	border: 1px solid #82cd2b;
+	border-radius: 4px;
+	padding: 10px;
+	box-sizing: border-box;
+}
+</style>
 </head>
 <body>
-<table>
-	<colgroup>
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-	</colgroup>
-	<tr>
-		<th>아이디</th>
-		<th>이름</th>
-		<th>현재 등급</th>
-		<th>승인 버튼</th>
-	</tr>
-	<c:choose>
-		<c:when test="${not empty manageUser}">
-			<c:forEach var="item" items="${manageUser}">
+	<table>
+		<colgroup>
+			<col width="25%">
+			<col width="25%">
+			<col width="25%">
+			<col width="25%">
+		</colgroup>
+		<tr>
+			<th>아이디</th>
+			<th>이름</th>
+			<th>현재 등급</th>
+			<th>승인 버튼</th>
+		</tr>
+		<c:choose>
+			<c:when test="${not empty manageUser}">
+				<c:forEach var="item" items="${manageUser}">
+					<tr>
+						<td>${item.user_id}</td>
+						<td>${item.user_nm}</td>
+						<td>${item.user_type}</td>
+						<td><button>승인</button></td>
+					</tr>
+				</c:forEach>
+			</c:when>
+			<c:otherwise>
 				<tr>
-					<td>${item.user_id}</td>
-					<td>${item.user_nm}</td>
-					<td>${item.user_type}</td>
-					<td><button>승인</button></td>
+					<td colspan="4">${ accountManageMsg }</td>
 				</tr>
-			</c:forEach>
-		</c:when>
-		<c:otherwise>
-			<tr>
-				<td colspan="4">${ accountManageMsg }</td>
-			</tr>
-		</c:otherwise>
-	</c:choose>
-</table>
+			</c:otherwise>
+		</c:choose>
+	</table>
+
+	<!-- 사용자 검색 영역 start------------------------------ -->
+	<div class="inner-container">
+		<div class="search-container">
+			<h2>사용자 검색</h2>
+			<div class="search-inner-container">
+				<div class="search-area">
+					<select id="modal_year" name="modal_year">
+						<option value="">-- 등급 선택 --</option>
+						<option value="common">일반 회원</option>
+						<option value="manager">매니저</option>
+						<option value="admin">관리자</option>
+					</select>
+					<input type="text" id="searchKeyword" placeholder="아이디 입력" autocomplete="off" />
+					<button class="green-btn" onclick="searchUser()">검색</button>
+				</div>
+				<button class="green-btn-admin" onclick="showUsageModal('add')">등록</button>
+				<button class="green-btn-admin" onclick="showUsageModal('edit')">수정</button>
+				<button class="green-btn-admin" onclick="deleteUsage()">삭제</button>
+				<table id="userTable">
+					<thead>
+						<tr>
+							<th style="width: 25%;">선택</th>
+							<th style="width: 25%;">아이디</th>
+							<th style="width: 25%;">이름</th>
+							<th style="width: 25%;">현재 등급</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="4">해당 계정 권한의 사용자가 없습니다.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- 사용자 검색 영역 end------------------------------ -->
+
+		<!-- 등록 수정 모달 폼 전체 영역 -->
+		<div id="usageModal" class="modal-container">
+			<h3 id="modalTitle">사용자 권한 관리</h3>
+			<input type="hidden" id="modal_user_id">
+			<div class="modal-field">
+				<select id="modal_year" name="modal_year">
+					<option value="">-- 연도 선택 --</option>
+					<option value="common">일반 회원</option>
+					<option value="manager">매니저</option>
+					<option value="admin">관리자</option>
+				</select>
+			</div>
+			<div class="modal-buttons">
+				<button class="green-btn-2" onclick="saveUsageData()">저장</button>
+				<button class="green-btn-2" onclick="hideUsageModal()">취소</button>
+			</div>
+		</div>
+
+		<div id="modalOverlay" class="modal-overlay"></div>
+
+		<!-- 데이터 저장 alert메세지 -->
+		<c:if test="${not empty msg}">
+			<script>
+	        	alert('${msg}');
+	    	</script>
+		</c:if>
 </body>
 </html>

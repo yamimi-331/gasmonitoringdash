@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eco.mapper.AdminMapper">
 	<!-- SELECT -->
-	<!-- 사용자 이름으로 사용자 조회 -->
+	<!-- 사용자 주소로 사용자 조회 -->
 	<select id="selectUsers" resultType="com.eco.domain.AdminDTO">
 		<![CDATA[
 		SELECT * FROM t_user u join t_local l ON u.local_cd = l.local_cd 
@@ -23,6 +23,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectPreAccount" resultType="com.eco.domain.UserVO">
 		<![CDATA[
 		SELECT * FROM t_user WHERE user_type IN ('preManager','preAdmin')
+		]]>
+	</select>
+	<!-- 관리자 권한 변경 위한 계정 조회 -->
+	<select id="selectAccount" resultType="com.eco.domain.UserVO">
+		<![CDATA[
+		SELECT * FROM t_user WHERE user_nm = #{user_nm} AND user_type = #{user_type}
 		]]>
 	</select>
 

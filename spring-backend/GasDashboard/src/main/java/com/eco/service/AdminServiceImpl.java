@@ -75,4 +75,9 @@ public class AdminServiceImpl implements AdminService{
 		}
 	}
 
+	@Override
+	public List<UserVO> searchAccount(String user_nm, String user_type) {
+		return mapper.selectAccount(user_nm, user_type);
+	}
+
 }

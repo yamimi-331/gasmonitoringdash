@@ -24,4 +24,7 @@ public interface AdminService {
 	
 	// 관리자 권한 요청 계정 조회
 	public List<UserVO> searchPreAccount();
+	
+	// 사용자 권한 변경 위한 계정 조회
+	public List<UserVO> searchAccount(String user_nm, String user_type);
 }

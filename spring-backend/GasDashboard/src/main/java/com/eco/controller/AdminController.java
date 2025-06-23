@@ -55,7 +55,7 @@ public class AdminController {
 	@GetMapping("/search-users")
 	@ResponseBody
 	public List<AdminDTO> searchUser(@RequestParam("keyword") String keyword) {
-		// 사용자 이름 기반으로 검색하여 결과를 List로 반환
+		// 사용자 주소 기반으로 검색하여 결과를 List로 반환
 		List<AdminDTO> result = adminService.searchUsers(keyword);
 		return result;
 	}
