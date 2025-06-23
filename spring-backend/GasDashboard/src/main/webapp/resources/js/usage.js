@@ -58,7 +58,7 @@ new Chart(comparisonCtx, {
     datasets: [{
       label: '사용량 (단위: m³)',
       data: [
-        localUsageData.avgCurrentMonthUsage,
+        localUsageData.avgCurrentMonthPublicUsage,
         localUsageData.currentMonthUsage,
         localUsageData.lastYearSameMonthUsage,
         localUsageData.yearlyAvgUsage
@@ -97,7 +97,7 @@ new Chart(comparisonCtx, {
       y: {
         beginAtZero: true,
         suggestedMax: Math.max(
-          localUsageData.avgCurrentMonthUsage,
+          localUsageData.avgCurrentMonthPublicUsage,
           localUsageData.currentMonthUsage,
           localUsageData.lastYearSameMonthUsage,
           localUsageData.yearlyAvgUsage

@@ -8,7 +8,7 @@ public class LocalComparisonDTO {
     private String localNm;
 
     // 지역 당월 사용량 평균(PublicVO)
-    private float avgCurrentMonthUsage; 
+    private float avgCurrentMonthPublicUsage; 
 
     // 당월 사용량 (UsageVO)
     private float currentMonthUsage;

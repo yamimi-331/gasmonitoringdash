@@ -59,12 +59,12 @@
 		<div class="inner-container">
 		    <c:choose>
 		        <%-- 사용량이 평균보다 낮은 경우 --%>
-		        <c:when test="${localUsage.currentMonthUsage lt localUsage.avgCurrentMonthUsage}">
+		        <c:when test="${localUsage.currentMonthUsage lt localUsage.avgCurrentMonthPublicUsage}">
 		            <p>이번 달 사용량이 지역 평균보다 낮습니다.</p>
 		        </c:when>
 		
 		        <%-- 사용량이 평균보다 높은 경우 --%>
-		        <c:when test="${localUsage.currentMonthUsage gt localUsage.avgCurrentMonthUsage}">
+		        <c:when test="${localUsage.currentMonthUsage gt localUsage.avgCurrentMonthPublicUsage}">
 		            <p>이번 달 사용량이 지역 평균보다 높습니다.</p>
 		        </c:when>
 		
@@ -94,7 +94,7 @@
 	    </c:forEach>
 	  ];
 	const localUsageData = {
-  		avgCurrentMonthUsage: ${localUsage.avgCurrentMonthUsage},
+		avgCurrentMonthPublicUsage: ${localUsage.avgCurrentMonthPublicUsage},
   		currentMonthUsage: ${localUsage.currentMonthUsage},
  	 	lastYearSameMonthUsage: ${localUsage.lastYearSameMonthUsage},
   		yearlyAvgUsage: ${localUsage.yearlyAvgUsage}
