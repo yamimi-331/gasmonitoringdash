@@ -40,6 +40,46 @@
 	padding: 10px;
 	box-sizing: border-box;
 }
+
+.inner-container {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	flex-direction: column;
+	padding: 10px;
+}
+.search-container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 8px;
+	padding: 10px;
+	box-sizing: border-box;
+	background-color: #fefefe;
+	border: none;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+}
+
+.result-container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 8px;
+	padding: 10px;
+	margin-top: 20px;
+	box-sizing: border-box;
+	background-color: #fefefe;
+	border: none;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+}
+
+
 </style>
 </head>
 <body>
@@ -75,6 +115,11 @@
 
 		<!-- main start ============================= -->
 		<main class="board-page">
+			<div class="inner-container">
+			<!-- 사용자 검색 영역 start------------------------------ -->
+			<div class="search-container">
+			<h2 class="no-margin">권한 승인 대기 목록</h2>
+			<div class="black-line"></div>
 			<table>
 				<colgroup>
 					<col width="25%">
@@ -128,11 +173,11 @@
 					</c:otherwise>
 				</c:choose>
 			</table>
-
+			</div>
 			<!-- 사용자 검색 영역 start------------------------------ -->
-			<div class="inner-container">
-				<div class="search-container">
-					<h2>사용자 검색</h2>
+				<div class="result-container">
+					<h2 class="no-margin">사용자 검색</h2>
+					<div class="black-line"></div>
 					<div class="search-inner-container">
 						<div class="search-area">
 							<select id="div_year" name="div_year">
