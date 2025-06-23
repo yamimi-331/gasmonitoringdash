@@ -21,7 +21,7 @@
 				<div class="form-group">
 					<label for="user_id">아이디</label>
 					<div class="id-group">
-						<input class="input-id" type="text" name="user_id" id="user_id"autocomplete="off">
+						<input class="input-id" type="text" name="user_id" id="user_id" autocomplete="off">
 						<input class="input-id-button" type="button" onclick="checkDuplicateId()" value="중복확인">
 					</div>
 				</div>
@@ -53,13 +53,13 @@
 				</div>
 				<label>회원 유형</label>
 				<div class="radio-group">
-					<div><input type="radio" name="user_type" value="common" id="common" checked><label for="common">일반 회원</label></div>
-					<div><input type="radio" name="user_type" value="preManager" id="preManager"><label for="preManager">매니저</label></div>
-					<div><input type="radio" name="user_type" value="preAdmin" id="preAdmin"><label for="preAdmin">관리자</label></div>
+					<div><input type="radio" name="user_type" value="common" id="common" checked><label for="common">일반</label></div>
+					<div><input type="radio" name="user_type" value="preManager" id="preManager"><label for="preManager">매니저(승인요청)</label></div>
+					<div><input type="radio" name="user_type" value="preAdmin" id="preAdmin"><label for="preAdmin">관리자(승인요청)</label></div>
 				</div>
 				<div class="button-group">
 					<input class="submit-area" type="submit" value="가입하기">
-					<a href="/">메인페이지</a>
+					<a class="go-main" href="/">메인페이지</a>
 				</div>
 			</form>
 		</div>

@@ -27,14 +27,14 @@
 				<!-- 비밀번호 입력 그룹 --> 
 				<div class="form-group">
 					<label for="userPw">비밀번호</label>
-					<input class="input-area" type="password" name="user_pw" id="user_pw" autocomplete="new-password">
+					<input class="input-area" type="password" name="user_pw" id="user_pw" autocomplete="off">
 				</div>
 	            
 	            <!-- 로그인 회원가입 버튼 그룹 -->
 				<div class="button-group">
 					<input class="submit-area" type="submit" value="로그인"/>
 					<input class="submit-area" type="button" onclick="location.href='/signup'" value="회원가입"/>
-					<a href="/">메인페이지</a>
+					<a class="go-main" href="/">메인페이지</a>
 				</div>
 			</form>
 		</div>

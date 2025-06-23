@@ -31,10 +31,11 @@
 }
 
 .input-id{
-	width: 240px;
+	width: 230px;
 	height: 35px;
 	border-radius: 8px;
 	border: 1px solid #aaa;
+	padding-left: 10px;
 }
 
 .input-id-button{
@@ -80,9 +81,19 @@
 	border: none;
 	margin: 5px 0;
 }
-
 .submit-area:hover{
 	background-color: #ddd;
+	cursor: pointer;
+}
+
+.go-main{
+	text-decoration: none;
+	color: black;
+	font-size: 15px;
+}
+.go-main:hover{
+	text-decoration: underline;
+	cursor: pointer;
 }
 
 .text-center{

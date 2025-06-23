@@ -109,7 +109,7 @@
 			<!-- 회원 탈퇴 폼 -->
 			<form class="button-group" id="profiledeleteForm" method="post" action="/profileEdit/delete">
 				<button onclick="confirmDelete()" class="btn submit-area">회원 탈퇴</button>
-				<a href="/myUsage">돌아가기</a>
+				<a class="go-main" href="/myUsage">돌아가기</a>
 			</form>
 		</div>
 	</main>
