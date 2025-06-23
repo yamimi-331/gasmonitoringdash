@@ -6,7 +6,7 @@
 }
 
 .form-title{
-	width: 300px;
+	width: 340px;
 	text-align: center;
 	border-bottom: 2px solid black;
 	margin-bottom: 10px;
@@ -31,21 +31,21 @@
 }
 
 .input-id{
-	width: 200px;
+	width: 240px;
 	height: 35px;
 	border-radius: 8px;
 	border: 1px solid #aaa;
 }
 
 .input-id-button{
-	width: 95px;
+	width: 90px;
 	height: 39px;
 	border-radius: 8px;
 	border: none;
 }
 
 .input-area{
-	width: 300px;
+	width: 330px;
 	height: 35px;
 	border-radius: 8px;
 	border: 1px solid #aaa;
@@ -57,6 +57,7 @@
 	border-radius: 8px;
 	border: 1px solid #aaa;
 	padding-left: 8px;
+	box-sizing: border-box;
 }
 
 .radio-group{

@@ -51,6 +51,7 @@
 					<label for="user_addr">상세주소</label> 
 					<input class="input-area" type="text" name="user_addr" id="user_addr" autocomplete="off">
 				</div>
+				<label>회원 유형</label>
 				<div class="radio-group">
 					<div><input type="radio" name="user_type" value="common" id="common" checked><label for="common">일반 회원</label></div>
 					<div><input type="radio" name="user_type" value="preManager" id="preManager"><label for="preManager">매니저</label></div>
