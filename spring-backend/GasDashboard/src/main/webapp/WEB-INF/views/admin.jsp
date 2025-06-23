@@ -68,7 +68,6 @@
 	gap: 8px;
 	padding: 10px;
 	box-sizing: border-box;
-	background-color: #fefefe;
 	border: none;
 	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 	border-radius: 4px;
@@ -164,7 +163,6 @@
 	padding: 10px;
 	margin-top: 10px;
 	box-sizing: border-box;
-	background-color: #fefefe;
 	border: none;
 	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 	border-radius: 4px;
@@ -226,7 +224,7 @@ margin:0;
 			<div class="inner-container">
 				<div class="search-container">
 					<h2 class="no-margin">주소 검색</h2>
-					<div class="black-line"></div>
+					<div class="white-line"></div>
 					<div class="search-inner-container">
 						<div class="search-area">
 							<input type="text" id="searchKeyword" placeholder="주소 입력"
@@ -255,7 +253,7 @@ margin:0;
 				<!-- 사용자별 에너지 사용량 관리 영역 start ------------------------ -->
 				<div id="usageSection" class="result-container">
 					<h2 class="no-margin">가스 사용내역</h2>
-					<div class="black-line"></div>
+					<div class="white-line"></div>
 					<div class="search-area">
 						<button class="green-btn-admin" onclick="showUsageModal('add')">등록</button>
 						<button class="green-btn-admin" onclick="showUsageModal('edit')">수정</button>

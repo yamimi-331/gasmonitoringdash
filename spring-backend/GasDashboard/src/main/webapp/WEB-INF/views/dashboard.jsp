@@ -21,30 +21,26 @@
 	<!-- nav와 main을 가로로 나란히 배치하기위한 컨테이너 -->
 	<div class="container">
 		<!-- 좌측 네비게이션 start ============================= -->
-		<nav class="board-page">
+		<nav class="sidebar-nav">
 			<c:choose>
 				<c:when test="${not empty currentUserInfo}">
 					<button class="header-button" onclick="location.href='/myUsage'">myUsage</button>
-					<button class="header-button" onclick="logout()">logout</button>
+					<button class="btn btn-logout" onclick="logout()">logout</button>
 				</c:when>
 				<c:otherwise>
-					<button class="header-button" onclick="location.href='/login'">Login</button>
+					<button class="btn btn-logout" onclick="location.href='/login'">Login</button>
 				</c:otherwise>
 			</c:choose>
+				<!-- 메뉴 영역 -->
+			  <div class="nav-menu">
+			    <a class="nav-link" href="/">메인페이지</a>
+			  </div>
 			<c:if
 				test="${currentUserInfo.user_type != null and (currentUserInfo.user_type == 'admin' or currentUserInfo.user_type == 'manager')}">
-				<button class="header-button" onclick="location.href='/admin'">admin</button>
+				<div class="nav-menu">
+				 <a class="nav-link" href="/admin">관리자 페이지</a>
+				</div>
 			</c:if>
-
-			<ul>
-				<li>메인 페이지</li>
-				<li>다른페이지</li>
-				<li>12131</li>
-				<li>다른페이지</li>
-				<li>12131</li>
-				<li>다른페이지</li>
-				<li>12131</li>
-			</ul>
 		</nav>
 		<!-- 좌측 네비게이션 end ============================= -->
 
@@ -57,18 +53,19 @@
 					<!-- 연도별 가스 공급량 차트 영역 Start ---------------------------------- -->
 					<div class="dashboard">
 						<div id="yearForm" class="year-form">
-							<h2 class="year-title">전국 가스 공급량</h2>
-							<div class="black-line"></div>
-							<label for="year">연도 선택:</label> <select id="year" name="year"
-								required>
-								<option value="2020">2020</option>
-								<option value="2021">2021</option>
-								<option value="2022">2022</option>
-								<option value="2023">2023</option>
-								<option value="2024">2024</option>
-								<option value="2025" selected>2025</option>
-							</select>
-						
+							<h2 class="header-title">전국 가스 공급량</h2>
+							<div class="white-line"></div>
+							<div class="controls">
+								<label for="year">연도 선택:</label> <select id="year" name="year"
+									required>
+									<option value="2020">2020</option>
+									<option value="2021">2021</option>
+									<option value="2022">2022</option>
+									<option value="2023">2023</option>
+									<option value="2024">2024</option>
+									<option value="2025" selected>2025</option>
+								</select>
+							</div>
 						</div>
 						<!-- 상단 차트 공간 -->
 						<div class="charts-top">
@@ -84,6 +81,8 @@
 					<!-- 연도별 가스 공급량 차트 영역 End ---------------------------------- -->
 					<!-- 가스 공급량 및 수요예측 차트 Start ------------------------------------------------ -->
 					<div class="dashboard">
+						<h2 class="header-title">가스 공급량 및 수요예측 차트</h2>
+						<div class="white-line"></div>
 						<!-- 선택영역 -->
 						<div class="controls">
 							<div id="cityForm">
@@ -132,6 +131,8 @@
 					<!-- 가스 공급량 및 수요예측 차트 End ------------------------------------------------ -->
 					<!-- 지역/년도별 인구수 및 가스 공급량 차트 start ----------------------------------------------- -->
 					<div class="dashboard">
+						<h2 class="header-title">지역/년도별 인구수 및 가스 공급량 차트</h2>
+						<div class="white-line"></div>
 						<div class="controls">
 							<label for="city_detail">지역 선택:</label> <select id="city_detail"
 								name="city" required>
@@ -166,8 +167,9 @@
 							</div>
 						</div>
 
+							<h2 class="header-title">동계 한파일수 vs 가스사용량</h2>
+							<div class="white-line"></div>
 						<div class="controls">
-							<h2>동계 한파일수 vs 가스사용량</h2>
 							<select id="cold_year" name="cold_year" required>
 								<option value="2020">2020</option>
 								<option value="2021">2021</option>

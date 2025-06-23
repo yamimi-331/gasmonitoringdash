@@ -74,7 +74,12 @@ main.board-page {
 	background-color: black;
 }
 
-
+.white-line{
+	width: 100%;
+	min-height: 3px;
+	align-self: center;
+	background-color: white;	
+}
 /*
 내비게이션 스타일
 */
