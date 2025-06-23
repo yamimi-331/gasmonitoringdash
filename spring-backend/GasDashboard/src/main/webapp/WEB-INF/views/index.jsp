@@ -38,13 +38,21 @@
 	<div class="circle_container">
         <a href="javascript:void(0);" onclick="goToMyUsagePage()"><div class="inner_circle">내 정보 보기</div></a>
         <a href="/dashboard"><div class="inner_circle2">대시보드<br>바로가기</div></a>
-        <a href="/admin"><div class="inner_circle">관리자<br>로그인</div></a>
+        <a href="javascript:void(0);" onclick="goToAdminPage()"><div class="inner_circle">관리자<br>로그인</div></a>
     </div>
     <script>
 		const isLoggedIn = ${not empty currentUserNm};
 		function goToMyUsagePage() {
 			if (isLoggedIn) {
 				location.href = '/myUsage';
+			} else {
+				alert('로그인이 필요합니다.');
+				location.href = '/login';
+			}
+		}
+		function goToAdminPage() {
+			if (isLoggedIn) {
+				location.href = '/admin';
 			} else {
 				alert('로그인이 필요합니다.');
 				location.href = '/login';

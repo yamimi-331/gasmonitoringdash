@@ -157,6 +157,11 @@ document.addEventListener("DOMContentLoaded", function () {
 				<label for="user_addr">상세주소</label> 
 				<input type="text" name="user_addr" id="user_addr" autocomplete="off">
 			</div>
+			<div>
+				<input type="radio" name="user_type" value="common" id="common" checked><label for="common">일반 회원</label>
+				<input type="radio" name="user_type" value="preManager" id="preManager"><label for="preManager">매니저</label>
+				<input type="radio" name="user_type" value="preAdmin" id="preAdmin"><label for="preAdmin">관리자</label>
+			</div>
 			<input type="submit" value="가입하기">
 			<input type="button" onclick="location.href='/'" value="메인페이지"/>
 		</form>

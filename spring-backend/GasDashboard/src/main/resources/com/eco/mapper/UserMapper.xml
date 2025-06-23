@@ -44,8 +44,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 회원가입 -->
 	<insert id="userInsert">
 		<![CDATA[
-		    INSERT INTO t_user(user_cd, user_id, user_pw, user_nm, local_cd, user_addr)
-		    VALUES(#{user_cd}, #{user_id}, #{user_pw}, #{user_nm}, #{local_cd}, #{user_addr})
+		    INSERT INTO t_user(user_cd, user_id, user_pw, user_nm, local_cd, user_addr, user_type)
+		    VALUES(#{user_cd}, #{user_id}, #{user_pw}, #{user_nm}, #{local_cd}, #{user_addr}, #{user_type})
 	    ]]>
 	</insert>
 
