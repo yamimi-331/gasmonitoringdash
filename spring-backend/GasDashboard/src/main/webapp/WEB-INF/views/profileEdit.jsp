@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,55 +8,115 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<!-- 아이디 (중복 확인) -->
-	<div class="form-group">
-	    <label for="user_id">아이디</label>
-	    <div class="id-check-group">
-	        <input class="input-area" type="text" name="user_id" id="user_id" value="${userVO.user_id}" autocomplete="off">
-	        <button type="button" onclick="checkDuplicateId()">중복확인</button>
-	    </div>
-	</div>
-	
-	<!-- 비밀번호 -->
-	<div class="form-group">
-	    <label for="user_pw">새 비밀번호</label>
-	    <input class="input-area" type="password" name="user_pw" id="user_pw" autocomplete="new-password">
-	</div>
-	<div class="form-group">
-	    <label for="user_pw_check">비밀번호 확인</label>
-	    <input class="input-area" type="password" id="user_pw_check" autocomplete="new-password">
-	</div>
-	
-	<!-- 이름 -->
-	<div class="form-group">
-	    <label for="user_nm">이름</label>
-	    <input class="input-area" type="text" name="user_nm" id="user_nm" value="${userVO.user_nm}">
-	</div>
-	
-	<!-- 지역 코드 (select) -->
-	<div class="form-group">
-	    <label for="local_cd">지역</label>
-	    <select class="input-area" name="local_cd" id="local_cd">
-	        <c:forEach var="region" items="${regionList}">
-	            <option value="${region.cd}" <c:if test="${region.cd == userVO.local_cd}">selected</c:if>>${region.name}</option>
-	        </c:forEach>
-	    </select>
-	</div>
-	
-	<!-- 주소 -->
-	<div class="form-group">
-	    <label for="user_addr">주소</label>
-	    <input class="input-area" type="text" name="user_addr" id="user_addr" value="${userVO.user_addr}">
-	</div>
-	
-	<!-- 사용자 유형 -->
-	<div class="form-group">
-	    <label for="user_type">회원 유형</label>
-	    <select class="input-area" name="user_type" id="user_type">
-	        <option value="common" <c:if test="${userVO.user_type == 'common'}">selected</c:if>>일반 사용자</option>
-	        <option value="preManager" <c:if test="${userVO.user_type == 'preManager'}">selected</c:if>>직원</option>
-	        <option value="preAdmin" <c:if test="${userVO.user_type == 'preAdmin'}">selected</c:if>>관리자</option>
-	    </select>
+
+	<div class="container mt-5">
+		<h2 class="mb-4">회원정보 수정</h2>
+
+		<form method="post" action="/profileEdit">
+			<!-- action 경로는 컨트롤러에 맞게 조정 -->
+			<div class="mb-3">
+				<label for="userId" class="form-label">사용자 아이디</label> <input
+					type="text" class="form-control" id="userId" name="user_id"
+					value="${currentUserInfo.user_id}" readonly>
+			</div>
+
+			<div class="mb-3">
+				<label for="userPw" class="form-label">비밀번호</label> <input
+					type="password" class="form-control" id="userPw" name="user_pw"
+					value="${currentUserInfo.user_pw}">
+			</div>
+
+			<div class="mb-3">
+				<label for="pwCheck" class="form-label">비밀번호 확인</label> <input
+					type="password" class="form-control" id="pwCheck" name="pw_check">
+			</div>
+
+			<div class="mb-3">
+				<label for="userName" class="form-label">이름</label> <input
+					type="text" class="form-control" id="userName" name="user_nm"
+					value="${currentUserInfo.user_nm}">
+			</div>
+
+			<div class="mb-3">
+				<label for="localCd" class="form-label">지역</label> <select
+					class="form-select" id="localCd" name="local_cd">
+					<c:forEach var="loc" items="${localList}">
+						<option value="${loc.local_cd}"
+							<c:if test="${loc.local_cd == currentUserInfo.local_cd}">selected</c:if>>
+							${loc.local_nm}</option>
+					</c:forEach>
+				</select>
+			</div>
+
+			<div class="mb-3">
+				<label for="address" class="form-label">상세주소</label> <input
+					type="text" class="form-control" id="address" name="address"
+					value="${currentUserInfo.user_addr}">
+			</div>
+
+			<div class="mb-3">
+    <label class="form-label">회원 유형</label>
+
+    <c:if test="${currentUserInfo.user_type == 'common'}">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="user_type"
+                   id="typeCommon" value="common" checked>
+            <label class="form-check-label" for="typeCommon">일반</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="user_type"
+                   id="typePreAdmin" value="preAdmin">
+            <label class="form-check-label" for="typePreAdmin">관리자(승인요청)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="user_type"
+                   id="typePreManager" value="preManager">
+            <label class="form-check-label" for="typePreManager">직원(승인요청)</label>
+        </div>
+    </c:if>
+
+    <c:if test="${currentUserInfo.user_type == 'preAdmin'}">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="user_type"
+                   id="typeCommon" value="common">
+            <label class="form-check-label" for="typeCommon">일반</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="user_type"
+                   id="typePreAdmin" value="preAdmin" checked>
+            <label class="form-check-label" for="typePreAdmin">관리자(승인요청)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="user_type"
+                   id="typePreManager" value="preManager">
+            <label class="form-check-label" for="typePreManager">직원(승인요청)</label>
+        </div>
+    </c:if>
+
+    <c:if test="${currentUserInfo.user_type == 'preManager'}">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="user_type"
+                   id="typeCommon" value="common">
+            <label class="form-check-label" for="typeCommon">일반</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="user_type"
+                   id="typePreAdmin" value="preAdmin">
+            <label class="form-check-label" for="typePreAdmin">관리자(승인요청)</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="user_type"
+                   id="typePreManager" value="preManager" checked>
+            <label class="form-check-label" for="typePreManager">직원(승인요청)</label>
+        </div>
+    </c:if>
+</div>
+
+			<div class="d-flex justify-content-between">
+				<button type="submit" class="btn btn-primary">수정하기</button>
+				<a href="/myUsage" class="btn btn-secondary">돌아가기</a>
+			</div>
+		</form>
 	</div>
 
 </body>

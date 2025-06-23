@@ -83,5 +83,16 @@ public class UserServiceImpl  implements UserService{
 		
 	}
 
+	@Override
+	public int updateUserInfo(UserVO sessionUser) {
+		try {
+			int updatedRows = mapper.updateUserInfo(sessionUser);
+			
+			return updatedRows;
+		} catch(Exception e) {
+			throw new ServiceException("회원정보 수정 실패", e);
+		}
+	}
+
 
 }

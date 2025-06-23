@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.eco.domain.LocalComparisonDTO;
 import com.eco.domain.UsageVO;
+import com.eco.domain.UserVO;
 import com.eco.service.UsageService;
 
 import lombok.AllArgsConstructor;
@@ -28,17 +29,17 @@ public class MyUsageController {
 	@GetMapping("")
 	public String myUsagePage(HttpSession session, Model model) {
 		// 세션의 사용자 아이디로 정보 조회
-		String userId = (String) session.getAttribute("currentUserId");
-	    if (userId == null) {
+		UserVO user = (UserVO) session.getAttribute("currentUserInfo");
+	    if (user == null) {
 	        throw new IllegalStateException("로그인이 필요합니다.");
 	    }
 	    
 	    // 사용자의 최근 (12개월) 월별 사용량 추이 
-		List<UsageVO> recentUsage = service.getRecentUsage(userId);
+		List<UsageVO> recentUsage = service.getRecentUsage(user.getUser_id());
 		model.addAttribute("recentUsage", recentUsage);
 		
 		// 가스사용량 비교 
-		LocalComparisonDTO localUsage = service.getLocalComparison(userId);
+		LocalComparisonDTO localUsage = service.getLocalComparison(user.getUser_id());
 		model.addAttribute("localUsage", localUsage);
 		
 		return "myUsage";

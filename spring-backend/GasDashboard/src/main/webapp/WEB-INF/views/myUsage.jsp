@@ -32,7 +32,7 @@
 				<div class="header-container">
 					<!-- 사용자 소개 -->
 					<div class="header-inner-container">
-						<span>${currentUserNm} 님, 환영합니다.</span> 
+						<span>${currentUserInfo.user_nm} 님, 환영합니다.</span> 
 					</div>
 					<!-- 로그아웃 및 기능 버튼 -->
 					<div class="header-inner-container">

@@ -41,7 +41,7 @@
         <a href="javascript:void(0);" onclick="goToAdminPage()"><div class="inner_circle">관리자<br>로그인</div></a>
     </div>
     <script>
-		const isLoggedIn = ${not empty currentUserNm};
+		const isLoggedIn = ${not empty currentUserInfo.user_nm};
 		function goToMyUsagePage() {
 			if (isLoggedIn) {
 				location.href = '/myUsage';
