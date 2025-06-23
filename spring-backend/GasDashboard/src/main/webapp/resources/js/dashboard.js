@@ -633,4 +633,13 @@ async function loadWinterCorrelation(localName, year) {
     console.error("데이터 불러오기 실패:", error);
   }
 }
+
+// 로그아웃 함수
+function logout() {
+	let isLogout = confirm("정말 로그아웃 하시겠습니까?");
+	if (isLogout) {
+		// 확인 눌렀을 때 로그아웃 페이지로 이동
+		window.location.href = "/logout";
+	}
+}
 //#endregion

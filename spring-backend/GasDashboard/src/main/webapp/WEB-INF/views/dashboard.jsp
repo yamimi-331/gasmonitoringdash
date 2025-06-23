@@ -7,19 +7,10 @@
 <meta charset="UTF-8">
 <title>대시보드</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script type="text/javascript" src="../../resources/js/chart.js"></script>
+<script type="text/javascript" src="../../resources/js/dashboard.js"></script>
 <link href="../../resources/css/dashboard.css?after" rel="stylesheet"
 	type="text/css">
 </head>
-<script>
-	function logout() {
-		let isLogout = confirm("정말 로그아웃 하시겠습니까?");
-		if (isLogout) {
-			// 확인 눌렀을 때 로그아웃 페이지로 이동
-			window.location.href = "/logout";
-		}
-	}
-</script>
 <body>
 	<!-- 전체 대시보드 컨테이너 -->
 	<div class="dashboard">
