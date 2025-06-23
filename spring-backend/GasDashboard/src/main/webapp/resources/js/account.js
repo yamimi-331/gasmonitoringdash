@@ -1,3 +1,10 @@
+function approveConfirm(){
+    return confirm('정말 승인하시겠습니까?');
+}
+function rejectConfirm(){
+    return confirm('정말 거절하시겠습니까?');
+}
+
 
 let selectedUserAddr = null;
 let selectedUserCd = null;

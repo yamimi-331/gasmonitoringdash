@@ -68,13 +68,15 @@
 							</c:when>
 						</c:choose>
 						<td>
-						<form method="post" action="/account/approve" style="display:inline;">
+						<form method="post" action="/account/approve" style="display:inline;"
+							onsubmit="return approveConfirm();">
 					        <input type="hidden" name="user_cd" value="${item.user_cd}">
 					        <input type="hidden" name="user_id" value="${item.user_id}">
 					        <input type="hidden" name="user_type" value="${item.user_type}">
 					        <button type="submit">승인</button>
 					    </form>
-					    <form method="post" action="/account/reject" style="display:inline;">
+					    <form method="post" action="/account/reject" style="display:inline;"
+					    	onsubmit="return rejectConfirm();">
 					        <input type="hidden" name="user_cd" value="${item.user_cd}">
 							<input type="hidden" name="user_id" value="${item.user_id}">
 					        <button type="submit">거절</button>

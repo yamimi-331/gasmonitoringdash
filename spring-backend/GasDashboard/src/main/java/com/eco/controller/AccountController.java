@@ -52,6 +52,7 @@ public class AccountController {
 		}
 	}
 	
+	// 사용자 등급 변경 승인
 	@PostMapping("/approve")
 	public String approveUser(UserVO user, RedirectAttributes redirectAttributes) {
 		String newType="";
@@ -66,7 +67,25 @@ public class AccountController {
 		user.setUser_type(newType);
 	    adminService.changeUserType(user);
 	    
-	    redirectAttributes.addFlashAttribute("msg", "승인이 완료되었습니다.");
+	    String newTypeStr = "";
+	    if(newType == "mannager") {
+	    	newTypeStr = "매니저";
+	    } else {
+	    	newTypeStr = "관리자";
+	    }
+	    
+	    redirectAttributes.addFlashAttribute("msg", newTypeStr + "로 등급이 변경 되었습니다.");
+	    return "redirect:/account";
+	}
+	
+	// 사용자 등급 변경 거절
+	@PostMapping("/reject")
+	public String rejectUser(UserVO user, RedirectAttributes redirectAttributes) {
+		String common = "common";
+		user.setUser_type(common);
+	    adminService.changeUserType(user);
+	    
+	    redirectAttributes.addFlashAttribute("msg", "일반 회원으로 등급이 변경 되었습니다.");
 	    return "redirect:/account";
 	}
 	
