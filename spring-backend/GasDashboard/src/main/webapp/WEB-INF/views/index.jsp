@@ -53,7 +53,7 @@
 	<header>
 		<c:set var="userType" value="${ currentUserInfo }"/>	
 		<div class="text-center">
-			<h3 class="text-center">메인 페이지</h3>
+			<h3 class="text-center">가스 공급량 및 수요 예측 모니터링 대시보드</h3>
 		</div>
 		<c:if test="${ userType !=null }">
 			<div class="text-center">

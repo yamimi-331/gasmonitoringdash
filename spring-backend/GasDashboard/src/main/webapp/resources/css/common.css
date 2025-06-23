@@ -10,13 +10,8 @@ body{
 	min-width: 1200px;
 	min-height: 100vh; 
 }
-main{
-	flex: 1 1 auto;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-header, footer {
+
+header {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
@@ -25,4 +20,33 @@ header, footer {
     color: white;
     padding: 15px 30px;
     font-weight: bold;
+	border: 2px solid black;
+	box-sizing: border-box;
+}
+
+nav{
+	border: 2px solid black;
+	box-sizing: border-box;
+}
+
+main{
+	flex: 1 1 auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 2px solid black;
+	box-sizing: border-box;
+}
+
+footer {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-item: center;
+    background-color: #2C3E50; /* 또는 #1B263B / 2C3E50*/
+    color: white;
+    padding: 15px 30px;
+    font-weight: bold;
+	border: 2px solid black;
+	box-sizing: border-box;
 }
