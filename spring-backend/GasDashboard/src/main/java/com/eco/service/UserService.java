@@ -19,5 +19,5 @@ public interface UserService {
 	// 지역코드 조회
 	public List<LocalVO> getLocalList();
 	// 회원정보 수정함수
-	public int updateUserInfo(UserVO sessionUser);
+	public void updateUserInfo(UserVO sessionUser);
 }

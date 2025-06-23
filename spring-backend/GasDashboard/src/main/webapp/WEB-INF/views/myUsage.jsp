@@ -79,7 +79,11 @@
 		
 	<!-- 여긴 높이 보정용 푸터 입니다. -->
 	<footer></footer>
-
+	<c:if test="${not empty msg}">
+   	 	<script>
+        	alert('${msg}');
+    	</script>
+	</c:if>
 <script>
 	const recentUsageData = [
 	    <c:forEach var="usage" items="${recentUsage}" varStatus="status">

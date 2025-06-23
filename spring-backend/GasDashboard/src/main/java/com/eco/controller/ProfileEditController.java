@@ -45,7 +45,7 @@ public class ProfileEditController {
 	}
 	
 	// 회원정보 수정 
-	@PostMapping("/profileEdit")
+	@PostMapping("")
 	public String updateProfile(@ModelAttribute UserVO userVo,
 	                            HttpSession session,
 	                            RedirectAttributes redirectAttributes) {
@@ -56,7 +56,6 @@ public class ProfileEditController {
 	    if (sessionUser == null) {
 	        return "redirect:/login"; // 로그인 안된 경우
 	    }
-
 	    // 기존 정보에 새로 입력된 값 반영
 	    sessionUser.setUser_pw(userVo.getUser_pw());
 	    sessionUser.setUser_nm(userVo.getUser_nm());

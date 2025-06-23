@@ -49,8 +49,8 @@
 			</div>
 
 			<div class="mb-3">
-				<label for="address" class="form-label">상세주소</label> <input
-					type="text" class="form-control" id="address" name="address"
+				<label for="user_addr" class="form-label">상세주소</label> <input
+					type="text" class="form-control" id="user_addr" name="user_addr"
 					value="${currentUserInfo.user_addr}">
 			</div>
 

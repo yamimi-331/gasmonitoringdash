@@ -49,6 +49,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    ]]>
 	</insert>
 
-
+	<!-- UPDATE -->
+	<!-- 회원정보 수정 -->
+	<update id="updateUserInfo" parameterType="com.eco.domain.UserVO">
+		<![CDATA[
+		    UPDATE t_user
+	        SET
+	            user_pw = #{user_pw},
+	            user_nm = #{user_nm},
+	            local_cd = #{local_cd},
+	            user_addr = #{user_addr},
+	            user_type = #{user_type}
+	        WHERE user_cd = #{user_cd} AND user_id = #{user_id}
+		]]>	
+	</update>	
 
 </mapper>
