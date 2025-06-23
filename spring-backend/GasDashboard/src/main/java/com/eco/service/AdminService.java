@@ -27,4 +27,7 @@ public interface AdminService {
 	
 	// 사용자 권한 변경 위한 계정 조회
 	public List<UserVO> searchAccount(String user_nm, String user_type);
+	
+	// 사용자 등급 변경
+	public boolean changeUserType(UserVO user);
 }

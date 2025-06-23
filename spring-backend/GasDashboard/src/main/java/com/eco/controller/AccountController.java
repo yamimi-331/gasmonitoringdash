@@ -7,12 +7,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.eco.domain.AdminDTO;
 import com.eco.domain.UserVO;
 import com.eco.service.AdminService;
 
@@ -40,10 +40,6 @@ public class AccountController {
 			
 			//관리자 권한 요청 계정 조회
 			List<UserVO> manageUser = adminService.searchPreAccount();
-			for(UserVO type : manageUser) {
-				String typeName = mapUserTypeToName(type.getUser_type());
-				type.setUser_type(typeName);
-			}
 			model.addAttribute("manageUser", manageUser);
 			if (manageUser.isEmpty()) {
 				model.addAttribute("accountManageMsg", "권한 요청한 사용자가 없습니다.");
@@ -56,15 +52,22 @@ public class AccountController {
 		}
 	}
 	
-	// 사용자 권한 요청 상태 한글로
-	private String mapUserTypeToName(String code) {
-		switch(code) {
-			case "admin": return "관리자";
-	        case "manager": return "매니저";
-	        case "preManager": return "매니저(승인 요청)";
-	        case "preAdmin": return "관리자(승인 요청)";
-	        case "common": return "일반 사용자";
-		} return "알 수 없음";
+	@PostMapping("/approve")
+	public String approveUser(UserVO user, RedirectAttributes redirectAttributes) {
+		String newType="";
+		switch (user.getUser_type()) {
+        case "preManager": newType = "manager"; break;
+        case "preAdmin": newType = "admin"; break;
+        default:
+            redirectAttributes.addFlashAttribute("msg", "승인할 수 없는 사용자입니다.");
+            return "redirect:/account";
+	    }
+		
+		user.setUser_type(newType);
+	    adminService.changeUserType(user);
+	    
+	    redirectAttributes.addFlashAttribute("msg", "승인이 완료되었습니다.");
+	    return "redirect:/account";
 	}
 	
 	// 사용자 검색

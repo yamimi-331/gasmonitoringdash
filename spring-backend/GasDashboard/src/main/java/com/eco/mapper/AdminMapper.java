@@ -29,4 +29,7 @@ public interface AdminMapper {
 
 	// 사용자 권한 변경 위한 계정 조회
 	public List<UserVO> selectAccount(@Param("user_nm") String user_nm, @Param("user_type") String user_type);
+	
+	// 사용자 권한 변경
+	public int updateUserType(UserVO user);
 }

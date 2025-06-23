@@ -74,10 +74,25 @@ public class AdminServiceImpl implements AdminService{
 			throw new ServiceException("관리자 권한 요청 계정 조회 실패", e);
 		}
 	}
-
+	
+	// 사용자 등급 변경 위한 계정 조회
 	@Override
 	public List<UserVO> searchAccount(String user_nm, String user_type) {
-		return mapper.selectAccount(user_nm, user_type);
+		try{
+			return mapper.selectPreAccount();
+		} catch (Exception e) {
+			throw new ServiceException("관리자 권한 요청 계정 조회 실패", e);
+		}
 	}
 
+	// 사용자 등급 변경
+	@Override
+	public boolean changeUserType(UserVO user) {
+		try{
+			int rows = mapper.updateUserType(user);
+			return rows > 0;
+		} catch (Exception e) {
+			throw new ServiceException("관리자 권한 요청 계정 조회 실패", e);
+		}
+	}
 }

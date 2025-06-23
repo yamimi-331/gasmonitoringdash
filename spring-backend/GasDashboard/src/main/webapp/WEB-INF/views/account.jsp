@@ -59,8 +59,27 @@
 					<tr>
 						<td>${item.user_id}</td>
 						<td>${item.user_nm}</td>
-						<td>${item.user_type}</td>
-						<td><button>승인</button></td>
+						<c:choose>
+							<c:when test="${ item.user_type == 'preManager' }">
+								<td>매니저(승인 요청)</td>
+							</c:when>
+							<c:when test="${ item.user_type == 'preAdmin' }">
+								<td>관리자(승인 요청)</td>
+							</c:when>
+						</c:choose>
+						<td>
+						<form method="post" action="/account/approve" style="display:inline;">
+					        <input type="hidden" name="user_cd" value="${item.user_cd}">
+					        <input type="hidden" name="user_id" value="${item.user_id}">
+					        <input type="hidden" name="user_type" value="${item.user_type}">
+					        <button type="submit">승인</button>
+					    </form>
+					    <form method="post" action="/account/reject" style="display:inline;">
+					        <input type="hidden" name="user_cd" value="${item.user_cd}">
+							<input type="hidden" name="user_id" value="${item.user_id}">
+					        <button type="submit">거절</button>
+					    </form>
+						</td>
 					</tr>
 				</c:forEach>
 			</c:when>
