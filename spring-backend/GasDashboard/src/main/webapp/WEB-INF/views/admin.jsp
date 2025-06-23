@@ -189,7 +189,7 @@ margin:0;
 </head>
 <body>
 	<header>
-		<h2 class="text-center">관리자 페이지</h2>
+		<h2 class="header-title">관리자 페이지</h2>
 	</header>
 	<!-- nav와 main을 가로로 나란히 배치하기위한 컨테이너 -->
 	<div class="container">
@@ -218,7 +218,6 @@ margin:0;
 		    </c:if>
 		  </div>
 		</nav>
-
 		<!-- 좌측 네비게이션 end ============================= -->
 
 		<!-- main start ============================= -->

@@ -80,7 +80,7 @@ main.board-page {
 */
 .sidebar-nav {
   width: 10%;
-  height: 100vh;
+  height: 100%;
   background-color: #f8f9fa;
   border-right: 1px solid #ddd;
   display: flex;
