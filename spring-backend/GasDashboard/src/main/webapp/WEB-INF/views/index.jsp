@@ -6,26 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="../../resources/css/common.css" rel="stylesheet"/>
 </head>
 <style>
-	html, body{
-		height: 100%;
-		margin: 0;
-	}
-	
-	body{
-		display: flex;
-		flex-direction: column;
-		min-width: 1200px;
-		min-height: 100vh; 
-	}
-	main{
-		flex: 1 1 auto;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
     .circle-container{
         display: flex;
         justify-content: center;
@@ -61,16 +44,7 @@
 	    text-align: center;
 	    flex-direction: column;
 	}
-	header, footer {
-		display: flex;
-		justify-content: center;
-		flex-direction: column;
-		align-item: center;
-	    background-color: #2C3E50; /* 또는 #1B263B / 2C3E50*/
-	    color: white;
-	    padding: 15px 30px;
-	    font-weight: bold;
-	}
+	
 	.text-center{
 	text-align: center;
 	}
@@ -97,7 +71,7 @@
 	    </div>
 	</main>
     
-	<footer>하단 푸터</footer>
+	<footer></footer>
     
     <script>
 		const isLoggedIn = ${not empty currentUserInfo.user_nm};

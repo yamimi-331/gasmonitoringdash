@@ -1,0 +1,28 @@
+@charset "UTF-8";
+html, body{
+	height: 100%;
+	margin: 0;
+}
+
+body{
+	display: flex;
+	flex-direction: column;
+	min-width: 1200px;
+	min-height: 100vh; 
+}
+main{
+	flex: 1 1 auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+header, footer {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-item: center;
+    background-color: #2C3E50; /* 또는 #1B263B / 2C3E50*/
+    color: white;
+    padding: 15px 30px;
+    font-weight: bold;
+}
