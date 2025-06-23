@@ -73,5 +73,24 @@ public class ProfileEditController {
 	    redirectAttributes.addFlashAttribute("msg", "회원정보가 수정되었습니다.");
 	    return "redirect:/myUsage";
 	}
+	
+	@PostMapping("/delete")
+	public String deleteMember(HttpSession session, RedirectAttributes redirectAttributes) {
+	    UserVO currentUser = (UserVO) session.getAttribute("currentUserInfo");
+	    if (currentUser == null) {
+	        return "redirect:/login";
+	    }
+
+	    try {
+	    	userService.deactivateUser(currentUser.getUser_cd());
+	        session.invalidate(); // 로그아웃 처리
+	        redirectAttributes.addFlashAttribute("msg", "회원 탈퇴가 정상 처리되었습니다.");
+	    } catch (Exception e) {
+	        redirectAttributes.addFlashAttribute("errorMsg", "회원 탈퇴 처리 중 오류가 발생했습니다.");
+	        return "redirect:/profileEdit";
+	    }
+
+	    return "redirect:/";
+	}
 
 }

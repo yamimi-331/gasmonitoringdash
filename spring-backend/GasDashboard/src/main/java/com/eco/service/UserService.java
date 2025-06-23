@@ -20,4 +20,6 @@ public interface UserService {
 	public List<LocalVO> getLocalList();
 	// 회원정보 수정함수
 	public void updateUserInfo(UserVO sessionUser);
+	// 회원 탈퇴
+	public void deactivateUser(String user_cd);
 }

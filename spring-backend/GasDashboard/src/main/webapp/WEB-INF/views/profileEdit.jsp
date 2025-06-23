@@ -6,14 +6,68 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function () {
+    const pwField = document.getElementById("userPw");
+    const pwCheckField = document.getElementById("pwCheck");
+    const pwCheckMsg = document.getElementById("pwCheckMsg");
+    const form = document.getElementById("profileEditForm");
+
+    // 비밀번호 입력 감지
+    pwField.addEventListener("input", checkPasswordMatch);
+    pwCheckField.addEventListener("input", checkPasswordMatch);
+
+    // 비밀번호 일치 확인
+    function checkPasswordMatch() {
+        const pw = pwField.value;
+        const pwCheck = pwCheckField.value;
+
+        if (pw && pwCheck && pw !== pwCheck) {
+            pwCheckField.classList.add("is-invalid");
+            pwCheckField.classList.remove("is-valid");
+            pwCheckMsg.textContent = "비밀번호가 일치하지 않습니다.";
+            pwCheckMsg.style.color = "red";
+            return false;
+        } else if (pw && pwCheck && pw === pwCheck) {
+            pwCheckField.classList.remove("is-invalid");
+            pwCheckField.classList.add("is-valid");
+            pwCheckMsg.textContent = "비밀번호가 일치합니다.";
+            pwCheckMsg.style.color = "green";
+            return true;
+        } else {
+            pwCheckField.classList.remove("is-valid", "is-invalid");
+            pwCheckMsg.textContent = "";
+            return false;
+        }
+    }
+
+    // 폼 제출 시 비밀번호 확인
+    form.addEventListener("submit", function (e) {
+        if (!checkPasswordMatch()) {
+            alert("비밀번호가 일치하지 않습니다.");
+            e.preventDefault();
+        }
+    });
+
+    // 탈퇴 최종 확인 함수
+    window.confirmDelete = function () {
+        if (confirm("정말로 회원을 탈퇴하시겠습니까?\n계정복구는 당사로 문의해주시기 바랍니다.")) {
+            document.getElementById('profiledeleteForm').submit();
+            return true;
+        } else {
+            return false;
+        }
+    };
+});
+
+</script>
 </head>
 <body>
 
 	<div class="container mt-5">
 		<h2 class="mb-4">회원정보 수정</h2>
-
-		<form method="post" action="/profileEdit">
-			<!-- action 경로는 컨트롤러에 맞게 조정 -->
+		<!-- 회원정보 수정 폼 -->
+		<form method="post" id="profileEditForm" action="/profileEdit">
 			<div class="mb-3">
 				<label for="userId" class="form-label">사용자 아이디</label> <input
 					type="text" class="form-control" id="userId" name="user_id"
@@ -29,6 +83,7 @@
 			<div class="mb-3">
 				<label for="pwCheck" class="form-label">비밀번호 확인</label> <input
 					type="password" class="form-control" id="pwCheck" name="pw_check">
+				 <small id="pwCheckMsg" class="form-text"></small>
 			</div>
 
 			<div class="mb-3">
@@ -55,68 +110,73 @@
 			</div>
 
 			<div class="mb-3">
-    <label class="form-label">회원 유형</label>
-
-    <c:if test="${currentUserInfo.user_type == 'common'}">
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="user_type"
-                   id="typeCommon" value="common" checked>
-            <label class="form-check-label" for="typeCommon">일반</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="user_type"
-                   id="typePreAdmin" value="preAdmin">
-            <label class="form-check-label" for="typePreAdmin">관리자(승인요청)</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="user_type"
-                   id="typePreManager" value="preManager">
-            <label class="form-check-label" for="typePreManager">직원(승인요청)</label>
-        </div>
-    </c:if>
-
-    <c:if test="${currentUserInfo.user_type == 'preAdmin'}">
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="user_type"
-                   id="typeCommon" value="common">
-            <label class="form-check-label" for="typeCommon">일반</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="user_type"
-                   id="typePreAdmin" value="preAdmin" checked>
-            <label class="form-check-label" for="typePreAdmin">관리자(승인요청)</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="user_type"
-                   id="typePreManager" value="preManager">
-            <label class="form-check-label" for="typePreManager">직원(승인요청)</label>
-        </div>
-    </c:if>
-
-    <c:if test="${currentUserInfo.user_type == 'preManager'}">
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="user_type"
-                   id="typeCommon" value="common">
-            <label class="form-check-label" for="typeCommon">일반</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="user_type"
-                   id="typePreAdmin" value="preAdmin">
-            <label class="form-check-label" for="typePreAdmin">관리자(승인요청)</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="user_type"
-                   id="typePreManager" value="preManager" checked>
-            <label class="form-check-label" for="typePreManager">직원(승인요청)</label>
-        </div>
-    </c:if>
-</div>
-
+		    <label class="form-label">회원 유형</label>
+		
+		    <c:if test="${currentUserInfo.user_type == 'common'}">
+		        <div class="form-check">
+		            <input class="form-check-input" type="radio" name="user_type"
+		                   id="typeCommon" value="common" checked>
+		            <label class="form-check-label" for="typeCommon">일반</label>
+		        </div>
+		        <div class="form-check">
+		            <input class="form-check-input" type="radio" name="user_type"
+		                   id="typePreAdmin" value="preAdmin">
+		            <label class="form-check-label" for="typePreAdmin">관리자(승인요청)</label>
+		        </div>
+		        <div class="form-check">
+		            <input class="form-check-input" type="radio" name="user_type"
+		                   id="typePreManager" value="preManager">
+		            <label class="form-check-label" for="typePreManager">직원(승인요청)</label>
+		        </div>
+		    </c:if>
+		
+		    <c:if test="${currentUserInfo.user_type == 'preAdmin'}">
+		        <div class="form-check">
+		            <input class="form-check-input" type="radio" name="user_type"
+		                   id="typeCommon" value="common">
+		            <label class="form-check-label" for="typeCommon">일반</label>
+		        </div>
+		        <div class="form-check">
+		            <input class="form-check-input" type="radio" name="user_type"
+		                   id="typePreAdmin" value="preAdmin" checked>
+		            <label class="form-check-label" for="typePreAdmin">관리자(승인요청)</label>
+		        </div>
+		        <div class="form-check">
+		            <input class="form-check-input" type="radio" name="user_type"
+		                   id="typePreManager" value="preManager">
+		            <label class="form-check-label" for="typePreManager">직원(승인요청)</label>
+		        </div>
+		    </c:if>
+		
+		    <c:if test="${currentUserInfo.user_type == 'preManager'}">
+		        <div class="form-check">
+		            <input class="form-check-input" type="radio" name="user_type"
+		                   id="typeCommon" value="common">
+		            <label class="form-check-label" for="typeCommon">일반</label>
+		        </div>
+		        <div class="form-check">
+		            <input class="form-check-input" type="radio" name="user_type"
+		                   id="typePreAdmin" value="preAdmin">
+		            <label class="form-check-label" for="typePreAdmin">관리자(승인요청)</label>
+		        </div>
+		        <div class="form-check">
+		            <input class="form-check-input" type="radio" name="user_type"
+		                   id="typePreManager" value="preManager" checked>
+		            <label class="form-check-label" for="typePreManager">직원(승인요청)</label>
+		        </div>
+		    </c:if>
+		</div>
 			<div class="d-flex justify-content-between">
 				<button type="submit" class="btn btn-primary">수정하기</button>
 				<a href="/myUsage" class="btn btn-secondary">돌아가기</a>
 			</div>
 		</form>
+		
+		<!-- 회원 탈퇴 폼 -->
+		<form id="profiledeleteForm" method="post" action="/profileEdit/delete">
+			<button onclick="confirmDelete()" class="btn btn-primary">회원 탈퇴</button>
+		</form>
+		
 	</div>
 
 </body>

@@ -63,5 +63,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        WHERE user_cd = #{user_cd} AND user_id = #{user_id}
 		]]>	
 	</update>	
-
+	
+	<!-- 회원 탈퇴 -->
+	<update id="deactivateUser" parameterType="string">
+	    <![CDATA[
+	    UPDATE t_user
+	    SET use_yn = 'N'
+	    WHERE user_cd = #{user_cd}
+	    ]]>	
+	</update>
 </mapper>

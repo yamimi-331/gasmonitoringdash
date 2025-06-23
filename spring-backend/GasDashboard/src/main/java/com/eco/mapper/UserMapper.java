@@ -23,4 +23,6 @@ public interface UserMapper {
 	public List<LocalVO> selectLocalList();
 	// 회원정보 수정
 	public int updateUserInfo(UserVO sessionUser);
+	// 회원 탈퇴
+	public int deactivateUser(@Param("user_cd") String user_cd);
 }

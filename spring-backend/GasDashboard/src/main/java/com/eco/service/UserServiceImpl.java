@@ -95,4 +95,16 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
+	public void deactivateUser(String user_cd) {
+		try {
+			int updatedRows = mapper.deactivateUser(user_cd);
+			if (updatedRows == 0) {
+				throw new ServiceException("해당 사용자를 찾을 수 없습니다.");
+			}
+		} catch (Exception e) {
+			throw new ServiceException("회원 탈퇴 처리 실패", e);
+		}
+	}
+
 }
