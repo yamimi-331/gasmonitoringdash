@@ -9,8 +9,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="../resources/js/admin.js"></script>
 <script>
-	const isLoggedIn = ${not empty sessionScope.currentUserInfo};
-
 	function logout() {
 		let isLogout = confirm("정말 로그아웃 하시겠습니까?");
 		if (isLogout) {
@@ -18,7 +16,6 @@
 			window.location.href = "/logout";
 		}
 	}
-
 </script>
 <style>
 .modal-container {
@@ -78,7 +75,7 @@
 			<c:set var="userType" value="${ currentUserInfo.user_type }"/>
 			<div class="main-container">
 				<c:if test="${ userType=='admin' }">
-					<a class="page-tab-a" href="/">▶ 사용자 계정 관리</a>
+					<a class="page-tab-a" href="/account">▶ 사용자 계정 관리</a>
 				</c:if>
 			</div>
 		</div>

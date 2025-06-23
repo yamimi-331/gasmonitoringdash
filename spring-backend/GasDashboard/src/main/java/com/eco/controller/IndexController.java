@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.eco.domain.UserVO;
+
 import lombok.extern.log4j.Log4j;
 
 @Controller
@@ -15,8 +17,8 @@ import lombok.extern.log4j.Log4j;
 public class IndexController {
 	@GetMapping("")
 	public String indexPage(Model model, HttpSession session) {
-	    String userNm = (String) session.getAttribute("currentUserNm");
-	    model.addAttribute("userNm", userNm);
+		UserVO user = (UserVO) session.getAttribute("currentUserInfo");
+	    model.addAttribute("currentUserInfo", user);
 		return "index";
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eco.domain.AdminDTO;
 import com.eco.domain.UsageVO;
@@ -34,14 +35,20 @@ public class AdminController {
 	
 	// 관리자 페이지 이동
 	@GetMapping("")
-	public String adminPage(Model model, HttpSession session) {
-		UserVO currentUserInfo = (UserVO) session.getAttribute("currentUserInfo");
-		if (currentUserInfo != null) {
-			model.addAttribute("currentUserInfo", currentUserInfo);
-		} else {
+	public String adminPage(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+		UserVO user = (UserVO) session.getAttribute("currentUserInfo");
+		if (user == null) {
 			return "redirect:/login";
+		}	
+		
+		String userType = user.getUser_type();
+		if ("admin".equals(userType) || "manager".equals(userType)) {
+			model.addAttribute("currentUserInfo", user);
+			return "admin";
+		} else {
+			redirectAttributes.addFlashAttribute("msg", "관리자 계정만 접근 가능합니다.");
+			return "redirect:/";
 		}
-		return "admin";
 	}
 	
 	// 사용자 검색
