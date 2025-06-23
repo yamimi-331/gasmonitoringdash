@@ -1,8 +1,18 @@
 @charset "UTF-8";
+main.user-page{
+	flex: 1 1 auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #252526;
+	box-sizing: border-box;
+}
+
 .form-container{
 	border-radius: 8px;
 	padding: 20px;
-	box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.3);
+	border: 1px solid white;
+	box-shadow: -6px -6px 10px 0px rgba(255, 255, 255, 0.3);
 }
 
 .form-title{
