@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.eco.domain.AdminDTO;
 import com.eco.domain.UsageVO;
+import com.eco.domain.UserVO;
 
 public interface AdminService {
 	// 사용자 조회
@@ -20,4 +21,7 @@ public interface AdminService {
 	
 	// 사용량 삭제
 	public boolean removeUsage(int usage_cd);
+	
+	// 관리자 권한 요청 계정 조회
+	public List<UserVO> searchPreAccount();
 }

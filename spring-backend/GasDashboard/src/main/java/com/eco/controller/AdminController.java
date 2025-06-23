@@ -35,11 +35,12 @@ public class AdminController {
 	// 관리자 페이지 이동
 	@GetMapping("")
 	public String adminPage(Model model, HttpSession session) {
-		String userId = (String) session.getAttribute("currentUserId");
-	    String userNm = (String) session.getAttribute("currentUserNm");
-
-	    model.addAttribute("userId", userId);
-	    model.addAttribute("userNm", userNm);
+		UserVO currentUserInfo = (UserVO) session.getAttribute("currentUserInfo");
+		if (currentUserInfo != null) {
+			model.addAttribute("currentUserInfo", currentUserInfo);
+		} else {
+			return "redirect:/login";
+		}
 		return "admin";
 	}
 	

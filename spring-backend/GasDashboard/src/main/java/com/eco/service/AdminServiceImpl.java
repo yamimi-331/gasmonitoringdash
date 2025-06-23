@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.eco.domain.AdminDTO;
 import com.eco.domain.UsageVO;
+import com.eco.domain.UserVO;
 import com.eco.exception.ServiceException;
 import com.eco.mapper.AdminMapper;
 
@@ -61,6 +62,16 @@ public class AdminServiceImpl implements AdminService{
 			return rows > 0;
 		} catch (Exception e) {
 			throw new ServiceException("가스 사용량 삭제 실패", e);
+		}
+	}
+
+	// 관리자 권한 요청 계정 조회
+	@Override
+	public List<UserVO> searchPreAccount() {
+		try{
+			return mapper.selectPreAccount();
+		} catch (Exception e) {
+			throw new ServiceException("관리자 권한 요청 계정 조회 실패", e);
 		}
 	}
 

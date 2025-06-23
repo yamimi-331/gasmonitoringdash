@@ -63,7 +63,7 @@
 				<div class="header-container">
 					<!-- 위쪽 텍스트 -->
 					<div class="header-inner-container">
-						<span>${currentUserNm} 님, 환영합니다.</span>
+						<span>${currentUserInfo.user_nm} 님, 환영합니다.</span>
 					</div>
 					<!-- 아래쪽 버튼 -->
 					<div class="header-inner-container">
@@ -75,9 +75,11 @@
 				<!-- 페이지 이동 버튼 -->
 				<a class="page-tab-a" href="/">▶ 메인페이지</a>
 			</div>
+			<c:set var="userType" value="${ currentUserInfo.user_type }"/>
 			<div class="main-container">
-				<!-- 페이지 이동 버튼 -->
-				<a class="page-tab-a" href="/">▶ 사용자 계정 관리</a>
+				<c:if test="${ userType=='admin' }">
+					<a class="page-tab-a" href="/">▶ 사용자 계정 관리</a>
+				</c:if>
 			</div>
 		</div>
 

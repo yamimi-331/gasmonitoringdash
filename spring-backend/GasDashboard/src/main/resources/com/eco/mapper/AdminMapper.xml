@@ -13,10 +13,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 사용 내역 조회 -->
-	<select id="selectUsageByUser"
-		resultType="com.eco.domain.UsageVO">
+	<select id="selectUsageByUser" resultType="com.eco.domain.UsageVO">
 		<![CDATA[
 		select * from t_usage where user_cd = #{user_cd} and use_yn = 'Y' ORDER BY usage_cd DESC
+		]]>
+	</select>
+	
+	<!-- 관리자 권한 요청한 계정 조회 -->
+	<select id="selectPreAccount" resultType="com.eco.domain.UserVO">
+		<![CDATA[
+		SELECT * FROM t_user WHERE user_type IN ('preManager','preAdmin')
 		]]>
 	</select>
 
