@@ -45,7 +45,8 @@
 				<li>다른페이지</li>
 				<li>12131</li>
 			</ul>
-		</nav> <!-- 좌측 네비게이션 end ============================= -->
+		</nav>
+		<!-- 좌측 네비게이션 end ============================= -->
 
 		<!-- main start ============================= -->
 		<main class="board-page">
@@ -55,7 +56,9 @@
 				<div class="dashboard-container">
 					<!-- 연도별 가스 공급량 차트 영역 Start ---------------------------------- -->
 					<div class="dashboard">
-						<div id="yearForm">
+						<div id="yearForm" class="year-form">
+							<h2 class="year-title">전국 가스 공급량</h2>
+							<div class="black-line"></div>
 							<label for="year">연도 선택:</label> <select id="year" name="year"
 								required>
 								<option value="2020">2020</option>
@@ -65,6 +68,7 @@
 								<option value="2024">2024</option>
 								<option value="2025" selected>2025</option>
 							</select>
+						
 						</div>
 						<!-- 상단 차트 공간 -->
 						<div class="charts-top">
