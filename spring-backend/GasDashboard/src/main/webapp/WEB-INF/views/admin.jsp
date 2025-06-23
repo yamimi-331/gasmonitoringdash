@@ -44,7 +44,7 @@
 	align-items: center;
 	min-height: 200px;
 	max-height: 500px;
-	border: 1px solid #82cd2b;
+	border: none;
 	border-radius: 4px;
 	padding: 10px;
 	box-sizing: border-box;
@@ -69,7 +69,8 @@
 	padding: 10px;
 	box-sizing: border-box;
 	background-color: #fefefe;
-	border: 1px solid #82cd2b;
+	border: none;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 	border-radius: 4px;
 }
 
@@ -161,9 +162,11 @@
 	align-items: flex-start;
 	gap: 8px;
 	padding: 10px;
+	margin-top: 10px;
 	box-sizing: border-box;
 	background-color: #fefefe;
-	border: 1px solid #82cd2b;
+	border: none;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 	border-radius: 4px;
 }
 
@@ -178,6 +181,9 @@
 	padding: 10px;
 	box-sizing: border-box;
 }
+.no-margin{
+margin:0;
+}
 
 </style>
 </head>
@@ -188,31 +194,31 @@
 	<!-- nav와 main을 가로로 나란히 배치하기위한 컨테이너 -->
 	<div class="container">
 		<!-- 좌측 네비게이션 start ============================= -->
-		<nav class="board-page">
-			<div class="head-box">
-				<!-- 버튼 내비게이션 -->
-				<div class="header-container">
-					<!-- 위쪽 텍스트 -->
-					<div class="header-inner-container">
-						<span>${currentUserInfo.user_nm} 님, 환영합니다.</span>
-					</div>
-					<!-- 아래쪽 버튼 -->
-					<div class="header-inner-container">
-						<button class="green-btn-2" onclick="logout()">로그아웃</button>
-					</div>
-				</div>
-			</div>
-			<div class="main-container">
-				<!-- 페이지 이동 버튼 -->
-				<a class="page-tab-a" href="/">▶ 메인페이지</a>
-			</div>
-			<c:set var="userType" value="${ currentUserInfo.user_type }" />
-			<div class="main-container">
-				<c:if test="${ userType=='admin' }">
-					<a class="page-tab-a" href="/account">▶ 사용자 계정 관리</a>
-				</c:if>
-			</div>
+		<nav class="sidebar-nav">
+		  <!-- 상단 환영 메시지 영역 -->
+		  <div class="nav-header">
+		    <div class="nav-user-info">
+		      <span class="user-welcome-text">${currentUserInfo.user_nm} 님, 환영합니다.</span>
+		    </div>
+		    <div class="nav-logout">
+		      <button class="btn btn-logout" onclick="logout()">로그아웃</button>
+		    </div>
+		  </div>
+		
+		  <!-- 메뉴 영역 -->
+		  <div class="nav-menu">
+		    <a class="nav-link" href="/">메인페이지</a>
+		  </div>
+		
+		  <!-- 관리자 전용 메뉴 -->
+		  <c:set var="userType" value="${ currentUserInfo.user_type }" />
+		  <div class="nav-menu">
+		    <c:if test="${ userType=='admin' }">
+		      <a class="nav-link" href="/account">사용자 계정 관리</a>
+		    </c:if>
+		  </div>
 		</nav>
+
 		<!-- 좌측 네비게이션 end ============================= -->
 
 		<!-- main start ============================= -->
@@ -220,7 +226,7 @@
 			<!-- 사용자 검색 영역 start------------------------------ -->
 			<div class="inner-container">
 				<div class="search-container">
-					<h2>주소 검색</h2>
+					<h2 class="no-margin">주소 검색</h2>
 					<div class="black-line"></div>
 					<div class="search-inner-container">
 						<div class="search-area">
@@ -249,7 +255,7 @@
 
 				<!-- 사용자별 에너지 사용량 관리 영역 start ------------------------ -->
 				<div id="usageSection" class="result-container">
-					<h3 id="usageTitle">가스 사용내역</h3>
+					<h2 class="no-margin">가스 사용내역</h2>
 					<div class="black-line"></div>
 					<div class="search-area">
 						<button class="green-btn-admin" onclick="showUsageModal('add')">등록</button>
