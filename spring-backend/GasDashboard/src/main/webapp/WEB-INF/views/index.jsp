@@ -20,21 +20,21 @@
 		min-height: 100vh; 
 	}
 	main{
-		flex: 1;
+		flex: 1 1 auto;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
-	footer{
-	
-	}
+
     .circle-container{
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 20px;
-        margin-top: 50px;
     }
 	.inner-circle{
-        width: 100px; 
-        height: 100px; 
+        width: 160px; 
+        height: 160px; 
         background-color: rgb(66, 108, 148); 
         border-radius: 50%; 
         display: flex;
@@ -42,8 +42,8 @@
         justify-content: center;
     }
     .inner-circle-big{
-        width: 130px; 
-        height: 130px; 
+        width: 200px; 
+        height: 200px; 
         background-color: rgb(66, 108, 148); 
         border-radius: 50%; 
         display: flex;
@@ -66,7 +66,7 @@
 		justify-content: center;
 		flex-direction: column;
 		align-item: center;
-	    background-color: #2C3E50; /* 또는 #1B263B */
+	    background-color: #2C3E50; /* 또는 #1B263B / 2C3E50*/
 	    color: white;
 	    padding: 15px 30px;
 	    font-weight: bold;
@@ -82,9 +82,9 @@
 			<h3 class="text-center">메인 페이지</h3>
 		</div>
 		<c:if test="${ userType !=null }">
-			<div>
-				<p class="text-center">${ currentUserInfo.user_nm }님, 환영합니다.</p>
-				<button class="text-center" onclick="logout()">로그아웃</button>
+			<div class="text-center">
+				${ currentUserInfo.user_nm }님, 환영합니다.
+				<button onclick="logout()">로그아웃</button>
 			</div>
 		</c:if>
 	</header>
