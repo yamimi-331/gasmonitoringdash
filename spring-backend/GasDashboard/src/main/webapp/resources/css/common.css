@@ -163,3 +163,9 @@ tr, td{
 	cursor: pointer;
 	user-select: none; 
 }
+
+.table-style {
+  width: 800px;         /* 원하는 고정 너비(px)로 조절 가능 */
+  margin: 0 auto;       /* 좌우 여백 자동: 가운데 정렬 */
+  border-collapse: collapse; /* 테이블 선 겹치기 제거(옵션) */
+}
