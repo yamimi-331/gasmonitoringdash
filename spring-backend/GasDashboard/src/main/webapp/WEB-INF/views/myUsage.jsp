@@ -10,21 +10,19 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet" type="text/css">
+<link href="../../resources/css/dashboard.css?after" rel="stylesheet" type="text/css">
 <style>
 
 /* inner-container는 nav 옆 공간 모두 차지, flex 컨테이너로 세로 정렬 */
-.inner-container {
+/* .inner-container {
   display: flex;
-  justify-content: center;  /* 가로 가운데 정렬 */
-  align-items: center;      /* 세로 가운데 정렬 */
+  justify-content: center;  
+  align-items: center;      
   box-sizing: border-box;
   padding: 20px;
-}
+} */
 
-.header-title{
-	margin: 0;
-	text-align: center;
-}
+/* 
 table{
 	margin: 20px;
 }
@@ -38,7 +36,7 @@ table td{
 table td[colspan="2"]{
 	text-align: center;
 	font-size: 0.9em;
-}
+} */
 </style>
 <script>
 	function logout() {
@@ -64,12 +62,12 @@ table td[colspan="2"]{
 					<span class="user-welcome-text">${currentUserInfo.user_nm} 님, 환영합니다.</span> 
 				</div>
 				<!-- 로그아웃 및 기능 버튼 -->
-				<div class="nav-logout">
-					<button class="btn btn-logout" onclick="logout()">로그아웃</button>
-				</div>
+				<button class="nav-btn" onclick="logout()">로그아웃</button>
 			</div>
 			<div class="nav-menu">
 				<a class="nav-link" href="/">대시보드 페이지</a>
+			</div>
+			<div class="nav-menu">
 				<a class="nav-link" href="/profileEdit">회원정보수정</a>
 			</div>
 		</nav>
@@ -78,15 +76,60 @@ table td[colspan="2"]{
 		<!-- 고객님의 최근 (12개월) 월별 사용량 추이 & 가스사용량 비교 Start ----------------- -->
 		<main class="board-page">
 		<div class="inner-container">
-			<div class="table-box">
+			<div class="dashboard-container">
+			<!-- 🚩 Dashboard 1: 최근 12개월 사용량 추이 -->
+			<div class="dashboard">
+				<h2 class="main-title">고객님의 최근 (12개월) 월별 사용량 추이</h2>
+				<div class="black-line"></div>
+			
+				<p>당월 사용량 : ${localUsage.currentMonthUsage}m³</p>
+				<div class="charts-top">
+					<div class="charts-box">
+						<canvas id="recentUsageChart" width="740" height="370"></canvas>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 🚩 Dashboard 2: 지역 사용량 비교 -->
+			<div class="dashboard usage-comparison-dashboard">
+				<h2 class="main-title">가스사용량 비교</h2>
+				<div class="black-line"></div>
+			
+				<p>지역: ${localUsage.localNm}</p>
+				<div class="charts-top">
+					<div class="charts-box">
+						<canvas id="localUsageComparison" width="740" height="370"></canvas>
+					</div>
+				</div>
+			
+				<div class="usage-feedback">
+					<c:choose>
+						<c:when test="${localUsage.currentMonthUsage lt localUsage.avgCurrentMonthPublicUsage}">
+							<h2>이번 달 사용량이 지역 평균보다 낮습니다.</h2>
+						</c:when>
+			
+						<c:when test="${localUsage.currentMonthUsage gt localUsage.avgCurrentMonthPublicUsage}">
+							<h2>이번 달 사용량이 지역 평균보다 높습니다.</h2>
+						</c:when>
+			
+						<c:otherwise>
+							<h2>이번 달 사용량이 지역 평균과 같습니다.</h2>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+			</div>
+			
+			
+		<%-- 	<div class="table-box">
 				<table>
 					<colgroup>
 						<col width="50%">
 						<col width="50%">
 					</colgroup>
 					<tr>
-						<th>고객님의 최근 (12개월) 월별 사용량 추이</th>
-						<th>가스사용량 비교</th>
+						<th><h2 class="main-title">고객님의 최근 (12개월) 월별 사용량 추이</h2></th>
+						<th><h2 class="main-title">가스사용량 비교</h2></th>
 					</tr>
 					<tr>
 						<td>당월 사용량 : ${localUsage.currentMonthUsage}m³</td>
@@ -99,17 +142,17 @@ table td[colspan="2"]{
 					<tr>
 						<td colspan="2">
 							<c:choose>
-						        <%-- 사용량이 평균보다 낮은 경우 --%>
+						        사용량이 평균보다 낮은 경우
 						        <c:when test="${localUsage.currentMonthUsage lt localUsage.avgCurrentMonthPublicUsage}">
 						            <h2>이번 달 사용량이 지역 평균보다 낮습니다.</h2>
 						        </c:when>
 						
-						        <%-- 사용량이 평균보다 높은 경우 --%>
+						        사용량이 평균보다 높은 경우
 						        <c:when test="${localUsage.currentMonthUsage gt localUsage.avgCurrentMonthPublicUsage}">
 						            <h2>이번 달 사용량이 지역 평균보다 높습니다.</h2>
 						        </c:when>
 						
-						        <%-- 사용량이 평균과 같은 경우 --%>
+						        사용량이 평균과 같은 경우
 						        <c:otherwise>
 						            <h2>이번 달 사용량이 지역 평균과 같습니다.</h2>
 						        </c:otherwise>
@@ -117,30 +160,9 @@ table td[colspan="2"]{
 						</td>
 					</tr>
 				</table>
-			</div>
+			</div> --%>
 		</div>
 		<!-- 고객님의 최근 (12개월) 월별 사용량 추이 & 가스사용량 비교 End   ----------------- -->
-		
-		<!-- 내 사용량에 관한 코멘트 Start -----------------
-		<div class="inner-container">
-		    <c:choose>
-		        <%-- 사용량이 평균보다 낮은 경우 --%>
-		        <c:when test="${localUsage.currentMonthUsage lt localUsage.avgCurrentMonthPublicUsage}">
-		            <p>이번 달 사용량이 지역 평균보다 낮습니다.</p>
-		        </c:when>
-		
-		        <%-- 사용량이 평균보다 높은 경우 --%>
-		        <c:when test="${localUsage.currentMonthUsage gt localUsage.avgCurrentMonthPublicUsage}">
-		            <p>이번 달 사용량이 지역 평균보다 높습니다.</p>
-		        </c:when>
-		
-		        <%-- 사용량이 평균과 같은 경우 --%>
-		        <c:otherwise>
-		            <p>이번 달 사용량이 지역 평균과 같습니다.</p>
-		        </c:otherwise>
-		    </c:choose>
-		</div>
-		내 사용량에 관한 코멘트 End ----------------- -->
 	</main>
 	</div>
 		

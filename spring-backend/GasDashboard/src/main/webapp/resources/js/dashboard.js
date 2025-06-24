@@ -95,8 +95,8 @@ async function fetchPrediction() {
   }
 
   // 로딩중 텍스트 활성화
-  const loading = document.getElementById("loading");
-  loading.style.display = "inline";
+  //const loading = document.getElementById("loading");
+  //loading.style.display = "inline";
 
   try {
     // 차트용 데이터
@@ -209,6 +209,7 @@ async function fetchPrediction() {
       },
       options: {
         responsive: true,
+         maintainAspectRatio: false,
         plugins: {
           title: {
             display: true,
@@ -240,7 +241,7 @@ async function fetchPrediction() {
     alert("예측 데이터를 가져오는 중 에러 발생: " + error);
   } finally {
     // 로딩중 메세지 비활성화
-    loading.style.display = "none";
+    //loading.style.display = "none";
   }
 }
 
@@ -248,8 +249,8 @@ async function fetchPrediction() {
 //topLocalSupplyChart = "상위 5개 지역 가스 공급량 점유율 차트"
 //yearLocalGasChart = "연도별 전국 가스 공급량 차트"
 async function yearLocalChartDraw(year) {
-	const loading = document.getElementById("loading");
-	loading.style.display = "inline";
+	//const loading = document.getElementById("loading");
+	//loading.style.display = "inline";
 	
 	try {
 		const response = await fetch('http://localhost:8000/api/gas/yearsupply?year=' + year);
@@ -265,7 +266,7 @@ async function yearLocalChartDraw(year) {
 	} catch(error) {
 		alert("데이터 가져오기 오류: " + error);
 	} finally {
-		loading.style.display = "none";
+		//loading.style.display = "none";
 	}
 }
 
@@ -378,8 +379,8 @@ function yearLocalGasChart(canvasId, yearData, year) {
 // populationSupplyChart = "지역/년도별 인구수 및 가스 공급량 차트"
 // personalGasUseChart = "지역별 1인당 가스 사용량 차트"
 async function populationChartDraw(city) {
-	const loading = document.getElementById("loading");
-	loading.style.display = "inline";
+	//const loading = document.getElementById("loading");
+	//loading.style.display = "inline";
 	
 	try {
 		const response = await fetch('http://localhost:8000/api/gas/populationsupply?localname=' + city);
@@ -402,7 +403,7 @@ async function populationChartDraw(city) {
 	} catch (error) {
 		alert("데이터 가져오기 오류: " + error);
 	}finally {
-		loading.style.display = "none";
+		//loading.style.display = "none";
 	}
 }
 

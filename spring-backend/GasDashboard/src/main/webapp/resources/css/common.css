@@ -110,9 +110,9 @@ main.board-page {
   color: black;
 }
 
-.nav-logout .btn-logout {
-  background-color: #00ff50;
-  color: black;
+.nav-btn {
+  background-color: #6080bb;
+  color: white;
   border: none;
   padding: 6px 12px;
   font-size: 14px;
@@ -120,8 +120,8 @@ main.board-page {
   cursor: pointer;
 }
 
-.nav-logout .btn-logout:hover {
-  background-color: #45a049;
+.nav-btn:hover {
+  background-color: #3a8de0;
 }
 
 .nav-menu {

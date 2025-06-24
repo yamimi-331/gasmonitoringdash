@@ -94,9 +94,7 @@
 					<span class="user-welcome-text">${currentUserInfo.user_nm}
 						님, 환영합니다.</span>
 				</div>
-				<div class="nav-logout">
-					<button class="btn btn-logout" onclick="logout()">로그아웃</button>
-				</div>
+				<button class="nav-btn" onclick="logout()">로그아웃</button>
 			</div>
 
 			<!-- 메뉴 영역 -->

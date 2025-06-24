@@ -22,21 +22,25 @@
 	<div class="container">
 		<!-- 좌측 네비게이션 start ============================= -->
 		<nav class="sidebar-nav">
-			<c:choose>
+		 <!-- 상단 환영 메시지 영역 -->
+		  <div class="nav-header">
+		    <c:choose>
 				<c:when test="${not empty currentUserInfo}">
-					<div class="nav-menu">
-				    	<a class="nav-link" href="/myUsage">내 사용량 확인하기</a>
-				  	</div>
-					<button class="btn btn-logout" onclick="logout()">로그아웃</button>
+					<div class="nav-user-info">
+				      <span class="user-welcome-text">${currentUserInfo.user_nm} 님, 환영합니다.</span>
+				    </div>
+				    <button class="nav-btn" onclick="logout()">로그아웃</button>
 				</c:when>
 				<c:otherwise>
-					<button class="btn btn-logout" onclick="location.href='/login'">로그인</button>
+					<button class="nav-btn" onclick="location.href='/login'">로그인</button>
 				</c:otherwise>
 			</c:choose>
-				<!-- 메뉴 영역 -->
-			  <!-- <div class="nav-menu">
-			    <a class="nav-link" href="/">메인페이지</a>
-			  </div> -->
+		  </div>
+			<c:if test="${not empty currentUserInfo}">
+				<div class="nav-menu">
+			    	<a class="nav-link" href="/myUsage">마이페이지</a>
+			  	</div>
+			</c:if>
 			<c:if
 				test="${currentUserInfo.user_type != null and (currentUserInfo.user_type == 'admin' or currentUserInfo.user_type == 'manager')}">
 				<div class="nav-menu">
@@ -54,10 +58,10 @@
 				<div class="dashboard-container">
 					<!-- 연도별 가스 공급량 차트 영역 Start ---------------------------------- -->
 					<div class="dashboard">
-						<div id="yearForm" class="year-form">
+						<div id="yearForm">
 							<h2 class="main-title">전국 가스 공급량</h2>
 							<div class="black-line"></div>
-							<div class="controls">
+							<div>
 								<label for="year" class="visually-hidden">연도 선택:</label> <select id="year" name="year"
 									required class="visually-hidden">
 									<option value="2020">2020</option>
@@ -118,10 +122,8 @@
 									<option value="6">6개월</option>
 									<option value="12">12개월</option>
 								</select>
-								<button type="button" onclick="fetchPrediction()">조회</button>
+								<button class="nav-btn" type="button" onclick="fetchPrediction()">조회</button>
 							</div>
-							<p id="loading" style="display: none;">데이터를 불러오는 중입니다...</p>
-							<p id="xgb-result"></p>
 						</div>
 						<!-- 차트 -->
 						<div class="charts-top">
@@ -162,11 +164,11 @@
 						</div>
 						<div class="charts-top">
 							<!-- 지역/년도별 인구수 및 가스 공급량 차트 -->
-							<div class="charts-box">
+							<div class="charts-box-small">
 								<canvas id="populationSupply"></canvas>
 							</div>
 							<!-- 지역별 1인당 가스 사용량 차트 -->
-							<div class="charts-box">
+							<div class="charts-box-small">
 								<canvas id="personalGasUse"></canvas>
 							</div>
 						</div>
@@ -205,7 +207,7 @@
 						</div>
 						<!-- 한파일수 & 공급량 차트 -->
 						<div class="charts-top">
-							<div class="charts-box">
+							<div class="charts-box-small">
 								<canvas id="coldDayChart"></canvas>
 							</div>
 						</div>
