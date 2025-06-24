@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../resources/js/account.js"></script>
+<script src="../resources/js/account.js?after"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet"
 	type="text/css">
 <link href="../../resources/css/admin.css?after" rel="stylesheet"
@@ -49,7 +49,7 @@
 			<div class="search-container">
 			<h2 class="no-margin">권한 승인 대기 목록</h2>
 			<div class="black-line"></div>
-			<table>
+			<table  class="table-style">
 				<colgroup>
 					<col width="20%">
 					<col width="20%">
@@ -99,7 +99,7 @@
 					</c:when>
 					<c:otherwise>
 						<tr>
-							<td colspan="4">${ accountManageMsg }</td>
+							<td colspan="4" style="text-align:center;">${ accountManageMsg }</td>
 						</tr>
 					</c:otherwise>
 				</c:choose>
@@ -119,46 +119,59 @@
 							</select> <input type="text" id="searchKeyword" placeholder="아이디 입력"
 								autocomplete="off" />
 							<button class="nav-btn" onclick="searchUser()">검색</button>
-							<button class="nav-btn" onclick="showUsageModal('edit')">권한 수정</button>
+							<button class="nav-btn" onclick="showLevelModal()">권한 수정</button>
 						</div>
-						<table id="userTable">
+						<table id="userTable" class="table-style">
+							<colgroup>
+								<col width="25%">
+								<col width="25%">
+								<col width="25%">
+								<col width="25%">
+							</colgroup>
 							<thead>
-								<tr>
-									<th style="width: 25%;">선택</th>
-									<th style="width: 25%;">아이디</th>
-									<th style="width: 25%;">이름</th>
-									<th style="width: 25%;">현재 등급</th>
-								</tr>
+							<tr>
+								<th>일련번호</th>
+								<th>아이디</th>
+								<th>이름</th>
+								<th>현재 등급</th>
+							</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td colspan="4">해당 계정 권한의 사용자가 없습니다.</td>
-								</tr>
+							<tr>
+								<td colspan="4" style="text-align:center;">조회된 사용자가 없습니다.</td>
+							</tr>
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
 			<!-- 사용자 검색 영역 end------------------------------ -->
-			<!-- 사용자 권한 수정 폼 전체 영역 -->
-			<div id="usageModal" class="modal-container">
-				<h3 id="modalTitle">사용자 권한 관리</h3>
-				<input type="hidden" id="modal_user_id">
+			<!-- 사용자 권한 수정 모달 -->
+			<div id="levelModal" class="modal-container">
+				<h3 id="levelModalTitle">사용자 권한 수정</h3>
+				<input type="hidden" id="selectedUserCd">
+				<input type="hidden" id="selectedUserId">
+				<input type="hidden" id="selectedUserCurrentLevel">
+				
 				<div class="modal-field">
-					<select id="modal_year" name="modal_year">
+					<label for="newUserLevel">새로운 권한 등급</label>
+					<select id="newUserLevel" name="newUserLevel">
 						<option value="">-- 권한 등급 선택 --</option>
 						<option value="common">일반 회원</option>
 						<option value="manager">매니저</option>
 						<option value="admin">관리자</option>
 					</select>
 				</div>
+			
 				<div class="modal-buttons">
-					<button class="green-btn-2" onclick="saveUsageData()">저장</button>
-					<button class="green-btn-2" onclick="hideUsageModal()">취소</button>
+					<button class="nav-btn" onclick="saveUserLevel()">저장</button>
+					<button class="nav-btn" onclick="hideLevelModal()">취소</button>
 				</div>
 			</div>
+			
+			<!-- 모달 오버레이 -->
+			<div id="levelModalOverlay" class="modal-overlay"></div>
 
-			<div id="modalOverlay" class="modal-overlay"></div>
 		</main>
 		<!-- main end ============================= -->
 	</div>

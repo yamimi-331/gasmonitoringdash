@@ -8,17 +8,18 @@ function rejectConfirm(){
 
 let selectedUserId = null;
 let selectedUserCd = null;
-let selectedUsageCd = null;
+let selectedUserLevel = null;
 
 // 사용자 검색 함수
 function searchUser() {
 	selectedUserId = null;
 	const keyword = jQuery("#searchKeyword").val();
-    const userType = jQuery("#div_level").val();
 	if (!keyword) return alert("아이디를 입력하세요.");
+    const userType = jQuery("#div_level").val();
+    if (!userType) return alert("권한 등급을 선택하세요.");
 
-	jQuery.ajax({
-		url: "/acount/search-users",
+    jQuery.ajax({
+		url: "/account/search-users",
 		type: "POST",
 		data: {
 			keyword: keyword,
@@ -28,21 +29,23 @@ function searchUser() {
 		success: function(users) {
 			const tbody = jQuery("#userTable tbody").empty();
 
-            if (!users || !users.user_id) {
-                tbody.append('<tr><td colspan="4">조회된 사용자가 없습니다.</td></tr>');
-                return;
+			// 배열이 아니거나 비었을 경우
+			if (!Array.isArray(users) || users.length === 0) {
+				tbody.append('<tr><td colspan="4" style="text-align:center;">조회된 사용자가 없습니다.</td></tr>');
+			}
+            else{
+                // 결과가 있을 경우
+                users.forEach(user => {
+                    const rowHtml =
+					'<tr onclick="selectUser(\'' + user.user_cd + '\', \'' + user.user_id + '\', \'' + user.user_type + '\')">' +
+                    '<td>' + user.user_cd + '</td>' +
+                    '<td>' + user.user_id + '</td>' +
+                    '<td>' + user.user_nm + '</td>' +
+                    '<td>' + convertUserType(user.user_type) + '</td>' +
+					'</tr>';
+                    tbody.append(rowHtml);
+                });
             }
-
-            const rowHtml =
-                '<tr onclick="selectUser(\'' + users.user_cd + '\', \'' + users.user_id + '\')">' +
-                    '<td><input type="radio" name="selectUser" /></td>' + // 선택 항목
-                    '<td>' + users.user_cd + '</td>' +                      // 아이디
-                    '<td>' + users.user_id + '</td>' +                      // 아이디
-                    '<td>' + users.user_nm + '</td>' +                      // 이름
-                    '<td>' + convertUserType(users.user_type) + '</td>' +   // 현재 등급
-                '</tr>';
-
-            tbody.append(rowHtml);
 		},
 	    error: function(xhr, status, error) {
 	        alert("서버 오류 발생: " + xhr.status + " " + xhr.statusText);
@@ -60,25 +63,23 @@ function convertUserType(type) {
 	}
 }
 // 사용자 선택 함수
-function selectUser(userCd, userId) {
+function selectUser(userCd, userId, userLevel) {
     // 이미 선택된 사용자를 다시 클릭하면 선택 해제
-    if (selectedUserId === userAddr) {
+    if (selectedUserCd === userCd) {
         selectedUserId = null;
         selectedUserCd = null; // 선택 해제
+		selectedUserLevel = null;        
         // 모든 <tr> 태그에서 'selected' 클래스 제거
         document.querySelectorAll("#userTable tbody tr").forEach(tr => {
             tr.classList.remove("selected");
         });
-        // 사용량 테이블 초기화 (선택 해제 시)
-        const usageTbody = jQuery("#usageTable tbody").empty();
-        const noDataRow = '<tr><td colspan="3">조회된 사용량 데이터가 없습니다.</td></tr>';
-        usageTbody.append(noDataRow);
         return; // 함수 종료
     }
 
-    selectedUserId = userId;
     selectedUserCd = userCd;
-
+    selectedUserId = userId;
+	selectedUserLevel = userLevel;
+	
     // 모든 <tr> 태그에서 'selected' 클래스 제거
     document.querySelectorAll("#userTable tbody tr").forEach(tr => {
         tr.classList.remove("selected");
@@ -90,227 +91,59 @@ function selectUser(userCd, userId) {
     trs.forEach(tr => {
         const tds = tr.querySelectorAll("td");
         // 첫 번째 td의 텍스트가 userCd와 일치하는지 확인 (user_cd는 첫 번째 열에 있으므로)
-        if (tds.length > 0 && tds[0].textContent.trim() === String(userId)) {
+        if (tds.length > 0 && tds[0].textContent.trim() === String(userCd)) {
             tr.classList.add("selected");
         }
     });
-
-    //공통 호출
-    loadUsageData();
+}
+// 모달 열기
+function showLevelModal() {
+	if (!selectedUserCd || !selectedUserId) {
+		return alert("사용자를 선택해주세요.");
+	}
+	document.getElementById("selectedUserCd").value = selectedUserCd;
+	document.getElementById("selectedUserId").value = selectedUserId;
+	document.getElementById("selectedUserCurrentLevel").value = selectedUserLevel;
+	
+	document.getElementById("levelModal").style.display = "block";
+	document.getElementById("levelModalOverlay").style.display = "block";
 }
 
-// 가스사용량 조회
-function loadUsageData() {
-	jQuery.ajax({
-		url: '/account/user/'+selectedUserCd+'/usage',
-		type: "GET",
-		dataType: "json",
-		success: function(data) {
-			renderUsageTable(data, 'GAS');
-		}
-	});
+// 모달 닫기
+function hideLevelModal() {
+	document.getElementById("levelModal").style.display = "none";
+	document.getElementById("levelModalOverlay").style.display = "none";
 }
 
-// 테이블 렌더 함수
-function renderUsageTable(data) {
-	if (!Array.isArray(data)) {
-		alert("데이터 형식이 잘못되었습니다.");
+// 저장버튼 
+function saveUserLevel() {
+	const userCd = document.getElementById("selectedUserCd").value;
+	const userId = document.getElementById("selectedUserId").value;
+	const newLevel = document.getElementById("newUserLevel").value;
+
+	if (!newLevel) return alert("권한 등급을 선택하세요.");
+
+	const currentLevel = document.getElementById("selectedUserCurrentLevel").value;
+	if (newLevel === currentLevel) {
+		alert("현재 권한 등급과 동일합니다. 다른 권한을 선택해주세요.");
 		return;
 	}
-
-	const tbody = jQuery("#usageTable tbody").empty();
-	selectedUsageCd = null;
 	
-	if (data.length === 0) {
-		const noDataRow = '<tr><td colspan="3">조회된 사용량 데이터가 없습니다.</td></tr>';
-		tbody.append(noDataRow);
-	} else {
-		data.forEach(row => {
-			const usage = row.usage_amount;
-            const timeStr = row.usage_dt;
-
-            const trHtml =
-                '<tr data-id="' + row.usage_cd + '" onclick="selectRow(this, ' + row.usage_cd + ')">' +
-                    '<td><input type="radio" name="selectUsage" value="' + row.usage_cd + '" onclick="event.stopPropagation(); selectRow(this.closest(\'tr\'), ' + row.usage_cd + ')"></td>' + 
-                    '<td class="date">' + timeStr + '</td>' +
-                    '<td class="usage">' + usage + '</td>' +
-                '</tr>';
-
-            tbody.append(trHtml);
-		});
-	}
-}
-
-
-// 사용량 행 선택 함수
-function selectRow(clickedTr, usageCd) {
-    // 이미 선택된 사용량을 다시 클릭하면 선택 해제
-    if (selectedUsageCd === usageCd) {
-        selectedUsageCd = null; // 선택 해제
-        jQuery(clickedTr).removeClass("selected"); // 해당 행의 배경색 제거
-        jQuery(clickedTr).find('input[name="selectUsage"]').prop('checked', false); // 라디오 버튼 체크 해제
-        return; // 함수 종료
-    }
-
-    selectedUsageCd = usageCd;
-
-    // 모든 <tr> 태그에서 'selected' 클래스 제거
-    jQuery("#usageTable tbody tr").removeClass("selected");
-
-    // 클릭된 행에 'selected' 클래스 추가
-    jQuery(clickedTr).addClass("selected");
-
-    // 해당 행의 라디오 버튼을 체크합니다.
-    jQuery("#usageTable tbody tr").find('input[name="selectUsage"]').prop('checked', false); // 모든 라디오 버튼 먼저 해제
-    jQuery(clickedTr).find('input[name="selectUsage"]').prop('checked', true); // 클릭된 라디오 버튼만 체크
-}
-
-
-// 사용량 제거 함수
-function deleteUsage() {
-	if (!selectedUsageCd) return alert("삭제할 행을 선택하세요.");
-	if (!confirm("정말 삭제하시겠습니까?")) return;
-
 	jQuery.ajax({
-		url: "/admin/gas/delete",
+		url: "/account/update-user-level",
 		type: "POST",
-		contentType: "application/json",
-		data: JSON.stringify({ usage_cd: selectedUsageCd }),
-		success: function() {
-			alert("가스 사용내역이 삭제되었습니다.");
-			loadUsageData();
+		data: {
+			user_cd: userCd,
+			user_id: userId,
+			user_type: newLevel // 필드명을 VO와 일치시킴
 		},
-        error: function(xhr) {
-			alert("삭제 중 오류가 발생했습니다: " + xhr.statusText);
+		success: function(res) {
+			alert('권한이 변경되었습니다.');
+			hideLevelModal();
+			searchUser(); // 권한 변경 후 재조회
+		},
+		error: function(xhr) {
+			alert("변경 실패: " + xhr.responseText);
 		}
 	});
-}
-
-
-//새로운 모달 관련 함수
-function showUsageModal(mode) {
-    // 공통 필드 초기화 (취소 후 다시 열었을 때 데이터 남아있는 것 방지)
-    jQuery("#modal_year").val('');
-    jQuery("#modal_month").val('');
-    jQuery("#modal_usage_input").val('');
-    jQuery("#modal_usage_cd").val(''); // usageCd 초기화 (수정 아닐 시 비워둠)
-
-    jQuery("#modal_mode").val(mode); // 모드 설정 ('add' 또는 'edit')
-    jQuery("#modal_user_id").val(selectedUserId); // 현재 선택된 사용자 코드 설정
-
-    if (mode === 'add') {
-        if (!selectedUserId) {
-            alert('사용자를 선택해주세요.');
-            hideUsageModal(); // 모달 띄우지 않고 바로 닫기
-            return;
-        }
-    } else if (mode === 'edit') {
-        if (!selectedUsageCd) {
-            alert("수정할 행을 선택하세요.");
-            hideUsageModal(); // 모달 띄우지 않고 바로 닫기
-            return;
-        }
-        jQuery("#modalTitle").text("사용량 수정");
-
-        const row = jQuery("tr[data-id='" + selectedUsageCd + "']");
-        const dateStr = row.find(".date").text();
-        const usageVal = row.find(".usage").text();
-
-        const [year, month] = dateStr.split('-');
-        jQuery("#modal_year").val(year);
-        jQuery("#modal_month").val(month);
-        // 날짜는 수정 불가하게 비활성화
-        jQuery("#modal_year").prop('disabled', true);
-        jQuery("#modal_month").prop('disabled', true);
-
-        jQuery("#modal_usage_cd").val(selectedUsageCd);
-        jQuery("#modal_usage_input").val(usageVal);
-    } else {
-        alert("알 수 없는 모드입니다.");
-        return;
-    }
-    jQuery("#usageModal").show();
-    jQuery("#modalOverlay").show();
-}
-
-function hideUsageModal() {
-    jQuery("#usageModal").hide();
-    jQuery("#modalOverlay").hide();
-    // 폼 내용 초기화
-    jQuery("#modal_usage_cd").val('');
-    jQuery("#modal_date").val('');
-    jQuery("#modal_usage_input").val('');
-    jQuery("#modal_year").prop('disabled', false);
-    jQuery("#modal_month").prop('disabled', false);// 다시 활성화
-}
-
-// 모달 내 '저장' 버튼 클릭 시 호출될 함수
-function saveUsageData() {
-    const mode = jQuery("#modal_mode").val();
-    const userId = jQuery("#modal_user_id").val();
-    const usageCd = jQuery("#modal_usage_cd").val(); // 수정 시에만 사용
-    const year = $("#modal_year").val();
-    const month = $("#modal_month").val();
-    const usage = parseFloat($("#modal_usage_input").val());
-    
-    if (!userId) {
-        alert("사용자가 선택되지 않았습니다.");
-        return;
-    }
-    if (!year || !month || isNaN(usage) || usage < 0) { 
-        alert("모든 필드를 올바르게 입력해주세요.");
-        return;
-    }
-
-    let url;
-    let data;
-
-    if (mode === 'add') {
-        url = '/admin/gas/insert';
-        data = {
-            user_id: userId,
-            modal_year: year,
-            modal_month: month,
-            usage_amount: usage
-        }
-    } else if (mode === 'edit') {
-        // 수정 시에는 usageCd가 필수
-        if (!usageCd) {
-            alert("수정할 사용량 데이터가 선택되지 않았습니다. 다시 선택해주세요.");
-            return;
-        }
-        url = '/admin/gas/update';
-        data = {
-            usage_cd: usageCd,
-            user_id: userId,
-            usage_amount: usage
-        }
-    } else {
-        alert("알 수 없는 모드입니다.");
-        return;
-    }
-    
-    jQuery.ajax({
-        url: url,
-        method: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        dataType: 'json',
-        success: function (response) {
-            if (response.success  === true || response === 'true') {
-                alert(mode === 'add' ? '사용량 등록 성공' : '사용량 수정 성공');
-                loadUsageData(); // 데이터 새로고침
-                hideUsageModal(); // 모달 닫기
-            } else {
-                alert(mode === 'add' ? '사용량 등록 실패' : '사용량 수정 실패 (서버 응답 오류)');
-            }
-        },
-        error: function (xhr, status, error) {
-            alert('서버 통신 오류가 발생했습니다. 개발자 도구 콘솔을 확인해주세요.');
-            console.error('AJAX Error Status:', status);
-            console.error('AJAX Error:', error);
-            console.error('AJAX Response Text:', xhr.responseText);
-            console.error('AJAX XHR Object:', xhr);
-        }
-    });
 }

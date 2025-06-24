@@ -1,17 +1,16 @@
 package com.eco.controller;
 
-import java.util.List; 
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eco.domain.UserVO;
@@ -26,80 +25,88 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("/account")
 public class AccountController {
 	private AdminService adminService;
-	
+
 	// 사용자 계정 관리 페이지로 이동
 	@GetMapping("")
 	public String accountManagePage(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 		UserVO user = (UserVO) session.getAttribute("currentUserInfo");
 		if (user == null) {
 			return "redirect:/login";
-		}	
-		
+		}
+
 		String userType = user.getUser_type();
 		if ("admin".equals(userType)) {
 			model.addAttribute("currentUserInfo", user);
-			
-			//관리자 권한 요청 계정 조회
+
+			// 관리자 권한 요청 계정 조회
 			List<UserVO> manageUser = adminService.searchPreAccount();
 			model.addAttribute("manageUser", manageUser);
 			if (manageUser.isEmpty()) {
 				model.addAttribute("accountManageMsg", "권한 요청한 사용자가 없습니다.");
 			}
-			
+
 			return "account";
 		} else {
 			redirectAttributes.addFlashAttribute("msg", "관리자 계정만 접근 가능합니다.");
 			return "redirect:/admin";
 		}
 	}
-	
+
 	// 사용자 등급 변경 승인
 	@PostMapping("/approve")
 	public String approveUser(UserVO user, RedirectAttributes redirectAttributes) {
-		String newType="";
+		String newType = "";
 		switch (user.getUser_type()) {
-        case "preManager": newType = "manager"; break;
-        case "preAdmin": newType = "admin"; break;
-        default:
-            redirectAttributes.addFlashAttribute("msg", "승인할 수 없는 사용자입니다.");
-            return "redirect:/account";
-	    }
-		
+		case "preManager":
+			newType = "manager";
+			break;
+		case "preAdmin":
+			newType = "admin";
+			break;
+		default:
+			redirectAttributes.addFlashAttribute("msg", "승인할 수 없는 사용자입니다.");
+			return "redirect:/account";
+		}
+
 		user.setUser_type(newType);
-	    adminService.changeUserType(user);
-	    
-	    String newTypeStr = "";
-	    if(newType == "mannager") {
-	    	newTypeStr = "매니저";
-	    } else {
-	    	newTypeStr = "관리자";
-	    }
-	    
-	    redirectAttributes.addFlashAttribute("msg", newTypeStr + "로 등급이 변경 되었습니다.");
-	    return "redirect:/account";
+		adminService.changeUserType(user);
+
+		String newTypeStr = "";
+		if (newType == "mannager") {
+			newTypeStr = "매니저";
+		} else {
+			newTypeStr = "관리자";
+		}
+
+		redirectAttributes.addFlashAttribute("msg", newTypeStr + "로 등급이 변경 되었습니다.");
+		return "redirect:/account";
 	}
-	
+
 	// 사용자 등급 변경 거절
 	@PostMapping("/reject")
 	public String rejectUser(UserVO user, RedirectAttributes redirectAttributes) {
 		String common = "common";
 		user.setUser_type(common);
+		adminService.changeUserType(user);
+
+		redirectAttributes.addFlashAttribute("msg", "일반 회원으로 등급이 변경 되었습니다.");
+		return "redirect:/account";
+	}
+
+	// 사용자 아이디 권한 레벨로 사용자 조회
+	@PostMapping("/search-users")
+	@ResponseBody
+	public List<UserVO> searchUsers(@RequestParam String keyword, @RequestParam(required = false) String userType) {
+		List<UserVO> users = adminService.findUsersByKeywordAndType(keyword, userType);
+		return users;
+	}
+
+	// 사용자 권한 레벨 수정
+	@PostMapping("/update-user-level")
+	public String updateUserLevel(UserVO user) {
+	    // 등급 변경
 	    adminService.changeUserType(user);
-	    
-	    redirectAttributes.addFlashAttribute("msg", "일반 회원으로 등급이 변경 되었습니다.");
 	    return "redirect:/account";
 	}
-	
-	// 사용자 검색
-	@PostMapping("/search-users")
-    public ResponseEntity<UserVO> searchUser(@RequestParam String keyword,
-            @RequestParam(required = false) String userType) {
-        UserVO user = adminService.findUserById(keyword, userType);
-        if (user != null) {
-        	log.info(user);
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
+
 }

@@ -98,12 +98,11 @@ public class AdminServiceImpl implements AdminService{
 	
 	// 사용자 등급 변경 계정 전체 조회
 	@Override
-	public UserVO findUserById(String user_id, String user_type) {
+	public List<UserVO> findUsersByKeywordAndType(String user_id, String user_type) {
 		try{
 			return mapper.selectUserById(user_id, user_type);
 		} catch (Exception e) {
 			throw new ServiceException("사용자 조회 실패", e);
 		}
 	}
-	
 }

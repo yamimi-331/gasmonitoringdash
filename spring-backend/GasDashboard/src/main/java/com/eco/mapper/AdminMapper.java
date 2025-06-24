@@ -34,5 +34,5 @@ public interface AdminMapper {
 	public int updateUserType(UserVO user);
 	
 	// 사용자 정보조회
-	public UserVO selectUserById(@Param("user_id") String user_id, @Param("user_type")  String user_type);
+	public List<UserVO> selectUserById(@Param("user_id") String user_id, @Param("user_type")  String user_type);
 }

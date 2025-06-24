@@ -32,5 +32,5 @@ public interface AdminService {
 	public boolean changeUserType(UserVO user);
 	
 	// 사용자 정보조회
-	public UserVO findUserById(String user_id, String user_type);
+	public List<UserVO> findUsersByKeywordAndType(String user_id, String user_type);
 }
