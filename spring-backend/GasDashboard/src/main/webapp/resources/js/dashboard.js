@@ -643,4 +643,43 @@ function logout() {
 		window.location.href = "/logout";
 	}
 }
+
+// 스크롤 및 버튼으로 슬라이드 이동
+document.addEventListener('DOMContentLoaded', () => {
+  const scrollWrapper = document.querySelector('.dashboard-scroll-wrapper');
+  const slides = document.querySelectorAll('.dashboard-page');
+  let currentSlide = 0;
+  let isScrolling = false;
+
+  function scrollToSlide(index) {
+    if (index < 0 || index >= slides.length) return;
+    isScrolling = true;
+    slides[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    currentSlide = index;
+    setTimeout(() => {
+      isScrolling = false;
+    }, 600);
+  }
+
+  scrollWrapper.addEventListener('wheel', e => {
+    if (isScrolling) return;
+    e.preventDefault();
+    if (e.deltaY > 0) {
+      // 아래로 휠 내림 → 다음 슬라이드로
+      scrollToSlide(currentSlide + 1);
+    } else if (e.deltaY < 0) {
+      // 위로 휠 올림 → 이전 슬라이드로
+      scrollToSlide(currentSlide - 1);
+    }
+  }, { passive: false });
+  
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    scrollToSlide(currentSlide - 1);
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    scrollToSlide(currentSlide + 1);
+  });
+});
+
 //#endregion

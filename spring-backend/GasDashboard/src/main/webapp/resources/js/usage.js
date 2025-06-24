@@ -5,6 +5,11 @@
 const recentLabels = recentUsageData.map(item => item.date);
 const recentData = recentUsageData.map(item => item.amount);
 
+// 마지막 막대만 다른 색상으로 설정
+const backgroundColors = recentData.map((_, i) =>
+  i === recentData.length - 1 ? 'rgba(255, 99, 132, 0.8)' : 'rgba(75, 192, 192, 0.6)'
+);
+
 const recentUsageCtx = document.getElementById('recentUsageChart').getContext('2d');
 new Chart(recentUsageCtx, {
   type: 'bar',
@@ -13,8 +18,8 @@ new Chart(recentUsageCtx, {
     datasets: [{
       label: '최근 12개월 가스 사용량',
       data: recentData,
-      backgroundColor: 'rgba(75, 192, 192, 0.6)',
-      borderColor: 'rgba(75, 192, 192, 1)',
+      backgroundColor: backgroundColors,
+      borderColor: backgroundColors,
       borderWidth: 1,
       barPercentage: 0.6
     }]
@@ -24,7 +29,8 @@ new Chart(recentUsageCtx, {
     plugins: {
       title: {
         display: true,
-        text: '최근 12개월 월별 가스 사용량'
+        text: '최근 12개월 월별 가스 사용량',
+        font: {size: 24}
       },
       legend: {
         display: false
@@ -40,10 +46,12 @@ new Chart(recentUsageCtx, {
     scales: {
       y: {
         beginAtZero: true,
-        title: { display: true, text: '사용량 (단위: m³)' }
+        title: { display: true, text: '사용량 (단위: m³)', font: {size: 15} },
+        ticks: { font: {size: 15} }
       },
       x: {
-        title: { display: true, text: '사용월' }
+        title: { display: true, text: '사용월', font: {size: 15} },
+        ticks: { font: {size: 15} }
       }
     }
   }
@@ -83,14 +91,13 @@ new Chart(comparisonCtx, {
     responsive: true,
     layout: { padding: { top: 20 } },
     plugins: {
-      title: { display: true, text: '내 사용량 vs 지역 평균 비교' },
+      title: { display: true, text: '내 사용량 vs 지역 평균 비교', font: {size: 24}},
       legend: { display: false },
       datalabels: {
         anchor: 'end',
         align: 'end',
-        formatter: Math.round,
         color: '#000',
-        font: { weight: 'bold' }
+        font: { weight: 'bold'}
       }
     },
     scales: {
@@ -102,8 +109,12 @@ new Chart(comparisonCtx, {
           localUsageData.lastYearSameMonthUsage,
           localUsageData.yearlyAvgUsage
         ) * 1.2,
-        title: { display: true, text: '사용량 (m³)' }
-      }
+        title: { display: true, text: '사용량 (m³)', font: {size: 15} },
+        ticks: { font: {size: 15} }
+      },
+      x: {
+      	ticks: { font: {size: 15} }
+      	}
     }
   },
   plugins: [ChartDataLabels]

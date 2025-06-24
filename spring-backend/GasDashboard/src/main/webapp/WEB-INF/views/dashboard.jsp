@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>대시보드</title>
+<title>DashBoard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript" src="../../resources/js/dashboard.js"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet"
@@ -224,7 +224,8 @@
 						</div>
 					</div>
 					<!-- 지역/년도별 인구수 및 가스 공급량 차트 end ------------------ -->
-				</div></section> <!-- small-container -->
+				</div> <!-- small-container -->
+				</section>
 				</div>
 				<!-- 대시보드를 담은 컨테이너 start -------------------------------------- -->
 			</div>
@@ -235,45 +236,6 @@
 	<!-- nav와 main을 가로로 나란히 배치하기위한 컨테이너 End ---------- -->
 
 	<footer></footer>
-	
-	<script>
-	document.addEventListener('DOMContentLoaded', () => {
-		  const scrollWrapper = document.querySelector('.dashboard-scroll-wrapper');
-		  const slides = document.querySelectorAll('.dashboard-page');
-		  let currentSlide = 0;
-		  let isScrolling = false;
-
-		  function scrollToSlide(index) {
-		    if (index < 0 || index >= slides.length) return;
-		    isScrolling = true;
-		    slides[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-		    currentSlide = index;
-		    setTimeout(() => {
-		      isScrolling = false;
-		    }, 600);
-		  }
-
-		  scrollWrapper.addEventListener('wheel', e => {
-		    if (isScrolling) return;
-		    e.preventDefault();
-		    if (e.deltaY > 0) {
-		      // 아래로 휠 내림 → 다음 슬라이드로
-		      scrollToSlide(currentSlide + 1);
-		    } else if (e.deltaY < 0) {
-		      // 위로 휠 올림 → 이전 슬라이드로
-		      scrollToSlide(currentSlide - 1);
-		    }
-		  }, { passive: false });
-		  
-		  document.getElementById('prevBtn').addEventListener('click', () => {
-		    scrollToSlide(currentSlide - 1);
-		  });
-
-		  document.getElementById('nextBtn').addEventListener('click', () => {
-		    scrollToSlide(currentSlide + 1);
-		  });
-		});
-	</script>
 </body>
 
 <!-- 로그아웃후 메세지 알람(일회성) -->

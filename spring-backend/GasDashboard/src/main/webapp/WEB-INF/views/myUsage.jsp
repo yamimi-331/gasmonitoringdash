@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>DashBoard</title>
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
@@ -67,6 +67,12 @@ table td[colspan="2"]{
 			<div class="nav-menu">
 				<a class="nav-link" href="/">대시보드 페이지</a>
 			</div>
+			<c:if
+				test="${currentUserInfo.user_type != null and (currentUserInfo.user_type == 'admin' or currentUserInfo.user_type == 'manager')}">
+				<div class="nav-menu">
+				 	<a class="nav-link" href="/admin">관리자 페이지</a>
+				</div>
+			</c:if>
 			<div class="nav-menu">
 				<a class="nav-link" href="/profileEdit">회원정보수정</a>
 			</div>

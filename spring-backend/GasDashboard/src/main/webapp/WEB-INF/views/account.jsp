@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>DashBoard</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="../resources/js/account.js?after"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet"
