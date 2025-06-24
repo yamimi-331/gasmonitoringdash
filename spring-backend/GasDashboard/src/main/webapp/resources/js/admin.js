@@ -1,5 +1,6 @@
 
 let selectedUserAddr = null;
+let selectedUserId = null;
 let selectedUserCd = null;
 let selectedUsageCd = null;
 
@@ -29,13 +30,13 @@ function searchUser() {
 				users.forEach(user => {
 					 // 각 항목을 안전하게 문자열로 변환
 					  const rowHtml =
-						  '<tr onclick="selectUser(\'' + user.user_addr + '\', \'' + user.user_cd + '\')">' +
+						  '<tr onclick="selectUser(\'' + user.user_id + '\', \'' + user.user_cd + '\', \''  + user.user_addr + '\' )">' +
+						    '<td>' + user.user_cd + '</td>' +
 						    '<td>' + user.user_id + '</td>' +
 						    '<td>' + user.user_nm + '</td>' +
 						    '<td>' + user.local_nm + '</td>' +
 						    '<td>' + user.user_addr + '</td>' +
 						  '</tr>';
-					   
 					    tbody.append(rowHtml);
 				});
 			}
@@ -48,11 +49,12 @@ function searchUser() {
 }
 
 // 사용자 선택 함수
-function selectUser(userAddr, userCd) {
+function selectUser(userId, userCd, userAddr) {
     // 이미 선택된 사용자를 다시 클릭하면 선택 해제
-    if (selectedUserAddr === userAddr) {
-        selectedUserAddr = null;
+    if (selectedUserId === userId) {
+        selectedUserId = null;
         selectedUserCd = null; // 선택 해제
+        selectedUserAddr = null;
         // 모든 <tr> 태그에서 'selected' 클래스 제거
         document.querySelectorAll("#userTable tbody tr").forEach(tr => {
             tr.classList.remove("selected");
@@ -63,8 +65,8 @@ function selectUser(userAddr, userCd) {
         usageTbody.append(noDataRow);
         return; // 함수 종료
     }
-
-    selectedUserAddr = userAddr;
+	selectedUserAddr = userAddr;
+    selectedUserId = userId;
     selectedUserCd = userCd;
 
     // 모든 <tr> 태그에서 'selected' 클래스 제거
@@ -78,7 +80,7 @@ function selectUser(userAddr, userCd) {
     trs.forEach(tr => {
         const tds = tr.querySelectorAll("td");
         // 첫 번째 td의 텍스트가 userCd와 일치하는지 확인 (user_cd는 첫 번째 열에 있으므로)
-        if (tds.length > 0 && tds[0].textContent.trim() === String(userId)) {
+        if (tds.length > 0 && tds[0].textContent.trim() === String(userCd)) {
             tr.classList.add("selected");
         }
     });
@@ -184,10 +186,10 @@ function showUsageModal(mode) {
     jQuery("#modal_usage_cd").val(''); // usageCd 초기화 (수정 아닐 시 비워둠)
 
     jQuery("#modal_mode").val(mode); // 모드 설정 ('add' 또는 'edit')
-    jQuery("#modal_user_id").val(selectedUserAddr); // 현재 선택된 사용자 코드 설정
+    jQuery("#modal_user_id").val(selectedUserId); // 현재 선택된 사용자 코드 설정
 
     if (mode === 'add') {
-        if (!selectedUserAddr) {
+        if (!selectedUserId) {
             alert('사용자를 선택해주세요.');
             hideUsageModal(); // 모달 띄우지 않고 바로 닫기
             return;

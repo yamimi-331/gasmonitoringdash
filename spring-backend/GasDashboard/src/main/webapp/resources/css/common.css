@@ -52,7 +52,7 @@ main.board-page {
 	width: 90%;
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 	box-sizing: border-box;
 	overflow: hidden;
 }
@@ -151,4 +151,14 @@ main.board-page {
 
 .main-title{
 	margin: 0;
+}
+
+.selected{
+	 background-color: #e0f0ff;
+  color: #007acc;
+  font-weight: bold;
+}
+tr, td{
+	cursor: pointer;
+	user-select: none; 
 }

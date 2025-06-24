@@ -10,6 +10,8 @@
 <script src="../resources/js/admin.js"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet"
 	type="text/css">
+<link href="../../resources/css/admin.css?after" rel="stylesheet"
+	type="text/css">
 <script>
 	function logout() {
 		let isLogout = confirm("정말 로그아웃 하시겠습니까?");
@@ -19,175 +21,6 @@
 		}
 	}
 </script>
-<style>
-.modal-container {
-	width: 30%;
-	display: none; /* Controlled by JS */
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background: white;
-	padding: 30px;
-	border: 1px solid #82cd2b;
-	border-radius: 8px;
-	z-index: 1000;
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-	font-size: 20px;
-}
-
-.result-inner-container {
-	display: flex;
-	width: 100%;
-	overflow-y: auto;
-	flex-direction: column;
-	align-items: center;
-	min-height: 200px;
-	max-height: 500px;
-	border: none;
-	border-radius: 4px;
-	padding: 10px;
-	box-sizing: border-box;
-}
-
-.inner-container {
-	display: flex;
-	width: 100%;
-	justify-content: center;
-	flex-direction: column;
-	padding: 10px;
-}
-
-
-.search-container {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-	gap: 8px;
-	padding: 10px;
-	box-sizing: border-box;
-	border: none;
-	background-color: #FFFFFF;
-	box-sizing: border-box;
-	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* 기존보다 저 진하고 넓은 그림자 */
-	border-radius: 4px;
-}
-
-.search-area {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center; /* 추가 */
-	gap: 10px;
-}
-
-.search-area input[type="text"] {
-	height: 36px;
-	padding: 0 10px;
-	font-size: 20px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-}
-
-.search-area button.green-btn-admin {
-	height: 36px;
-	font-size: 20px;
-	border: none;
-	border-radius: 4px;
-	background-color: #008000;
-	color: white;
-	cursor: pointer;
-	padding: 0 5px;
-}
-.search-area button.green-btn{
-	height: 36px;
-	font-size: 20px;
-	border: none;
-	border-radius: 4px;
-	background-color: #008000;
-	color: white;
-	cursor: pointer;
-	padding: 0;
-}
-.search-area button.green-btn:hover {
-	background-color: #218838;
-}
-
-.search-inner-container {
-	display: flex;
-	width: 100%;
-	flex-direction: column;
-	align-items: center;
-	min-height: 200px;
-	padding: 10px;
-	box-sizing: border-box;
-}
-
-.type-tab {
-	display: flex;
-	justify-content: space-around;
-	width: 80%;
-	align-items: center;
-	text-align: center;
-	box-sizing: border-box;
-	padding: 10px;
-}
-
-.type-tab-btn {
-	display: flex;
-	width: 60%;
-	line-height: 50px;
-	justify-content: center;
-	margin: 0;
-	background-color: #c5ee8f;
-	color: black;
-	cursor: pointer;
-	font-size: 20px;
-	border: none;
-}
-
-.type-tab-btn.active {
-	background-color: #008000; /* 활성화 색상 */
-	font-weight: bold;
-	color: white;
-}
-
-.result-container {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-	gap: 8px;
-	padding: 10px;
-	margin-top: 10px;
-	box-sizing: border-box;
-	border: none;
-	background-color: #FFFFFF;
-	box-sizing: border-box;
-	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* 기존보다 저 진하고 넓은 그림자 */
-	border-radius: 4px;
-}
-
-.result-inner-container {
-	display: flex;
-	width: 100%;
-	overflow-y: auto;
-	flex-direction: column;
-	align-items: center;
-	min-height: 200px;
-	max-height: 500px;
-	padding: 10px;
-	box-sizing: border-box;
-}
-.no-margin{
-margin:0;
-}
-
-</style>
 </head>
 <body>
 	<header>
@@ -236,15 +69,16 @@ margin:0;
 						<table id="userTable">
 							<thead>
 								<tr>
-									<th style="width: 25%">아이디</th>
-									<th style="width: 25%">이름</th>
-									<th style="width: 25%">지역</th>
-									<th style="width: 25%">상세주소</th>
+									<th style="width: 20%">사용자 일련번호</th>
+									<th style="width: 20%">아이디</th>
+									<th style="width: 20%">이름</th>
+									<th style="width: 20%">지역</th>
+									<th style="width: 20%">상세주소</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
-									<td colspan="4">해당하는 주소에 데이터가 없습니다.</td>
+									<td colspan="5"><p style="text-align: center;">해당하는 주소에 데이터가 없습니다.</p></td>
 								</tr>
 							</tbody>
 						</table>
@@ -276,9 +110,7 @@ margin:0;
 								</tr>
 							</tbody>
 						</table>
-
 					</div>
-
 				</div>
 			</div>
 			<!-- 사용자별 에너지 사용량 관리 영역 end ------------------------ -->

@@ -10,75 +10,8 @@
 <script src="../resources/js/account.js"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet"
 	type="text/css">
-<style>
-.modal-container {
-	width: 30%;
-	display: none; /* Controlled by JS */
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background: white;
-	padding: 30px;
-	border: 1px solid #82cd2b;
-	border-radius: 8px;
-	z-index: 1000;
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-	font-size: 20px;
-}
-
-.result-inner-container {
-	display: flex;
-	width: 100%;
-	overflow-y: auto;
-	flex-direction: column;
-	align-items: center;
-	min-height: 200px;
-	max-height: 500px;
-	border: 1px solid #82cd2b;
-	border-radius: 4px;
-	padding: 10px;
-	box-sizing: border-box;
-}
-
-.inner-container {
-	display: flex;
-	width: 100%;
-	justify-content: center;
-	flex-direction: column;
-	padding: 10px;
-}
-.search-container {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-	gap: 8px;
-	padding: 10px;
-	box-sizing: border-box;
-	border: none;
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-	border-radius: 4px;
-}
-
-.result-container {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-	gap: 8px;
-	padding: 10px;
-	margin-top: 20px;
-	box-sizing: border-box;
-	border: none;
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-	border-radius: 4px;
-}
-
-
-</style>
+<link href="../../resources/css/admin.css?after" rel="stylesheet"
+	type="text/css">
 </head>
 <body>
 	<header>
@@ -118,12 +51,14 @@
 			<div class="black-line"></div>
 			<table>
 				<colgroup>
-					<col width="25%">
-					<col width="25%">
-					<col width="25%">
-					<col width="25%">
+					<col width="20%">
+					<col width="20%">
+					<col width="20%">
+					<col width="20%">
+					<col width="20%">
 				</colgroup>
 				<tr>
+					<th>사용자 일련번호</th>
 					<th>아이디</th>
 					<th>이름</th>
 					<th>현재 등급</th>
@@ -183,11 +118,9 @@
 								<option value="admin">관리자</option>
 							</select> <input type="text" id="searchKeyword" placeholder="아이디 입력"
 								autocomplete="off" />
-							<button class="green-btn" onclick="searchUser()">검색</button>
+							<button class="nav-btn" onclick="searchUser()">검색</button>
+							<button class="nav-btn" onclick="showUsageModal('edit')">권한 수정</button>
 						</div>
-						<button class="green-btn-admin" onclick="showUsageModal('add')">등록</button>
-						<button class="green-btn-admin" onclick="showUsageModal('edit')">수정</button>
-						<button class="green-btn-admin" onclick="deleteUsage()">삭제</button>
 						<table id="userTable">
 							<thead>
 								<tr>
