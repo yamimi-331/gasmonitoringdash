@@ -11,7 +11,7 @@ body{
 	flex-direction: column;
 	min-width: 1200px;
 	min-height: 100vh; 
-	color: white
+	color: black;
 }
 
 header {
@@ -19,8 +19,8 @@ header {
 	justify-content: center;
 	flex-direction: column;
 	align-item: center;
-    background-color: #101014; /* 또는 #1B263B / 2C3E50*/
-    color: white;
+    background-color: #30475E;
+    color: black;
     padding: 15px 30px;
     font-weight: bold;
 	box-sizing: border-box;
@@ -31,7 +31,7 @@ main{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #252526;
+	background-color: #E8E8E8;
 	box-sizing: border-box;
 }
 
@@ -40,8 +40,7 @@ footer {
 	justify-content: center;
 	flex-direction: column;
 	align-item: center;
-    background-color: #101014; /* 또는 #1B263B / 2C3E50*/
-    color: white;
+    background-color: #30475E; 
     padding: 15px 30px;
     font-weight: bold;
 	box-sizing: border-box;
@@ -86,8 +85,8 @@ main.board-page {
 .sidebar-nav {
   width: 10%;
   height: 100%;
-  background-color: #252526;
-  border-right: 1px solid #ddd;
+  background-color: #E8E8E8;
+  border-right: 1px solid #222831;
   display: flex;
   flex-direction: column;
   padding: 16px;
@@ -108,12 +107,12 @@ main.board-page {
 }
 
 .user-welcome-text {
-  color: #fff;
+  color: black;
 }
 
 .nav-logout .btn-logout {
   background-color: #00ff50;
-  color: white;
+  color: black;
   border: none;
   padding: 6px 12px;
   font-size: 14px;
@@ -132,7 +131,7 @@ main.board-page {
 .nav-link {
   display: block;
   padding: 10px;
-  color: #fff;
+  color: black;
   text-decoration: none;
   border-radius: 4px;
   transition: background-color 0.2s ease;
@@ -146,5 +145,10 @@ main.board-page {
 */
 .header-title{
 	margin: 0;
+	color: #E8E8E8;
 	text-align: center;
+}
+
+.main-title{
+	margin: 0;
 }

@@ -53,11 +53,11 @@
 					<!-- 연도별 가스 공급량 차트 영역 Start ---------------------------------- -->
 					<div class="dashboard">
 						<div id="yearForm" class="year-form">
-							<h2 class="header-title">전국 가스 공급량</h2>
-							<div class="white-line"></div>
+							<h2 class="main-title">전국 가스 공급량</h2>
+							<div class="black-line"></div>
 							<div class="controls">
-								<label for="year">연도 선택:</label> <select id="year" name="year"
-									required>
+								<label for="year" class="visually-hidden">연도 선택:</label> <select id="year" name="year"
+									required class="visually-hidden">
 									<option value="2020">2020</option>
 									<option value="2021">2021</option>
 									<option value="2022">2022</option>
@@ -81,8 +81,8 @@
 					<!-- 연도별 가스 공급량 차트 영역 End ---------------------------------- -->
 					<!-- 가스 공급량 및 수요예측 차트 Start ------------------------------------------------ -->
 					<div class="dashboard">
-						<h2 class="header-title">가스 공급량 및 수요예측 차트</h2>
-						<div class="white-line"></div>
+						<h2 class="main-title">가스 공급량 및 수요예측 차트</h2>
+						<div class="black-line"></div>
 						<!-- 선택영역 -->
 						<div class="controls">
 							<div id="cityForm">
@@ -131,8 +131,8 @@
 					<!-- 가스 공급량 및 수요예측 차트 End ------------------------------------------------ -->
 					<!-- 지역/년도별 인구수 및 가스 공급량 차트 start ----------------------------------------------- -->
 					<div class="dashboard">
-						<h2 class="header-title">지역/년도별 인구수 및 가스 공급량 차트</h2>
-						<div class="white-line"></div>
+						<h2 class="main-title">지역/년도별 인구수 및 가스 공급량 차트</h2>
+						<div class="black-line"></div>
 						<div class="controls">
 							<label for="city_detail">지역 선택:</label> <select id="city_detail"
 								name="city" required>
@@ -155,7 +155,6 @@
 								<option value="제주특별자치도">제주특별자치도</option>
 							</select>
 						</div>
-
 						<div class="charts-top">
 							<!-- 지역/년도별 인구수 및 가스 공급량 차트 -->
 							<div class="charts-box">
@@ -166,9 +165,11 @@
 								<canvas id="personalGasUse"></canvas>
 							</div>
 						</div>
-
-							<h2 class="header-title">동계 한파일수 vs 가스사용량</h2>
-							<div class="white-line"></div>
+							
+						</div>
+						<div class="dashboard">
+						<h2 class="main-title">동계 한파일수 vs 가스사용량</h2>
+						<div class="black-line"></div>
 						<div class="controls">
 							<select id="cold_year" name="cold_year" required>
 								<option value="2020">2020</option>
@@ -198,8 +199,10 @@
 							</select>
 						</div>
 						<!-- 한파일수 & 공급량 차트 -->
-						<div class="charts-box">
-							<canvas id="coldDayChart" width="600" height="300"></canvas>
+						<div class="charts-top">
+							<div class="charts-box">
+								<canvas id="coldDayChart"></canvas>
+							</div>
 						</div>
 					</div>
 					<!-- 지역/년도별 인구수 및 가스 공급량 차트 end ------------------ -->
