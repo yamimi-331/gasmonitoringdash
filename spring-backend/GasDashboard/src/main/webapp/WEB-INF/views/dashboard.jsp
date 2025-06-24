@@ -129,6 +129,9 @@
 						</div>
 					</div>
 					<!-- 가스 공급량 및 수요예측 차트 End ------------------------------------------------ -->
+					
+					<div class="small-contaier">
+					
 					<!-- 지역/년도별 인구수 및 가스 공급량 차트 start ----------------------------------------------- -->
 					<div class="dashboard">
 						<h2 class="main-title">지역/년도별 인구수 및 가스 공급량 차트</h2>
@@ -165,8 +168,8 @@
 								<canvas id="personalGasUse"></canvas>
 							</div>
 						</div>
-							
 						</div>
+								
 						<div class="dashboard">
 						<h2 class="main-title">동계 한파일수 vs 가스사용량</h2>
 						<div class="black-line"></div>
@@ -206,6 +209,7 @@
 						</div>
 					</div>
 					<!-- 지역/년도별 인구수 및 가스 공급량 차트 end ------------------ -->
+				</div> <!-- small-container -->
 				</div>
 				<!-- 대시보드를 담은 컨테이너 start -------------------------------------- -->
 			</div>

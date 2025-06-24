@@ -154,13 +154,18 @@ button:hover {
 }
 
 .visually-hidden {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		margin: -1px;
-		padding: 0;
-		border: 0;
-		clip: rect(0, 0, 0, 0);
-		overflow: hidden;
-		white-space: nowrap;
-	}
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	overflow: hidden;
+	white-space: nowrap;
+}
+.small-contaier{
+	 display: flex; /* 이 div를 Flexbox 컨테이너로 만듭니다 */
+    flex-direction: column; /* 중요: 자식 요소들을 세로(위아래)로 배치합니다 */
+	gap: 20px;
+}
