@@ -255,9 +255,7 @@
 
 		  scrollWrapper.addEventListener('wheel', e => {
 		    if (isScrolling) return;
-
 		    e.preventDefault();
-
 		    if (e.deltaY > 0) {
 		      // 아래로 휠 내림 → 다음 슬라이드로
 		      scrollToSlide(currentSlide + 1);
@@ -266,6 +264,14 @@
 		      scrollToSlide(currentSlide - 1);
 		    }
 		  }, { passive: false });
+		  
+		  document.getElementById('prevBtn').addEventListener('click', () => {
+		    scrollToSlide(currentSlide - 1);
+		  });
+
+		  document.getElementById('nextBtn').addEventListener('click', () => {
+		    scrollToSlide(currentSlide + 1);
+		  });
 		});
 	</script>
 </body>
