@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
+<title>DashBoard</title>
 <script type="text/javascript" src="../../resources/js/login.js"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet" type="text/css">
 <link href="../../resources/css/user.css?after" rel="stylesheet" type="text/css">

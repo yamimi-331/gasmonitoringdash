@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>DashBoard</title>
 <script type="text/javascript" src="../../resources/js/signup.js"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet" type="text/css">
 <link href="../../resources/css/user.css?after" rel="stylesheet" type="text/css">

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Eco</title>
+<title>DashBoard</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="../resources/js/admin.js"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet"

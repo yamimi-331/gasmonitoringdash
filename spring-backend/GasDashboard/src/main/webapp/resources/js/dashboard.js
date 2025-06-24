@@ -214,7 +214,7 @@ async function fetchPrediction() {
           title: {
             display: true,
             text: selectedCity+"의 가스 공급량 및 수요 예측 ("+selectedModel+")",
-            font: { size: 18 },
+            font: { size: 24 },
           },
           tooltip: {
             mode: "index",
@@ -223,10 +223,10 @@ async function fetchPrediction() {
         },
         scales: {
           x: {
-            title: { display: true, text: "월" },
+            title: { display: true, text: "월", font: { size: 15 } },
           },
           y: {
-            title: { display: true, text: "공급량 (백만 m³)" },
+            title: { display: true, text: "공급량 (백만 m³)" , font: { size: 15 }},
 			ticks:{
 				callback: function(value){
 					return (value / 1000000).toFixed(0)
@@ -310,7 +310,8 @@ function topLocalSupplyChart(yearData, year){
 					aspectRatio: 1,
 					title: {
 						display: true,
-						text: city+ '의 공급량 점유율'
+						text: city+ '의 공급량 점유율',
+						font: { size: 15 }
 					},
                     donutCenterText: {
                         text: percentage,
@@ -349,7 +350,7 @@ function yearLocalGasChart(canvasId, yearData, year) {
 				title: {
 				display: true,
 				text: year+ '년 전국 가스 총 공급량',
-				font: { size: 18 }
+				font: { size: 24 }
 				},
 				tooltip: {
 				mode: 'index',
@@ -358,10 +359,10 @@ function yearLocalGasChart(canvasId, yearData, year) {
 			},
 			scales: {
 				x: {
-					title: { display: true, text: '지역' }
+					title: { display: true, text: '지역', font: { size: 15 }}
 				},
 				y: {
-					title: { display: true, text: '총 공급량(백만 m³)' },
+					title: { display: true, text: '총 공급량(백만 m³)' , font: { size: 15 }},
 					ticks:{
 						callback: function(value){
 							return (value / 1000000).toFixed(0)
@@ -643,4 +644,43 @@ function logout() {
 		window.location.href = "/logout";
 	}
 }
+
+// 스크롤 및 버튼으로 슬라이드 이동
+document.addEventListener('DOMContentLoaded', () => {
+  const scrollWrapper = document.querySelector('.dashboard-scroll-wrapper');
+  const slides = document.querySelectorAll('.dashboard-page');
+  let currentSlide = 0;
+  let isScrolling = false;
+
+  function scrollToSlide(index) {
+    if (index < 0 || index >= slides.length) return;
+    isScrolling = true;
+    slides[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    currentSlide = index;
+    setTimeout(() => {
+      isScrolling = false;
+    }, 600);
+  }
+
+  scrollWrapper.addEventListener('wheel', e => {
+    if (isScrolling) return;
+    e.preventDefault();
+    if (e.deltaY > 0) {
+      // 아래로 휠 내림 → 다음 슬라이드로
+      scrollToSlide(currentSlide + 1);
+    } else if (e.deltaY < 0) {
+      // 위로 휠 올림 → 이전 슬라이드로
+      scrollToSlide(currentSlide - 1);
+    }
+  }, { passive: false });
+  
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    scrollToSlide(currentSlide - 1);
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    scrollToSlide(currentSlide + 1);
+  });
+});
+
 //#endregion

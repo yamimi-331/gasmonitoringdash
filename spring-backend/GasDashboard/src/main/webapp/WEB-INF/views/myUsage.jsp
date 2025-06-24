@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>DashBoard</title>
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
@@ -67,6 +67,12 @@ table td[colspan="2"]{
 			<div class="nav-menu">
 				<a class="nav-link" href="/">대시보드 페이지</a>
 			</div>
+			<c:if
+				test="${currentUserInfo.user_type != null and (currentUserInfo.user_type == 'admin' or currentUserInfo.user_type == 'manager')}">
+				<div class="nav-menu">
+				 	<a class="nav-link" href="/admin">관리자 페이지</a>
+				</div>
+			</c:if>
 			<div class="nav-menu">
 				<a class="nav-link" href="/profileEdit">회원정보수정</a>
 			</div>
@@ -76,9 +82,9 @@ table td[colspan="2"]{
 		<!-- 고객님의 최근 (12개월) 월별 사용량 추이 & 가스사용량 비교 Start ----------------- -->
 		<main class="board-page">
 		<div class="inner-container">
-			<div class="dashboard-container">
+			<div class="myusage-container">
 			<!-- 🚩 Dashboard 1: 최근 12개월 사용량 추이 -->
-			<div class="dashboard">
+			<div class="myusage-dashboard">
 				<h2 class="main-title">고객님의 최근 (12개월) 월별 사용량 추이</h2>
 				<div class="black-line"></div>
 			
