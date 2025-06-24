@@ -115,7 +115,7 @@
 			<!-- 사용자 검색 영역 start------------------------------ -->
 			<div class="search-container">
 			<h2 class="no-margin">권한 승인 대기 목록</h2>
-			<div class="white-line"></div>
+			<div class="black-line"></div>
 			<table>
 				<colgroup>
 					<col width="25%">
@@ -173,7 +173,7 @@
 			<!-- 사용자 검색 영역 start------------------------------ -->
 				<div class="result-container">
 					<h2 class="no-margin">사용자 검색</h2>
-					<div class="white-line"></div>
+					<div class="black-line"></div>
 					<div class="search-inner-container">
 						<div class="search-area">
 							<select id="div_year" name="div_year">

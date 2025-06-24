@@ -69,7 +69,9 @@
 	padding: 10px;
 	box-sizing: border-box;
 	border: none;
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+	background-color: #FFFFFF;
+	box-sizing: border-box;
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* 기존보다 저 진하고 넓은 그림자 */
 	border-radius: 4px;
 }
 
@@ -164,7 +166,9 @@
 	margin-top: 10px;
 	box-sizing: border-box;
 	border: none;
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+	background-color: #FFFFFF;
+	box-sizing: border-box;
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* 기존보다 저 진하고 넓은 그림자 */
 	border-radius: 4px;
 }
 
@@ -222,12 +226,12 @@ margin:0;
 			<div class="inner-container">
 				<div class="search-container">
 					<h2 class="no-margin">주소 검색</h2>
-					<div class="white-line"></div>
+					<div class="black-line"></div>
 					<div class="search-inner-container">
 						<div class="search-area">
 							<input type="text" id="searchKeyword" placeholder="주소 입력"
 								autocomplete="off" />
-							<button class="green-btn" onclick="searchUser()">검색</button>
+							<button class="nav-btn" onclick="searchUser()">검색</button>
 						</div>
 						<table id="userTable">
 							<thead>
@@ -251,11 +255,11 @@ margin:0;
 				<!-- 사용자별 에너지 사용량 관리 영역 start ------------------------ -->
 				<div id="usageSection" class="result-container">
 					<h2 class="no-margin">가스 사용내역</h2>
-					<div class="white-line"></div>
+					<div class="black-line"></div>
 					<div class="search-area">
-						<button class="green-btn-admin" onclick="showUsageModal('add')">등록</button>
-						<button class="green-btn-admin" onclick="showUsageModal('edit')">수정</button>
-						<button class="green-btn-admin" onclick="deleteUsage()">삭제</button>
+						<button class="nav-btn" onclick="showUsageModal('add')">등록</button>
+						<button class="nav-btn" onclick="showUsageModal('edit')">수정</button>
+						<button class="nav-btn" onclick="deleteUsage()">삭제</button>
 					</div>
 					<div class="result-inner-container">
 						<table id="usageTable">
@@ -321,8 +325,8 @@ margin:0;
 				</div>
 
 				<div class="modal-buttons">
-					<button class="green-btn-2" onclick="saveUsageData()">저장</button>
-					<button class="green-btn-2" onclick="hideUsageModal()">취소</button>
+					<button class="nav-btn" onclick="saveUsageData()">저장</button>
+					<button class="nav-btn" onclick="hideUsageModal()">취소</button>
 				</div>
 			</div>
 
