@@ -91,7 +91,7 @@ new Chart(comparisonCtx, {
     responsive: true,
     layout: { padding: { top: 20 } },
     plugins: {
-      title: { display: true, text: '내 사용량 vs 지역 평균 비교', font: {size: 24}},
+      title: { display: true, text: '내 사용량 vs 지역 평균 비교' , font: {size: 24}},
       legend: { display: false },
       datalabels: {
         anchor: 'end',

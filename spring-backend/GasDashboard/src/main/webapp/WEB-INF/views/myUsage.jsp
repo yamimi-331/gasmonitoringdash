@@ -82,9 +82,9 @@ table td[colspan="2"]{
 		<!-- 고객님의 최근 (12개월) 월별 사용량 추이 & 가스사용량 비교 Start ----------------- -->
 		<main class="board-page">
 		<div class="inner-container">
-			<div class="dashboard-container">
+			<div class="myusage-container">
 			<!-- 🚩 Dashboard 1: 최근 12개월 사용량 추이 -->
-			<div class="dashboard">
+			<div class="myusage-dashboard">
 				<h2 class="main-title">고객님의 최근 (12개월) 월별 사용량 추이</h2>
 				<div class="black-line"></div>
 			

@@ -4,11 +4,6 @@
 	justify-content: flex-end;
 }
 /* 내부 스크롤 감싸기 */
-.dashboard-scroll-wrapper2 {
-  overflow-x: auto;
-  overflow-y: hidden;
-  width: 100%;
-}
 
 .dashboard-scroll-wrapper {
   overflow-x: auto;
@@ -20,7 +15,7 @@
 }
 
 /* 실질적 콘텐츠 */
-.dashboard-container2 {
+.myusage-container {
   display: inline-flex;
   gap: 20px;
   min-width: max-content;
@@ -33,6 +28,7 @@
   gap: 20px;
   padding: 20px;
 }
+
 .dashboard-page {
   scroll-snap-align: start;
   flex: 0 0 90vw; /* 한 슬라이드가 화면 전체 너비 */
@@ -42,15 +38,8 @@
   justify-content: center;
   align-items: flex-start;
 }
-.dashboard-page2 {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-  width: 100%;
-  box-sizing: border-box;
-}
 
-.dashboard2 {
+.myusage-dashboard {
   width: fit-content;
   min-width: fit-content;
   flex-shrink: 0;
