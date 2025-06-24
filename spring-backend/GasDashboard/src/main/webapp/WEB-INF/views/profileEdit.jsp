@@ -56,51 +56,58 @@
 					<input class="input-area" type="text" id="user_addr" name="user_addr" value="${currentUserInfo.user_addr}">
 				</div>
 	
-				<div class="form-group">
-			    <label>회원 유형</label>
 			
-				    <c:if test="${currentUserInfo.user_type == 'common'}">
-				    	<div class="radio-group">
-					        <div>
-					            <input type="radio" name="user_type" id="typeCommon" value="common" checked><label for="typeCommon">일반</label>
-					        </div>
-					        <div>
-					            <input type="radio" name="user_type" id="typePreAdmin" value="preAdmin"><label for="typePreAdmin">관리자(승인요청)</label>
-					        </div>
-					        <div>
-					            <input type="radio" name="user_type" id="typePreManager" value="preManager"><label for="typePreManager">직원(승인요청)</label>
-					        </div>
+		
+			    <c:if test="${currentUserInfo.user_type == 'common'}">
+			    <div class="form-group">
+		    	<label>회원 유형</label>
+			    	<div class="radio-group">
+				        <div>
+				            <input type="radio" name="user_type" id="typeCommon" value="common" checked><label for="typeCommon">일반</label>
 				        </div>
-				    </c:if>
-				
-				    <c:if test="${currentUserInfo.user_type == 'preAdmin'}">
-				    	<div class="radio-group">
-					        <div>
-					            <input type="radio" name="user_type" id="typeCommon" value="common"><label for="typeCommon">일반</label>
-					        </div>
-					        <div>
-					            <input type="radio" name="user_type" id="typePreAdmin" value="preAdmin" checked><label for="typePreAdmin">관리자(승인요청)</label>
-					        </div>
-					        <div>
-					            <input type="radio" name="user_type" id="typePreManager" value="preManager"><label for="typePreManager">직원(승인요청)</label>
-					        </div>
-					       </div>
-				    </c:if>
-				
-				    <c:if test="${currentUserInfo.user_type == 'preManager'}">
-						<div class="radio-group">
-							<div>
-								<input type="radio" name="user_type" id="typeCommon" value="common"><label for="typeCommon">일반</label>
-							</div>
-							<div>
-								<input type="radio" name="user_type" id="typePreAdmin" value="preAdmin"><label for="typePreAdmin">관리자(승인요청)</label>
-							</div>
-							<div>
-								<input type="radio" name="user_type" id="typePreManager" value="preManager" checked><label for="typePreManager">직원(승인요청)</label>
-							</div>
+				        <div>
+				            <input type="radio" name="user_type" id="typePreAdmin" value="preAdmin"><label for="typePreAdmin">관리자(승인요청)</label>
+				        </div>
+				        <div>
+				            <input type="radio" name="user_type" id="typePreManager" value="preManager"><label for="typePreManager">직원(승인요청)</label>
+				        </div>
+			        </div>
+			    </div>
+			    </c:if>
+			
+			    <c:if test="${currentUserInfo.user_type == 'preAdmin'}">
+			    <div class="form-group">
+		    	<label>회원 유형</label>
+			    	<div class="radio-group">
+				        <div>
+				            <input type="radio" name="user_type" id="typeCommon" value="common"><label for="typeCommon">일반</label>
+				        </div>
+				        <div>
+				            <input type="radio" name="user_type" id="typePreAdmin" value="preAdmin" checked><label for="typePreAdmin">관리자(승인요청)</label>
+				        </div>
+				        <div>
+				            <input type="radio" name="user_type" id="typePreManager" value="preManager"><label for="typePreManager">직원(승인요청)</label>
 						</div>
-					</c:if>
+					</div>
 				</div>
+			    </c:if>
+			
+			    <c:if test="${currentUserInfo.user_type == 'preManager'}">
+			    <div class="form-group">
+		    	<label>회원 유형</label>
+					<div class="radio-group">
+						<div>
+							<input type="radio" name="user_type" id="typeCommon" value="common"><label for="typeCommon">일반</label>
+						</div>
+						<div>
+							<input type="radio" name="user_type" id="typePreAdmin" value="preAdmin"><label for="typePreAdmin">관리자(승인요청)</label>
+						</div>
+						<div>
+							<input type="radio" name="user_type" id="typePreManager" value="preManager" checked><label for="typePreManager">직원(승인요청)</label>
+						</div>
+					</div>
+				</div>
+				</c:if>
 				<div class="button-group">
 					<button type="submit" class="submit-area">수정하기</button>
 				</div>

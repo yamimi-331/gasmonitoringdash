@@ -50,8 +50,15 @@
 		</nav>
 		<!-- 좌측 네비게이션 end ============================= -->
 
+		
+		
 		<!-- main start ============================= -->
 		<main class="board-page">
+			<!-- 화면 이동 버튼 -->
+			<div class="slide-controls">
+				<button id="prevBtn"><img src="../../resources/img/prev-arrow.png"></button>
+				<button id="nextBtn"><img src="../../resources/img/next-arrow.png"></button>
+			</div>
 			<!-- 대시보드 스크롤용 감싸는 div start =============================== -->
 			<div class="dashboard-scroll-wrapper">
 				<!-- 대시보드를 담은 컨테이너 start -------------------------------------- -->
@@ -248,9 +255,7 @@
 
 		  scrollWrapper.addEventListener('wheel', e => {
 		    if (isScrolling) return;
-
 		    e.preventDefault();
-
 		    if (e.deltaY > 0) {
 		      // 아래로 휠 내림 → 다음 슬라이드로
 		      scrollToSlide(currentSlide + 1);
@@ -259,6 +264,14 @@
 		      scrollToSlide(currentSlide - 1);
 		    }
 		  }, { passive: false });
+		  
+		  document.getElementById('prevBtn').addEventListener('click', () => {
+		    scrollToSlide(currentSlide - 1);
+		  });
+
+		  document.getElementById('nextBtn').addEventListener('click', () => {
+		    scrollToSlide(currentSlide + 1);
+		  });
 		});
 	</script>
 </body>
