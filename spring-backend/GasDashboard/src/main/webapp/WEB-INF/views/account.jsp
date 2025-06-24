@@ -101,7 +101,7 @@
 
 			<!-- 메뉴 영역 -->
 			<div class="nav-menu">
-				<a class="nav-link" href="/">메인페이지</a>
+				<a class="nav-link" href="/">대시보드 페이지</a>
 			</div>
 
 			<!-- 관리자 전용 메뉴 -->

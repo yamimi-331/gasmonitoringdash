@@ -59,7 +59,7 @@
 				</div>
 				<div class="button-group">
 					<input class="submit-area" type="submit" value="가입하기">
-					<a class="go-main" href="/">메인페이지</a>
+					<a class="go-main" href="/">대시보드 페이지</a>
 				</div>
 			</form>
 		</div>

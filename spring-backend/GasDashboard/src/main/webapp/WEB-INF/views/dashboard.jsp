@@ -24,21 +24,23 @@
 		<nav class="sidebar-nav">
 			<c:choose>
 				<c:when test="${not empty currentUserInfo}">
-					<button class="header-button" onclick="location.href='/myUsage'">myUsage</button>
-					<button class="btn btn-logout" onclick="logout()">logout</button>
+					<div class="nav-menu">
+				    	<a class="nav-link" href="/myUsage">내 사용량 확인하기</a>
+				  	</div>
+					<button class="btn btn-logout" onclick="logout()">로그아웃</button>
 				</c:when>
 				<c:otherwise>
-					<button class="btn btn-logout" onclick="location.href='/login'">Login</button>
+					<button class="btn btn-logout" onclick="location.href='/login'">로그인</button>
 				</c:otherwise>
 			</c:choose>
 				<!-- 메뉴 영역 -->
-			  <div class="nav-menu">
+			  <!-- <div class="nav-menu">
 			    <a class="nav-link" href="/">메인페이지</a>
-			  </div>
+			  </div> -->
 			<c:if
 				test="${currentUserInfo.user_type != null and (currentUserInfo.user_type == 'admin' or currentUserInfo.user_type == 'manager')}">
 				<div class="nav-menu">
-				 <a class="nav-link" href="/admin">관리자 페이지</a>
+				 	<a class="nav-link" href="/admin">관리자 페이지</a>
 				</div>
 			</c:if>
 		</nav>

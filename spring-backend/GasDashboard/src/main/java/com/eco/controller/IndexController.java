@@ -13,7 +13,7 @@ import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@RequestMapping("/")
+@RequestMapping("/index")
 public class IndexController {
 	@GetMapping("")
 	public String indexPage(Model model, HttpSession session) {

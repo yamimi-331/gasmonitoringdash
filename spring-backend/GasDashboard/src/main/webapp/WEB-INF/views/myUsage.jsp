@@ -69,7 +69,7 @@ table td[colspan="2"]{
 				</div>
 			</div>
 			<div class="nav-menu">
-				<a class="nav-link" href="/">메인페이지</a>
+				<a class="nav-link" href="/">대시보드 페이지</a>
 				<a class="nav-link" href="/profileEdit">회원정보수정</a>
 			</div>
 		</nav>
