@@ -4,13 +4,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eco.domain.UserVO;
@@ -90,11 +91,15 @@ public class AccountController {
 	}
 	
 	// 사용자 검색
-	@GetMapping("/search-users")
-	@ResponseBody
-	public List<UserVO> searchUser(@RequestParam("user_nm") String user_nm, @RequestParam("user_type") String user_type) {
-		// 사용자 이름, 타입 검색하여 결과를 List로 반환
-		List<UserVO> result = adminService.searchAccount(user_nm, user_type);
-		return result;
-	}
+	@PostMapping("/search-users")
+    public ResponseEntity<UserVO> searchUser(@RequestParam String keyword,
+            @RequestParam(required = false) String userType) {
+        UserVO user = adminService.findUserById(keyword, userType);
+        if (user != null) {
+        	log.info(user);
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }

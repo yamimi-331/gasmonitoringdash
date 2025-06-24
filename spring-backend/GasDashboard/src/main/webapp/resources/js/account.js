@@ -6,46 +6,43 @@ function rejectConfirm(){
 }
 
 
-let selectedUserAddr = null;
+let selectedUserId = null;
 let selectedUserCd = null;
 let selectedUsageCd = null;
 
 // 사용자 검색 함수
 function searchUser() {
-	selectedUserAddr = null;
+	selectedUserId = null;
 	const keyword = jQuery("#searchKeyword").val();
-	if (!keyword) return alert("주소를 입력하세요.");
+    const userType = jQuery("#div_level").val();
+	if (!keyword) return alert("아이디를 입력하세요.");
 
 	jQuery.ajax({
-		url: "/admin/search-users",
-		type: "GET",
-		data: { keyword },
+		url: "/acount/search-users",
+		type: "POST",
+		data: {
+			keyword: keyword,
+			userType: userType
+		},
 		dataType: "json", // JSON으로 받기
 		success: function(users) {
 			const tbody = jQuery("#userTable tbody").empty();
-			// 사용량 테이블 초기화
-			const usageTbody = jQuery("#usageTable tbody").empty();
-			const noDataRow = '<tr><td colspan="3">조회된 사용량 데이터가 없습니다.</td></tr>';
-			usageTbody.append(noDataRow);
-				
-			if (users.length === 0) {
-				// No users found, display a message
-				const noUserRow = '<tr><td colspan="4">조회된 사용자가 없습니다.</td></tr>';
-				tbody.append(noUserRow);
-			} else {
-				users.forEach(user => {
-					 // 각 항목을 안전하게 문자열로 변환
-					  const rowHtml =
-						  '<tr onclick="selectUser(\'' + user.user_addr + '\', \'' + user.user_cd + '\')">' +
-						    '<td>' + user.user_id + '</td>' +
-						    '<td>' + user.user_nm + '</td>' +
-						    '<td>' + user.local_nm + '</td>' +
-						    '<td>' + user.user_addr + '</td>' +
-						  '</tr>';
-					   
-					    tbody.append(rowHtml);
-				});
-			}
+
+            if (!users || !users.user_id) {
+                tbody.append('<tr><td colspan="4">조회된 사용자가 없습니다.</td></tr>');
+                return;
+            }
+
+            const rowHtml =
+                '<tr onclick="selectUser(\'' + users.user_cd + '\', \'' + users.user_id + '\')">' +
+                    '<td><input type="radio" name="selectUser" /></td>' + // 선택 항목
+                    '<td>' + users.user_cd + '</td>' +                      // 아이디
+                    '<td>' + users.user_id + '</td>' +                      // 아이디
+                    '<td>' + users.user_nm + '</td>' +                      // 이름
+                    '<td>' + convertUserType(users.user_type) + '</td>' +   // 현재 등급
+                '</tr>';
+
+            tbody.append(rowHtml);
 		},
 	    error: function(xhr, status, error) {
 	        alert("서버 오류 발생: " + xhr.status + " " + xhr.statusText);
@@ -54,11 +51,19 @@ function searchUser() {
 	});
 }
 
+function convertUserType(type) {
+	switch (type) {
+		case "common": return "일반 회원";
+		case "manager": return "직원";
+		case "admin": return "관리자";
+		default: return "알수없음";
+	}
+}
 // 사용자 선택 함수
-function selectUser(userAddr, userCd) {
+function selectUser(userCd, userId) {
     // 이미 선택된 사용자를 다시 클릭하면 선택 해제
-    if (selectedUserAddr === userAddr) {
-        selectedUserAddr = null;
+    if (selectedUserId === userAddr) {
+        selectedUserId = null;
         selectedUserCd = null; // 선택 해제
         // 모든 <tr> 태그에서 'selected' 클래스 제거
         document.querySelectorAll("#userTable tbody tr").forEach(tr => {
@@ -71,7 +76,7 @@ function selectUser(userAddr, userCd) {
         return; // 함수 종료
     }
 
-    selectedUserAddr = userAddr;
+    selectedUserId = userId;
     selectedUserCd = userCd;
 
     // 모든 <tr> 태그에서 'selected' 클래스 제거
@@ -97,7 +102,7 @@ function selectUser(userAddr, userCd) {
 // 가스사용량 조회
 function loadUsageData() {
 	jQuery.ajax({
-		url: '/admin/user/'+selectedUserCd+'/usage',
+		url: '/account/user/'+selectedUserCd+'/usage',
 		type: "GET",
 		dataType: "json",
 		success: function(data) {
@@ -191,10 +196,10 @@ function showUsageModal(mode) {
     jQuery("#modal_usage_cd").val(''); // usageCd 초기화 (수정 아닐 시 비워둠)
 
     jQuery("#modal_mode").val(mode); // 모드 설정 ('add' 또는 'edit')
-    jQuery("#modal_user_id").val(selectedUserAddr); // 현재 선택된 사용자 코드 설정
+    jQuery("#modal_user_id").val(selectedUserId); // 현재 선택된 사용자 코드 설정
 
     if (mode === 'add') {
-        if (!selectedUserAddr) {
+        if (!selectedUserId) {
             alert('사용자를 선택해주세요.');
             hideUsageModal(); // 모달 띄우지 않고 바로 닫기
             return;

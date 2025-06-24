@@ -85,13 +85,13 @@
 										<input type="hidden" name="user_id" value="${item.user_id}">
 										<input type="hidden" name="user_type"
 											value="${item.user_type}">
-										<button type="submit">승인</button>
+										<button class="nav-btn" type="submit">승인</button>
 									</form>
 									<form method="post" action="/account/reject"
 										style="display: inline;" onsubmit="return rejectConfirm();">
 										<input type="hidden" name="user_cd" value="${item.user_cd}">
 										<input type="hidden" name="user_id" value="${item.user_id}">
-										<button type="submit">거절</button>
+										<button  class="nav-btn" type="submit">거절</button>
 									</form>
 								</td>
 							</tr>
@@ -105,14 +105,14 @@
 				</c:choose>
 			</table>
 			</div>
-			<!-- 사용자 검색 영역 start------------------------------ -->
+			<!-- 사용자 권한 등급 수정 start------------------------------ -->
 				<div class="result-container">
-					<h2 class="no-margin">사용자 검색</h2>
+					<h2 class="no-margin">사용자 권한 등급 수정</h2>
 					<div class="black-line"></div>
 					<div class="search-inner-container">
 						<div class="search-area">
-							<select id="div_year" name="div_year">
-								<option value="">-- 등급 선택 --</option>
+							<select id="div_level" name="div_level">
+								<option value="">-- 권한 등급 선택 --</option>
 								<option value="common">일반 회원</option>
 								<option value="manager">매니저</option>
 								<option value="admin">관리자</option>
@@ -140,13 +140,13 @@
 				</div>
 			</div>
 			<!-- 사용자 검색 영역 end------------------------------ -->
-			<!-- 등록 수정 모달 폼 전체 영역 -->
+			<!-- 사용자 권한 수정 폼 전체 영역 -->
 			<div id="usageModal" class="modal-container">
 				<h3 id="modalTitle">사용자 권한 관리</h3>
 				<input type="hidden" id="modal_user_id">
 				<div class="modal-field">
 					<select id="modal_year" name="modal_year">
-						<option value="">-- 연도 선택 --</option>
+						<option value="">-- 권한 등급 선택 --</option>
 						<option value="common">일반 회원</option>
 						<option value="manager">매니저</option>
 						<option value="admin">관리자</option>

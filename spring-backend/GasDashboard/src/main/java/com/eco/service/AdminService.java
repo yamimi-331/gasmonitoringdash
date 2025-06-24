@@ -30,4 +30,7 @@ public interface AdminService {
 	
 	// 사용자 등급 변경
 	public boolean changeUserType(UserVO user);
+	
+	// 사용자 정보조회
+	public UserVO findUserById(String user_id, String user_type);
 }

@@ -32,6 +32,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</select>
 
+	<!-- 관리자 권한 변경 위한 전체 계정 조회 -->
+	<select id="selectUserById" resultType="com.eco.domain.UserVO">
+		<![CDATA[
+		SELECT * FROM t_user WHERE user_id LIKE #{user_id} AND user_type = #{user_type} AND use_yn = 'Y'
+		]]>
+	</select>
+
 	<!-- INSERT -->
 	<!-- 사용량 등록 -->
 	<insert id="insertUsage"
