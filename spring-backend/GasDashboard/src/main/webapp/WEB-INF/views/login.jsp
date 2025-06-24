@@ -34,7 +34,7 @@
 				<div class="button-group">
 					<input class="submit-area" type="submit" value="로그인"/>
 					<input class="submit-area" type="button" onclick="location.href='/signup'" value="회원가입"/>
-					<a class="go-main" href="/">메인페이지</a>
+					<a class="go-main" href="/">대시보드 이동</a>
 				</div>
 			</form>
 		</div>

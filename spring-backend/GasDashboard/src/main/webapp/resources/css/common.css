@@ -55,6 +55,7 @@ main.board-page {
 	align-items: flex-start;
 	box-sizing: border-box;
 	overflow: hidden;
+	position: relative;
 }
 
 .container {

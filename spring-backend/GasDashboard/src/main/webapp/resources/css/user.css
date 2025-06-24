@@ -10,7 +10,7 @@ main.user-page{
 
 .form-container{
 	border-radius: 8px;
-	padding: 20px;
+	padding: 10px 20px;
 	border: 1px solid white;
 	box-shadow: 6px 6px 10px 0px #cccccc;
 	background-color: #FFFFFF;
@@ -21,7 +21,7 @@ main.user-page{
 	text-align: center;
 	border-bottom: 4px solid black;
 	margin-bottom: 10px;
-	font-size: 23px;
+	font-size: 20px;
 }
 
 .user-form{
@@ -35,7 +35,7 @@ main.user-page{
 	flex-direction: column;
 	gap: 5px;
 	margin: 10px 0;
-	font-size: 18px;
+	font-size: 17px;
 }
 
 .id-group{
@@ -49,7 +49,7 @@ main.user-page{
 	border-radius: 8px;
 	border: 1px solid #aaa;
 	padding-left: 10px;
-	font-size: 18px;
+	font-size: 17px;
 }
 
 .input-id-button{
@@ -59,7 +59,7 @@ main.user-page{
 	border: none;
 	background-color: #6080bb;
 	color: white;
-	font-size: 17px;
+	font-size: 16px;
 	font-weight: bold;
 }
 .input-id-button:hover{
@@ -68,12 +68,12 @@ main.user-page{
 }
 
 .input-area{
-	width: 330px;
+	width: 350px;
 	height: 35px;
 	border-radius: 8px;
 	border: 1px solid #aaa;
 	padding-left: 10px;
-	font-size: 17px;
+	font-size: 15px;
 }
 
 .select-area{
@@ -82,14 +82,14 @@ main.user-page{
 	border: 1px solid #aaa;
 	padding-left: 8px;
 	box-sizing: border-box;
-	font-size: 17px;
+	font-size: 15px;
 }
 
 .radio-group{
 	display: flex;
 	justify-content: space-around;
 	margin: 10px 0;
-	font-size: 17px;
+	font-size: 16px;
 }
 
 .button-group{
@@ -107,7 +107,7 @@ main.user-page{
 	margin: 5px 0;
 	background-color: #6080bb;
 	color: white;
-	font-size: 17px;
+	font-size: 16px;
 	font-weight: bold;
 }
 .submit-area:hover{

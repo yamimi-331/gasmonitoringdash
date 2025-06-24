@@ -203,3 +203,39 @@ canvas {
 	gap: 20px;
 }
 
+.slide-controls {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 10px;
+  width: 100%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.slide-controls button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  width: 60px;
+  height: 60px;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 20px;
+}
+
+.slide-controls img {
+	width: 100%;
+	height: auto;
+	display: block;
+	opacity: 0.6;
+}
+.slide-controls img:hover{
+	opacity: 1;
+}
