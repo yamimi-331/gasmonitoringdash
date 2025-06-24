@@ -4,7 +4,7 @@ main.user-page{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #252526;
+	background-color: #E8E8E8;
 	box-sizing: border-box;
 }
 
@@ -12,7 +12,8 @@ main.user-page{
 	border-radius: 8px;
 	padding: 20px;
 	border: 1px solid white;
-	box-shadow: -6px -6px 10px 0px rgba(255, 255, 255, 0.3);
+	box-shadow: 6px 6px 10px 0px #cccccc;
+	background-color: #FFFFFF;
 }
 
 .form-title{
@@ -53,6 +54,12 @@ main.user-page{
 	height: 39px;
 	border-radius: 8px;
 	border: none;
+	background-color: #6080bb;
+	color: white;
+}
+.input-id-button:hover{
+	background-color: #496497;
+	cursor: pointer;
 }
 
 .input-area{
@@ -90,9 +97,11 @@ main.user-page{
 	border-radius: 8px;
 	border: none;
 	margin: 5px 0;
+	background-color: #6080bb;
+	color: white;
 }
 .submit-area:hover{
-	background-color: #ddd;
+	background-color: #496497;
 	cursor: pointer;
 }
 
