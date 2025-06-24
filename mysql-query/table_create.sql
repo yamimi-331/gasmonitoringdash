@@ -18,7 +18,7 @@ CREATE TABLE T_USER (
     user_nm    VARCHAR(15),              -- 사용자 이름
     local_cd   CHAR(3)  NOT NULL,              -- 지역 코드 (FK)
     user_addr  VARCHAR(100) NOT NULL,              -- 상세 주소
-    admin_yn   CHAR(1)      NOT NULL DEFAULT 'N',  -- 관리자 여부 (기본값 N)
+    user_type   VARCHAR(100)      NOT NULL DEFAULT 'common',  -- 회원 등급 (기본값 common)
     use_yn     CHAR(1)      NOT NULL DEFAULT 'Y',  -- 사용 여부 (기본값 Y)
     FOREIGN KEY (local_cd) REFERENCES T_LOCAL(local_cd)
 );
