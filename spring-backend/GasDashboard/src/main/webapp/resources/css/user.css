@@ -17,10 +17,11 @@ main.user-page{
 }
 
 .form-title{
-	width: 340px;
+	width: 360px;
 	text-align: center;
-	border-bottom: 2px solid black;
+	border-bottom: 4px solid black;
 	margin-bottom: 10px;
+	font-size: 23px;
 }
 
 .user-form{
@@ -34,6 +35,7 @@ main.user-page{
 	flex-direction: column;
 	gap: 5px;
 	margin: 10px 0;
+	font-size: 18px;
 }
 
 .id-group{
@@ -42,11 +44,12 @@ main.user-page{
 }
 
 .input-id{
-	width: 230px;
+	width: 250px;
 	height: 35px;
 	border-radius: 8px;
 	border: 1px solid #aaa;
 	padding-left: 10px;
+	font-size: 18px;
 }
 
 .input-id-button{
@@ -56,6 +59,8 @@ main.user-page{
 	border: none;
 	background-color: #6080bb;
 	color: white;
+	font-size: 17px;
+	font-weight: bold;
 }
 .input-id-button:hover{
 	background-color: #496497;
@@ -68,6 +73,7 @@ main.user-page{
 	border-radius: 8px;
 	border: 1px solid #aaa;
 	padding-left: 10px;
+	font-size: 17px;
 }
 
 .select-area{
@@ -76,12 +82,14 @@ main.user-page{
 	border: 1px solid #aaa;
 	padding-left: 8px;
 	box-sizing: border-box;
+	font-size: 17px;
 }
 
 .radio-group{
 	display: flex;
 	justify-content: space-around;
 	margin: 10px 0;
+	font-size: 17px;
 }
 
 .button-group{
@@ -92,13 +100,15 @@ main.user-page{
 }
 
 .submit-area{
-	width: 150px;
-	height: 35px;
+	width: 170px;
+	height: 40px;
 	border-radius: 8px;
 	border: none;
 	margin: 5px 0;
 	background-color: #6080bb;
 	color: white;
+	font-size: 17px;
+	font-weight: bold;
 }
 .submit-area:hover{
 	background-color: #496497;
