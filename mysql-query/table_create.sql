@@ -12,10 +12,10 @@ CREATE TABLE T_LOCAL (
 
 -- T_USER 생성
 CREATE TABLE T_USER (
-    user_cd    CHAR(11)     NOT NULL primary key,              -- YYYY+RRR+SSSS 형태의 사용자 코드
-    user_id    VARCHAR(50)  NOT NULL UNIQUE,       -- 사용자 ID (고유)
-    user_pw    VARCHAR(100),              -- 비밀번호
-    user_nm    VARCHAR(15),              -- 사용자 이름
+    user_cd    CHAR(11)  CHARACTER SET utf8mb4 COLLATE utf8mb4_bin   NOT NULL primary key,              -- YYYY+RRR+SSSS 형태의 사용자 코드
+    user_id    VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL UNIQUE,       -- 사용자 ID (고유)
+    user_pw    VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,              -- 비밀번호
+    user_nm    VARCHAR(15) NOT NULL,              -- 사용자 이름
     local_cd   CHAR(3)  NOT NULL,              -- 지역 코드 (FK)
     user_addr  VARCHAR(100) NOT NULL,              -- 상세 주소
     user_type   VARCHAR(100)      NOT NULL DEFAULT 'common',  -- 회원 등급 (기본값 common)
