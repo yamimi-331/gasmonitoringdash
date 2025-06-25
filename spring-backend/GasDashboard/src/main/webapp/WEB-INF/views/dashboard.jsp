@@ -15,43 +15,12 @@
 </head>
 <body>
 	<header>
-		<h2 class="header-title">Dashboard</h2>
+		<h2 class="header-title">가스 공급량 수요 예측 모니터링 대시보드</h2>
 	</header>
 
 	<!-- nav와 main을 가로로 나란히 배치하기위한 컨테이너 -->
 	<div class="container">
-		<!-- 좌측 네비게이션 start ============================= -->
-		<nav class="sidebar-nav">
-		 <!-- 상단 환영 메시지 영역 -->
-		  <div class="nav-header">
-		    <c:choose>
-				<c:when test="${not empty currentUserInfo}">
-					<div class="nav-user-info">
-				      <span class="user-welcome-text">${currentUserInfo.user_nm} 님, 환영합니다.</span>
-				    </div>
-				    <button class="nav-btn" onclick="logout()">로그아웃</button>
-				</c:when>
-				<c:otherwise>
-					<button class="nav-btn" onclick="location.href='/login'">로그인</button>
-				</c:otherwise>
-			</c:choose>
-		  </div>
-			<c:if test="${not empty currentUserInfo}">
-				<div class="nav-menu">
-			    	<a class="nav-link" href="/myUsage">마이페이지</a>
-			  	</div>
-			</c:if>
-			<c:if
-				test="${currentUserInfo.user_type != null and (currentUserInfo.user_type == 'admin' or currentUserInfo.user_type == 'manager')}">
-				<div class="nav-menu">
-				 	<a class="nav-link" href="/admin">관리자 페이지</a>
-				</div>
-			</c:if>
-		</nav>
-		<!-- 좌측 네비게이션 end ============================= -->
-
-		
-		
+		<jsp:include page="/WEB-INF/views/common/nav.jsp" />
 		<!-- main start ============================= -->
 		<main class="board-page">
 			<!-- 화면 이동 버튼 -->

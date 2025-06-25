@@ -53,31 +53,7 @@ table td[colspan="2"]{
 		<h2 class="header-title">마이페이지</h2>
 	</header>
 	<div class="container">
-		<!-- 좌측 네비게이션 Start ------------------------- -->
-		<nav class="sidebar-nav">
-			<div class="nav-header">
-				<!-- 버튼 내비게이션 -->
-				<!-- 사용자 소개 -->
-				<div class="nav-user-info">
-					<span class="user-welcome-text">${currentUserInfo.user_nm} 님, 환영합니다.</span> 
-				</div>
-				<!-- 로그아웃 및 기능 버튼 -->
-				<button class="nav-btn" onclick="logout()">로그아웃</button>
-			</div>
-			<div class="nav-menu">
-				<a class="nav-link" href="/">대시보드 페이지</a>
-			</div>
-			<c:if
-				test="${currentUserInfo.user_type != null and (currentUserInfo.user_type == 'admin' or currentUserInfo.user_type == 'manager')}">
-				<div class="nav-menu">
-				 	<a class="nav-link" href="/admin">관리자 페이지</a>
-				</div>
-			</c:if>
-			<div class="nav-menu">
-				<a class="nav-link" href="/profileEdit">회원정보수정</a>
-			</div>
-		</nav>
-		<!-- 좌측 네비게이션 end   ------------------------- -->
+		<jsp:include page="/WEB-INF/views/common/nav.jsp" />
 		
 		<!-- 고객님의 최근 (12개월) 월별 사용량 추이 & 가스사용량 비교 Start ----------------- -->
 		<main class="board-page">

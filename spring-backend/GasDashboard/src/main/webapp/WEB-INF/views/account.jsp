@@ -19,28 +19,7 @@
 	</header>
 	<!-- nav와 main을 가로로 나란히 배치하기위한 컨테이너 -->
 	<div class="container">
-		<!-- 좌측 네비게이션 start ============================= -->
-		<nav class="sidebar-nav">
-			<!-- 상단 환영 메시지 영역 -->
-			<div class="nav-header">
-				<div class="nav-user-info">
-					<span class="user-welcome-text">${currentUserInfo.user_nm}
-						님, 환영합니다.</span>
-				</div>
-				<button class="nav-btn" onclick="logout()">로그아웃</button>
-			</div>
-
-			<!-- 메뉴 영역 -->
-			<div class="nav-menu">
-				<a class="nav-link" href="/">대시보드 페이지</a>
-			</div>
-
-			<!-- 관리자 전용 메뉴 -->
-			<div class="nav-menu">
-				<a class="nav-link" href="/admin">관리자 페이지</a>
-			</div>
-		</nav>
-		<!-- 좌측 네비게이션 end ============================= -->
+		<jsp:include page="/WEB-INF/views/common/nav.jsp" />
 
 		<!-- main start ============================= -->
 		<main class="board-page">

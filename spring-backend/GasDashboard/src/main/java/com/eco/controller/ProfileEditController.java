@@ -62,7 +62,6 @@ public class ProfileEditController {
 	    sessionUser.setLocal_cd(userVo.getLocal_cd());
 	    sessionUser.setUser_addr(userVo.getUser_addr());
 	    sessionUser.setUser_type(userVo.getUser_type());
-
 	    // DB 업데이트
 	    userService.updateUserInfo(sessionUser);
 
