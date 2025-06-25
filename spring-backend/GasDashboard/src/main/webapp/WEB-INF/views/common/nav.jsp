@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+
 <style>
 
 /* active 상태일 때 */
@@ -99,4 +101,11 @@
       menu.classList.remove('active');
     });
   }
+  function logout() {
+		let isLogout = confirm("정말 로그아웃 하시겠습니까?");
+		if (isLogout) {
+			// 확인 눌렀을 때 로그아웃 페이지로 이동
+			window.location.href = "/logout";
+		}
+	}
 </script>
