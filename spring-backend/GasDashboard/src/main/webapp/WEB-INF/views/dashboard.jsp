@@ -53,16 +53,19 @@
 						</div>
 						<!-- 상단 차트 공간 -->
 						<div class="charts-top">
-							<div id="topLocalSupply"></div>
+							<div id="topLocalSupply" class="loading-wrapper"></div>
+							<div class="local-loading-overlay" id="loading-topLocalSupply">
+								<div class="spinner"></div>
+							</div>
 						</div>
 						<!-- 연도별 전국 가스 공급량 차트 -->
 						<div class="charts-top">
 							<div class="local-charts-box loading-wrapper">
 								<canvas id="yearLocalSupply"></canvas>
 								<!-- 로딩 오버레이 -->
-							    <!-- <div class="local-loading-overlay" id="chartLoading">
-							      <div class="spinner"></div>
-							    </div> -->
+							    <div class="local-loading-overlay" id="loading-yearLocalSupply">
+									<div class="spinner"></div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -114,7 +117,7 @@
 							<div class="charts-box loading-wrapper">
 								<canvas id="gasChart"></canvas>
 								<!-- 로딩 오버레이 -->
-							    <div class="local-loading-overlay" id="chartLoading">
+							    <div class="local-loading-overlay" id="loading-gasChart">
 							      <div class="spinner"></div>
 							    </div>
 							</div>
@@ -153,17 +156,21 @@
 						</div>
 						<div class="charts-top">
 							<!-- 지역/년도별 인구수 및 가스 공급량 차트 -->
-							<div class="charts-box-small">
+							<div class="charts-box-small loading-wrapper">
 								<canvas id="populationSupply"></canvas>
+								<div class="local-loading-overlay" id="loading-populationSupply">
+								    <div class="spinner"></div>
+								  </div>
 							</div>
 							<!-- 지역별 1인당 가스 사용량 차트 -->
-							<div class="charts-box-small">
+							<div class="charts-box-small loading-wrapper">
 								<canvas id="personalGasUse"></canvas>
+								<div class="local-loading-overlay" id="loading-personalGasUse">
+								    <div class="spinner"></div>
+								  </div>
 							</div>
 						</div>
-						<!-- </div>
-								
-						<div class="dashboard"> -->
+
 						<h2 class="main-title">동계 한파일수 vs 가스사용량</h2>
 						<div class="black-line"></div>
 						<div class="controls">
@@ -197,8 +204,11 @@
 						</div>
 						<!-- 한파일수 & 공급량 차트 -->
 						<div class="charts-top">
-							<div class="charts-box-small">
+							<div class="charts-box-small loading-wrapper">
 								<canvas id="coldDayChart"></canvas>
+								<div class="local-loading-overlay" id="loading-coldDayChart">
+								    <div class="spinner"></div>
+								  </div>
 							</div>
 						</div>
 					</div>

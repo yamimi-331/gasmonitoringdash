@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	yearLocalChartDraw("2025");
 	populationChartDraw("서울특별시");
 	loadWinterCorrelation("서울특별시","2025");
-	});
+});
 
 //#region  차트생성함수
 // "가스 공급량 및 수요예측 차트" 생성 함수
@@ -100,7 +100,7 @@ async function fetchPrediction() {
 
   try { 
 	  // 로딩창 표시
-	  showChartLoading();
+	  showLoading('gasChart');
 	  
 	  // 브라우저에 렌더링 타이밍을 줌
 	  await new Promise(resolve => setTimeout(resolve, 50));
@@ -248,7 +248,7 @@ async function fetchPrediction() {
     // 로딩중 메세지 비활성화
     //loading.style.display = "none";
      requestAnimationFrame(() => {
-	    hideChartLoading();
+	    hideLoading('gasChart');
 	  });
   }
   
@@ -258,9 +258,6 @@ async function fetchPrediction() {
 //topLocalSupplyChart = "상위 5개 지역 가스 공급량 점유율 차트"
 //yearLocalGasChart = "연도별 전국 가스 공급량 차트"
 async function yearLocalChartDraw(year) {
-	//const loading = document.getElementById("loading");
-	//loading.style.display = "inline";
-	
 	try {
 		const response = await fetch('http://localhost:8000/api/gas/yearsupply?year=' + year);
 		data = await response.json();
@@ -270,20 +267,23 @@ async function yearLocalChartDraw(year) {
 		destroyIfChartExists("yearLocalSupply");
 		
 		// 새로 그리기 (반환값 필요 없음)
-		topLocalSupplyChart(yearData, year);
-		yearLocalGasChart('yearLocalSupply', yearData, year);
+		await topLocalSupplyChart(yearData, year);
+		await yearLocalGasChart('yearLocalSupply', yearData, year);
 	} catch(error) {
 		alert("데이터 가져오기 오류: " + error);
 	} finally {
-		//loading.style.display = "none";
 	}
 }
 
 // "상위 5개 지역 가스 공급량 점유율 차트"
-function topLocalSupplyChart(yearData, year){
+async function topLocalSupplyChart(yearData, year){
+	showLoading('topLocalSupply');
+	// 브라우저에 렌더링 타이밍을 줌
+	await new Promise(resolve => setTimeout(resolve, 50));
+
 	const container = document.getElementById('topLocalSupply');
 	container.innerHTML = ""; // 기존 차트 제거
-	
+		
 	//상위 5개 도시 추출
 	const entries = Object.entries(yearData);
 	const top5 = entries.slice(0, 5);
@@ -332,10 +332,17 @@ function topLocalSupplyChart(yearData, year){
 			plugins: [donutCenterText]
 		});
 	});
+	requestAnimationFrame(() => {
+	    hideLoading('topLocalSupply');
+    });
 }
 
 // "연도별 전국 가스 공급량 차트"
-function yearLocalGasChart(canvasId, yearData, year) {
+async function yearLocalGasChart(canvasId, yearData, year) {
+	showLoading('yearLocalSupply');	
+	// 브라우저에 렌더링 타이밍을 줌
+	await new Promise(resolve => setTimeout(resolve, 50));
+		
 	const labels = Object.keys(yearData);
 	const supplyValues = Object.values(yearData);
 
@@ -384,6 +391,9 @@ function yearLocalGasChart(canvasId, yearData, year) {
 			}
 		}
 	});
+	requestAnimationFrame(() => {
+	    hideLoading('yearLocalSupply');
+    });
 }
 
 
@@ -391,8 +401,6 @@ function yearLocalGasChart(canvasId, yearData, year) {
 // populationSupplyChart = "지역/년도별 인구수 및 가스 공급량 차트"
 // personalGasUseChart = "지역별 1인당 가스 사용량 차트"
 async function populationChartDraw(city) {
-	//const loading = document.getElementById("loading");
-	//loading.style.display = "inline";
 	
 	try {
 		const response = await fetch('http://localhost:8000/api/gas/populationsupply?localname=' + city);
@@ -409,13 +417,13 @@ async function populationChartDraw(city) {
 		destroyIfChartExists("personalGasUse");
 
 		// 새로 그리기 (반환값 필요 없음)
-		populationSupplyChart('populationSupply', years, populations, supplies, city)
-		personalGasUseChart('personalGasUse', years, perPerson, city)
+		await populationSupplyChart('populationSupply', years, populations, supplies, city)
+		await personalGasUseChart('personalGasUse', years, perPerson, city)
 		
 	} catch (error) {
 		alert("데이터 가져오기 오류: " + error);
 	}finally {
-		//loading.style.display = "none";
+		
 	}
 }
 
@@ -426,7 +434,11 @@ function destroyIfChartExists(id) {
 }
 
 // "지역/년도별 인구수 및 가스 공급량 차트"
-function populationSupplyChart(canvasId, labels, populations, supplies, city){
+async function populationSupplyChart(canvasId, labels, populations, supplies, city){
+	showLoading('populationSupply');
+	// 브라우저에 렌더링 타이밍을 줌
+	await new Promise(resolve => setTimeout(resolve, 50));
+	  
 	// 최대, 최소값 계산
     const maxPop = Math.max(...populations);
     const minPop = Math.min(...populations);
@@ -506,10 +518,17 @@ function populationSupplyChart(canvasId, labels, populations, supplies, city){
 			}
 		}
 	});
+	requestAnimationFrame(() => {
+	    	hideLoading('populationSupply');
+	  	});
 }
 
 // "지역별 1인당 가스 사용량 차트"
-function personalGasUseChart(canvasId, labels, data, city) {
+async function personalGasUseChart(canvasId, labels, data, city) {
+	showLoading('personalGasUse');
+	// 브라우저에 렌더링 타이밍을 줌
+	await new Promise(resolve => setTimeout(resolve, 50));
+	  
 	const ctx = document.getElementById(canvasId).getContext('2d');
 	new Chart(ctx, {
 		type: 'line',
@@ -543,6 +562,10 @@ function personalGasUseChart(canvasId, labels, data, city) {
 			}
 		}
 	});
+	
+	requestAnimationFrame(() => {
+	    hideLoading('personalGasUse');
+	});
 }
 
 // 선택 밸류 확인
@@ -558,6 +581,10 @@ function handleSelectChange() {
 // "한파 일수 & 공급량 차트"
 async function loadWinterCorrelation(localName, year) {
   try {
+	showLoading('coldDayChart');
+	// 브라우저에 렌더링 타이밍을 줌
+	  await new Promise(resolve => setTimeout(resolve, 50));
+	  
 	const queryParams = new URLSearchParams({ localname: localName, year });
 		
 	const response = await fetch('http://localhost:8000/api/gas/coldDaySupply?'+queryParams);
@@ -566,7 +593,7 @@ async function loadWinterCorrelation(localName, year) {
     const labels = data.map(item => item.Month+'월');
     const coldDays = data.map(item => item.ColdDay);
     const gasSupply = data.map(item => item.GasSupply);
-     
+    
     destroyIfChartExists("coldDayChart");
     
     const ctx = document.getElementById("coldDayChart").getContext("2d");
@@ -644,6 +671,10 @@ async function loadWinterCorrelation(localName, year) {
     	});
   } catch (error) {
     console.error("데이터 불러오기 실패:", error);
+  } finally{
+  	requestAnimationFrame(() => {
+	    hideLoading('coldDayChart');
+	  });
   }
 }
 // 스크롤 및 버튼으로 슬라이드 이동
@@ -685,13 +716,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 로딩 기능 추가
-function showChartLoading() {
-  document.getElementById("chartLoading").style.display = "flex";
+function showLoading(canvasId) {
+  const overlay = document.getElementById(`loading-${canvasId}`);
+  if (overlay) overlay.style.display = 'flex';
 }
 
-function hideChartLoading() {
-  document.getElementById("chartLoading").style.display = "none";
+function hideLoading(canvasId) {
+  const overlay = document.getElementById(`loading-${canvasId}`);
+  if (overlay) overlay.style.display = 'none';
 }
-
 
 //#endregion
