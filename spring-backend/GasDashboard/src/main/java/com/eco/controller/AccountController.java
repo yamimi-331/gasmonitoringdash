@@ -89,14 +89,18 @@ public class AccountController {
 	@PostMapping("/reject")
 	public String rejectUser(UserVO user, RedirectAttributes redirectAttributes) {
 		String type = user.getUser_type();
-		String resultType= "";
-		if(type == "commonM" || type =="commonA") {
-			resultType = "common";
-		} else if(type == "managerA") {
-			resultType = "manager";
-		} 
-		user.setUser_type(resultType);
+		log.info(user);
 		
+		String resultType= "";
+		if ("commonM".equals(type) || "commonA".equals(type)) {
+		    resultType = "common";
+		} else if ("managerA".equals(type)) {
+		    resultType = "manager";
+		}
+		
+		user.setUser_type(resultType);
+		log.info(user);
+				
 		adminService.changeUserType(user);
 
 		redirectAttributes.addFlashAttribute("msg", resultType + "으로 등급이 변경 되었습니다.");
