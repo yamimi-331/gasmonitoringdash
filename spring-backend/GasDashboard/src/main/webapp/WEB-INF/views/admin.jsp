@@ -125,43 +125,37 @@
 				<input type="hidden" id="modal_mode"> <input type="hidden"
 					id="modal_usage_cd"> <input type="hidden"
 					id="modal_user_id">
+				<fieldset  class="modal-field">
+					<legend>사용 일자:</legend>
+					<select id="modal_year" name="modal_year">
+						<option value="">-- 연도 선택 --</option>
+						<option value="2020">2020년</option>
+						<option value="2021">2021년</option>
+						<option value="2022">2022년</option>
+						<option value="2023">2023년</option>
+						<option value="2024">2024년</option>
+						<option value="2025">2025년</option>
+					</select> <select id="modal_month" name="modal_month">
+						<option value="">-- 월 선택 --</option>
+						<option value="01">1월</option>
+						<option value="02">2월</option>
+						<option value="03">3월</option>
+						<option value="04">4월</option>
+						<option value="05">5월</option>
+						<option value="06">6월</option>
+						<option value="07">7월</option>
+						<option value="08">8월</option>
+						<option value="09">9월</option>
+						<option value="10">10월</option>
+						<option value="11">11월</option>
+						<option value="12">12월</option>
+					</select>
+				</fieldset>
+
 				<div class="modal-field">
-					<fieldset>
-						<legend>사용 일자:</legend>
-						<select id="modal_year" name="modal_year">
-							<option value="">-- 연도 선택 --</option>
-							<option value="2020">2020년</option>
-							<option value="2021">2021년</option>
-							<option value="2022">2022년</option>
-							<option value="2023">2023년</option>
-							<option value="2024">2024년</option>
-							<option value="2025">2025년</option>
-						</select> <select id="modal_month" name="modal_month">
-							<option value="">-- 월 선택 --</option>
-							<option value="01">1월</option>
-							<option value="02">2월</option>
-							<option value="03">3월</option>
-							<option value="04">4월</option>
-							<option value="05">5월</option>
-							<option value="06">6월</option>
-							<option value="07">7월</option>
-							<option value="08">8월</option>
-							<option value="09">9월</option>
-							<option value="10">10월</option>
-							<option value="11">11월</option>
-							<option value="12">12월</option>
-						</select>
-					</fieldset>
-				</div>
-
-
-				<div class="modal-field" style="margin-bottom: 20px;">
 					<label for="modal_usage_input">사용량:</label> <input type="number"
 						id="modal_usage_input" step="0.01" min="0" class="modal-input"
 						required>
-				</div>
-
-				<div class="modal-buttons">
 					<button class="nav-btn" onclick="saveUsageData()">저장</button>
 					<button class="nav-btn" onclick="hideUsageModal()">취소</button>
 				</div>

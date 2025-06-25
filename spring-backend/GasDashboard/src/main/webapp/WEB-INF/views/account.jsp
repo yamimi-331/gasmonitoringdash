@@ -174,9 +174,6 @@
 						<option value="manager">매니저</option>
 						<option value="admin">관리자</option>
 					</select>
-				</div>
-			
-				<div class="modal-buttons">
 					<button class="nav-btn" onclick="saveUserLevel()">저장</button>
 					<button class="nav-btn" onclick="hideLevelModal()">취소</button>
 				</div>
