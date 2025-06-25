@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>DashBoard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script type="text/javascript" src="../../resources/js/dashboard.js"></script>
+<script type="text/javascript" src="../../resources/js/dashboard.js?after"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet"
 	type="text/css">
 <link href="../../resources/css/dashboard.css?after" rel="stylesheet"
@@ -100,23 +100,6 @@
 									<option value="제주특별자치도">제주특별자치도</option>
 								</select>
 								<label for="model">분석 모델: </label>
-								<div class="info-box">
-									<img class="info-img" src="../../resources/img/info.png">
-									<div class="information">
-										<div>
-											XGBoost<br>
-											단기 예측에 빠르고 정확.
-										</div>
-										<div>
-											Prophet<br>
-											계절성과 추세가 뚜렷한 중단기 예측에 유리. 복잡한 변동에는 한계 존재.
-										</div>
-										<div>
-											LSTM<br>
-											복잡한 패턴과 장기 흐름을 파악하는 데 유리. 먼 미래 예측은 불확실성이 커질 가능성 존재.
-										</div>
-									</div>
-								</div>
 								<select id="model" name="model" required>
 									<option value="XGBoost" selected>XGBoost</option>
 									<option value="Prophet">Prophet</option>
@@ -129,6 +112,20 @@
 									<option value="12">12개월</option>
 								</select>
 								<button class="nav-btn" type="button" onclick="fetchPrediction()">조회</button>
+								<div class="info-box">
+									<img class="info-img" src="../../resources/img/info.png">
+									<div class="information">
+										<div>
+											<span>XGBoost<br>단기 예측에 빠르고 정확.</span>
+										</div>
+										<div>
+											<span>Prophet<br>계절성과 추세가 뚜렷한 중단기 예측에 유리. 복잡한 변동에는 한계 존재.</span>
+										</div>
+										<div>
+											<span>LSTM<br>복잡한 패턴과 장기 흐름을 파악하는 데 유리. 먼 미래 예측은 불확실성이 커질 가능성 존재.</span>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 						<!-- 차트 -->

@@ -228,7 +228,7 @@ async function fetchPrediction() {
         },
         scales: {
           x: {
-            title: { display: true, text: "월", font: { size: 15 } },
+            ticks: {font: { size: 15 } },
           },
           y: {
             title: { display: true, text: "공급량 (백만 m³)" , font: { size: 15 }},
@@ -377,7 +377,7 @@ async function yearLocalGasChart(canvasId, yearData, year) {
 			},
 			scales: {
 				x: {
-					title: { display: true, text: '지역', font: { size: 15 }}
+					ticks: { font: { size: 15 }}
 				},
 				y: {
 					title: { display: true, text: '총 공급량(백만 m³)' , font: { size: 15 }},
