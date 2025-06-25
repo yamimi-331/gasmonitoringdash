@@ -286,9 +286,9 @@ function topLocalSupplyChart(yearData, year){
 		const canvasId = `donutChart${index}`;
 		const canvas = document.createElement("canvas");
 		canvas.id = canvasId;
-		canvas.style.width = "15%"
-		canvas.style.height = "120px";
-		canvas.style.flex = "0 0 auto"
+		canvas.classList.add("donut-chart");
+		canvas.width = 160;
+		canvas.height = 160;
 		container.appendChild(canvas);
 
 		const ctx = canvas.getContext("2d");
@@ -305,9 +305,10 @@ function topLocalSupplyChart(yearData, year){
 				}]
 			},
 			options: {
+				responsive: false,
+  				maintainAspectRatio: true,
+				aspectRatio: 1,
 				plugins: {
-					responsive: true,
-					aspectRatio: 1,
 					title: {
 						display: true,
 						text: city+ '의 공급량 점유율',
@@ -346,6 +347,7 @@ function yearLocalGasChart(canvasId, yearData, year) {
 		},
 		options: {
 			responsive: true,
+			maintainAspectRatio: false,
 			plugins: {
 				title: {
 				display: true,

@@ -87,7 +87,7 @@
 						</div>
 						<!-- 연도별 전국 가스 공급량 차트 -->
 						<div class="charts-top">
-							<div class="charts-box">
+							<div class="local-charts-box">
 								<canvas id="yearLocalSupply"></canvas>
 							</div>
 						</div>
@@ -183,9 +183,9 @@
 								<canvas id="personalGasUse"></canvas>
 							</div>
 						</div>
-						</div>
+						<!-- </div>
 								
-						<div class="dashboard">
+						<div class="dashboard"> -->
 						<h2 class="main-title">동계 한파일수 vs 가스사용량</h2>
 						<div class="black-line"></div>
 						<div class="controls">

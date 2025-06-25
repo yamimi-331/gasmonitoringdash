@@ -90,20 +90,20 @@ table td[colspan="2"]{
 			
 				<p>당월 사용량 : ${localUsage.currentMonthUsage}m³</p>
 				<div class="charts-top">
-					<div class="charts-box">
+					<div class="myusage-charts-box">
 						<canvas id="recentUsageChart" width="740" height="370"></canvas>
 					</div>
 				</div>
 			</div>
 			
 			<!-- 🚩 Dashboard 2: 지역 사용량 비교 -->
-			<div class="dashboard usage-comparison-dashboard">
+			<div class="myusage-dashboard">
 				<h2 class="main-title">가스사용량 비교</h2>
 				<div class="black-line"></div>
 			
 				<p>지역: ${localUsage.localNm}</p>
 				<div class="charts-top">
-					<div class="charts-box">
+					<div class="myusage-charts-box">
 						<canvas id="localUsageComparison" width="740" height="370"></canvas>
 					</div>
 				</div>
