@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>DashBoard</title>
-<script type="text/javascript" src="../../resources/js/profileEdit.js"></script>
+<script type="text/javascript" src="../../resources/js/profileEdit.js?after"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet" type="text/css">
 <link href="../../resources/css/user.css?after" rel="stylesheet" type="text/css">
 </head>
@@ -112,7 +112,7 @@
 
 			<!-- 회원 탈퇴 폼 -->
 			<form class="button-group" id="profiledeleteForm" method="post" action="/profileEdit/delete">
-				<button onclick="confirmDelete()" class="btn submit-area">회원 탈퇴</button>
+				<button onclick="return confirmDelete()" class="btn submit-area">회원 탈퇴</button>
 				<a class="go-main" href="/myUsage">돌아가기</a>
 			</form>
 		</div>

@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 폼 제출 시 비밀번호 확인
     form.addEventListener("submit", function (e) {
         const userNm = userNmInput.value.trim();
-        if (userNm === "" || userNm === null) {
+        if (userNm == "" || userNm == null) {
 	        alert("이름을 입력해주세요.");
 	        userNmInput.focus();
 	        e.preventDefault();
