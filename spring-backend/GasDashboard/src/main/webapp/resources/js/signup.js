@@ -4,7 +4,6 @@
 
 let isIdChecked = false; // 아이디 중복 확인 완료 여부
 let isPwdValid = false;  // 비밀번호 확인 완료 여부
-let isEmailVerified = false; // 이메일 인증 완료 여부
 
 function validateForm() {
     const userIdInput = document.querySelector('input[name="user_id"]');
@@ -48,6 +47,7 @@ function checkDuplicateId() {
         const userId = document.querySelector('input[name="user_id"]').value;
         if (!userId) {
             alert("아이디를 입력하세요.");
+            userIdInput.focus();
             return;
         }
 

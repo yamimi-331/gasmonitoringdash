@@ -6,7 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const pwCheckField = document.getElementById("pwCheck");
     const pwCheckMsg = document.getElementById("pwCheckMsg");
     const form = document.getElementById("profileEditForm");
-
+    
+    const userNmInput = document.querySelector('input[name="user_nm"]');
+	
     // 비밀번호 입력 감지
     pwField.addEventListener("input", checkPasswordMatch);
     pwCheckField.addEventListener("input", checkPasswordMatch);
@@ -37,9 +39,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 폼 제출 시 비밀번호 확인
     form.addEventListener("submit", function (e) {
-        if (!checkPasswordMatch()) {
+        const userNm = userNmInput.value.trim();
+        if (userNm === "" || userNm === null) {
+	        alert("이름을 입력해주세요.");
+	        userNmInput.focus();
+	        e.preventDefault();
+	        return;
+    	}
+    	if (!checkPasswordMatch()) {
             alert("비밀번호가 일치하지 않습니다.");
+            pwCheckField.focus();
             e.preventDefault();
+            return;
         }
     });
 
@@ -47,7 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
     window.confirmDelete = function () {
     	if (!checkPasswordMatch()) {
             alert("비밀번호가 일치하지 않습니다.");
-            e.preventDefault();
+            pwCheckField.focus();
+            return false;
         } else {
 	        if (confirm("정말로 회원을 탈퇴하시겠습니까?\n계정복구는 당사로 문의해주시기 바랍니다.")) {
 	            document.getElementById('profiledeleteForm').submit();
