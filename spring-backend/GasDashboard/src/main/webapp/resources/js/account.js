@@ -13,8 +13,8 @@ let selectedUserLevel = null;
 // 사용자 검색 함수
 function searchUser() {
 	selectedUserId = null;
-	const keyword = jQuery("#searchKeyword").val();
-	if (!keyword) return alert("아이디를 입력하세요.");
+	const userName = jQuery("#searchKeyword").val();
+	if (!userName) return alert("이름을 입력하세요.");
     const userType = jQuery("#div_level").val();
     if (!userType) return alert("권한 등급을 선택하세요.");
 
@@ -22,7 +22,7 @@ function searchUser() {
 		url: "/account/search-users",
 		type: "POST",
 		data: {
-			keyword: keyword,
+			userName: userName,
 			userType: userType
 		},
 		dataType: "json", // JSON으로 받기
@@ -31,7 +31,7 @@ function searchUser() {
 
 			// 배열이 아니거나 비었을 경우
 			if (!Array.isArray(users) || users.length === 0) {
-				tbody.append('<tr><td colspan="4" style="text-align:center;">조회된 사용자가 없습니다.</td></tr>');
+				tbody.append('<tr><td colspan="4" style="text-align:center;"> ' + userName + '으로 조회된 사용자가 없습니다.</td></tr>');
 			}
             else{
                 // 결과가 있을 경우

@@ -49,6 +49,8 @@
 			<div class="search-container">
 			<h2 class="no-margin">권한 승인 대기 목록</h2>
 			<div class="black-line"></div>
+			<div class="search-inner-container">
+			<div class="table-wrapper">
 			<table  class="table-style">
 				<colgroup>
 					<col width="20%">
@@ -57,17 +59,21 @@
 					<col width="20%">
 					<col width="20%">
 				</colgroup>
+				<thead>
 				<tr>
-					<th>사용자 일련번호</th>
+					<th>사용자번호</th>
 					<th>아이디</th>
 					<th>이름</th>
 					<th>현재 등급</th>
 					<th>승인 버튼</th>
 				</tr>
+				</thead>
+				<tbody>
 				<c:choose>
 					<c:when test="${not empty manageUser}">
 						<c:forEach var="item" items="${manageUser}">
 							<tr>
+								<td>${item.user_cd}</td>
 								<td>${item.user_id}</td>
 								<td>${item.user_nm}</td>
 								<c:choose>
@@ -103,24 +109,30 @@
 						</tr>
 					</c:otherwise>
 				</c:choose>
+				</tbody>
+				
 			</table>
+			</div>
+			
+			</div>
 			</div>
 			<!-- 사용자 권한 등급 수정 start------------------------------ -->
 				<div class="result-container">
 					<h2 class="no-margin">사용자 권한 등급 수정</h2>
 					<div class="black-line"></div>
-					<div class="search-inner-container">
+					<div class="result-inner-container">
 						<div class="search-area">
 							<select id="div_level" name="div_level">
 								<option value="">-- 권한 등급 선택 --</option>
 								<option value="common">일반 회원</option>
 								<option value="manager">매니저</option>
 								<option value="admin">관리자</option>
-							</select> <input type="text" id="searchKeyword" placeholder="아이디 입력"
+							</select> <input type="search" id="searchKeyword" placeholder="이름 입력"
 								autocomplete="off" />
 							<button class="nav-btn" onclick="searchUser()">검색</button>
 							<button class="nav-btn" onclick="showLevelModal()">권한 수정</button>
 						</div>
+						<div class="table-wrapper">
 						<table id="userTable" class="table-style">
 							<colgroup>
 								<col width="25%">
@@ -142,6 +154,7 @@
 							</tr>
 							</tbody>
 						</table>
+						</div>
 					</div>
 				</div>
 			</div>

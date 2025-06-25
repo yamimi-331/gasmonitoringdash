@@ -62,26 +62,28 @@
 					<div class="black-line"></div>
 					<div class="search-inner-container">
 						<div class="search-area">
-							<input type="text" id="searchKeyword" placeholder="주소 입력"
+							<input type="search" id="searchKeyword" placeholder="주소 입력"
 								autocomplete="off" />
 							<button class="nav-btn" onclick="searchUser()">검색</button>
 						</div>
-						<table id="userTable">
-							<thead>
-								<tr>
-									<th style="width: 20%">사용자 일련번호</th>
-									<th style="width: 20%">아이디</th>
-									<th style="width: 20%">이름</th>
-									<th style="width: 20%">지역</th>
-									<th style="width: 20%">상세주소</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td colspan="5"><p style="text-align: center;">해당하는 주소에 데이터가 없습니다.</p></td>
-								</tr>
-							</tbody>
-						</table>
+						<div class="table-wrapper">
+							<table id="userTable" class="table-style">
+								<thead>
+									<tr>
+										<th style="width: 20%">사용자번호</th>
+										<th style="width: 20%">아이디</th>
+										<th style="width: 20%">이름</th>
+										<th style="width: 20%">지역</th>
+										<th style="width: 20%">상세주소</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td colspan="5">해당하는 주소에 데이터가 없습니다.</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 				<!-- 사용자 검색 영역 end------------------------------ -->
@@ -90,13 +92,15 @@
 				<div id="usageSection" class="result-container">
 					<h2 class="no-margin">가스 사용내역</h2>
 					<div class="black-line"></div>
-					<div class="search-area">
-						<button class="nav-btn" onclick="showUsageModal('add')">등록</button>
-						<button class="nav-btn" onclick="showUsageModal('edit')">수정</button>
-						<button class="nav-btn" onclick="deleteUsage()">삭제</button>
-					</div>
 					<div class="result-inner-container">
-						<table id="usageTable">
+						<div class="search-area">
+							<h3 class="no-margin">날짜 선택</h3>
+							<button class="nav-btn" onclick="showUsageModal('add')">등록</button>
+							<button class="nav-btn" onclick="showUsageModal('edit')">수정</button>
+							<button class="nav-btn" onclick="deleteUsage()">삭제</button>
+						</div>
+						<div class="table-wrapper">
+						<table id="usageTable" class="table-style">
 							<thead>
 								<tr>
 									<th style="width: 20%;">선택</th>
@@ -110,6 +114,7 @@
 								</tr>
 							</tbody>
 						</table>
+						</div>
 					</div>
 				</div>
 			</div>

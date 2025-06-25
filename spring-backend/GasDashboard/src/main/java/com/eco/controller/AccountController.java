@@ -93,11 +93,11 @@ public class AccountController {
 		return "redirect:/account";
 	}
 
-	// 사용자 아이디 권한 레벨로 사용자 조회
+	// 사용자 이름, 권한 레벨로 사용자 조회
 	@PostMapping("/search-users")
 	@ResponseBody
-	public List<UserVO> searchUsers(@RequestParam String keyword, @RequestParam(required = false) String userType) {
-		List<UserVO> users = adminService.findUsersByKeywordAndType(keyword, userType);
+	public List<UserVO> searchUsers(@RequestParam String userName, @RequestParam(required = false) String userType) {
+		List<UserVO> users = adminService.findUsersByNameAndType(userName, userType);
 		return users;
 	}
 
