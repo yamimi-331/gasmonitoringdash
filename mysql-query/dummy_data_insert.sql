@@ -24,7 +24,15 @@ VALUES
 select *
  from t_user;
  desc t_usage;
+ update t_user set use_yn = 'N' where user_cd in('2025L010001'
+,'2025L010002'
+,'2025L020003'
+,'2025L040004');
  
+ update t_user set user_type = 'preManager' where user_id in ('jjang09',
+'gjeong10',
+'psong11',
+'rkim12');
  
  INSERT INTO t_usage(user_cd, local_cd, usage_dt, usage_amount)
 VALUES ('2525L010005'	,	'L01'	,	'2020-01'	,	12	),
