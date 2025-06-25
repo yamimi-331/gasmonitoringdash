@@ -45,11 +45,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 탈퇴 최종 확인 함수
     window.confirmDelete = function () {
-        if (confirm("정말로 회원을 탈퇴하시겠습니까?\n계정복구는 당사로 문의해주시기 바랍니다.")) {
-            document.getElementById('profiledeleteForm').submit();
-            return true;
+    	if (!checkPasswordMatch()) {
+            alert("비밀번호가 일치하지 않습니다.");
+            e.preventDefault();
         } else {
-            return false;
-        }
+	        if (confirm("정말로 회원을 탈퇴하시겠습니까?\n계정복구는 당사로 문의해주시기 바랍니다.")) {
+	            document.getElementById('profiledeleteForm').submit();
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    }
     };
 });
