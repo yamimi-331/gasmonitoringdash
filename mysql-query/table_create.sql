@@ -22,6 +22,10 @@ CREATE TABLE T_USER (
     use_yn     CHAR(1)      NOT NULL DEFAULT 'Y',  -- 사용 여부 (기본값 Y)
     FOREIGN KEY (local_cd) REFERENCES T_LOCAL(local_cd)
 );
+   -- 아이디 비번 대소문자 구분을 위한 속성추가
+ALTER TABLE t_user
+MODIFY user_id VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+MODIFY user_pw VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 
 -- T_USAGE 생성
 CREATE TABLE T_USAGE (
