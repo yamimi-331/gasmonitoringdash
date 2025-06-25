@@ -13,33 +13,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet" type="text/css">
 <link href="../../resources/css/dashboard.css?after" rel="stylesheet" type="text/css">
-<style>
-
-/* inner-container는 nav 옆 공간 모두 차지, flex 컨테이너로 세로 정렬 */
-/* .inner-container {
-  display: flex;
-  justify-content: center;  
-  align-items: center;      
-  box-sizing: border-box;
-  padding: 20px;
-} */
-
-/* 
-table{
-	margin: 20px;
-}
-table th{
-	font-size: 1.5em;
-	padding-bottom: 15px;
-}
-table td{
-	padding: 0 20px;
-}
-table td[colspan="2"]{
-	text-align: center;
-	font-size: 0.9em;
-} */
-</style>
 <script>
 	function logout() {
 		let isLogout = confirm("정말 로그아웃 하시겠습니까?");
@@ -48,7 +21,23 @@ table td[colspan="2"]{
 			window.location.href = "/logout";
 		}
 	}
+	const recentUsageData = [
+	    <c:forEach var="usage" items="${recentUsage}" varStatus="status">
+	      {
+	        date: '${usage.usage_dt}',
+	        amount: ${usage.usage_amount}
+	      }<c:if test="${!status.last}">,</c:if>
+	    </c:forEach>
+	  ];
+	const localUsageData = {
+		avgCurrentMonthPublicUsage: ${localUsage.avgCurrentMonthPublicUsage},
+  		currentMonthUsage: ${localUsage.currentMonthUsage},
+ 	 	lastYearSameMonthUsage: ${localUsage.lastYearSameMonthUsage},
+  		yearlyAvgUsage: ${localUsage.yearlyAvgUsage}
+	};
 </script>
+	
+<script src="../resources/js/usage.js"></script>
 </head>
 <body>
 	<header>
@@ -68,8 +57,12 @@ table td[colspan="2"]{
 			
 				<p>당월 사용량 : ${localUsage.currentMonthUsage}m³</p>
 				<div class="charts-top">
-					<div class="myusage-charts-box">
+					<div class="myusage-charts-box loading-wrapper">
 						<canvas id="recentUsageChart" width="740" height="370"></canvas>
+						<!-- 로딩 오버레이 -->
+					    <div class="local-loading-overlay" id="loading-recentUsageChart">
+							<div class="spinner"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -81,8 +74,12 @@ table td[colspan="2"]{
 			
 				<p>지역: ${localUsage.localNm}</p>
 				<div class="charts-top">
-					<div class="myusage-charts-box">
+					<div class="myusage-charts-box loading-wrapper">
 						<canvas id="localUsageComparison" width="740" height="370"></canvas>
+						<!-- 로딩 오버레이 -->
+					    <div class="local-loading-overlay" id="loading-localUsageComparison">
+							<div class="spinner"></div>
+						</div>
 					</div>
 				</div>
 			
@@ -103,48 +100,6 @@ table td[colspan="2"]{
 				</div>
 			</div>
 			</div>
-			
-			
-		<%-- 	<div class="table-box">
-				<table>
-					<colgroup>
-						<col width="50%">
-						<col width="50%">
-					</colgroup>
-					<tr>
-						<th><h2 class="main-title">고객님의 최근 (12개월) 월별 사용량 추이</h2></th>
-						<th><h2 class="main-title">가스사용량 비교</h2></th>
-					</tr>
-					<tr>
-						<td>당월 사용량 : ${localUsage.currentMonthUsage}m³</td>
-						<td>지역: ${localUsage.localNm}</td>
-					</tr>
-					<tr>
-						<td><canvas id="recentUsageChart" width="740" height="370"></canvas></td>
-						<td><canvas id="localUsageComparison" width="740" height="370"></canvas></td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<c:choose>
-						        사용량이 평균보다 낮은 경우
-						        <c:when test="${localUsage.currentMonthUsage lt localUsage.avgCurrentMonthPublicUsage}">
-						            <h2>이번 달 사용량이 지역 평균보다 낮습니다.</h2>
-						        </c:when>
-						
-						        사용량이 평균보다 높은 경우
-						        <c:when test="${localUsage.currentMonthUsage gt localUsage.avgCurrentMonthPublicUsage}">
-						            <h2>이번 달 사용량이 지역 평균보다 높습니다.</h2>
-						        </c:when>
-						
-						        사용량이 평균과 같은 경우
-						        <c:otherwise>
-						            <h2>이번 달 사용량이 지역 평균과 같습니다.</h2>
-						        </c:otherwise>
-						    </c:choose>
-						</td>
-					</tr>
-				</table>
-			</div> --%>
 		</div>
 		<!-- 고객님의 최근 (12개월) 월별 사용량 추이 & 가스사용량 비교 End   ----------------- -->
 	</main>
@@ -158,22 +113,6 @@ table td[colspan="2"]{
         	alert('${msg}');
     	</script>
 	</c:if>
-	<script>
-		const recentUsageData = [
-		    <c:forEach var="usage" items="${recentUsage}" varStatus="status">
-		      {
-		        date: '${usage.usage_dt}',
-		        amount: ${usage.usage_amount}
-		      }<c:if test="${!status.last}">,</c:if>
-		    </c:forEach>
-		  ];
-		const localUsageData = {
-			avgCurrentMonthPublicUsage: ${localUsage.avgCurrentMonthPublicUsage},
-	  		currentMonthUsage: ${localUsage.currentMonthUsage},
-	 	 	lastYearSameMonthUsage: ${localUsage.lastYearSameMonthUsage},
-	  		yearlyAvgUsage: ${localUsage.yearlyAvgUsage}
-		};
-	</script>
-<script src="../resources/js/usage.js"></script>
+
 </body>
 </html>

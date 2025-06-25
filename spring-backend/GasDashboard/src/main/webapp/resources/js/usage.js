@@ -1,5 +1,8 @@
 // gasUsageChart.js
 // JSP에서 선언된 전역 변수 recentUsageData, localUsageData 를 사용
+document.addEventListener('DOMContentLoaded', function () {
+// 로딩 표시
+showLoading('recentUsageChart');
 
 // recentUsageData가 배열 형태여야 함
 const recentLabels = recentUsageData.map(item => item.date);
@@ -56,6 +59,13 @@ new Chart(recentUsageCtx, {
     }
   }
 });
+
+// 렌더 완료 후 로딩 숨김
+setTimeout(() => hideLoading('recentUsageChart'), 300);
+
+// ========== 두 번째 차트 ==========
+
+showLoading('localUsageComparison');
 
 // 두 번째 차트
 const comparisonCtx = document.getElementById('localUsageComparison').getContext('2d');
@@ -119,3 +129,13 @@ new Chart(comparisonCtx, {
   },
   plugins: [ChartDataLabels]
 });
+// 차트 렌더 후 로딩 제거 (지연 추가)
+setTimeout(() => hideLoading('localUsageComparison'), 300);
+});
+function showLoading(id) {
+  document.getElementById(`loading-${id}`).style.display = 'flex';
+}
+
+function hideLoading(id) {
+  document.getElementById(`loading-${id}`).style.display = 'none';
+}
