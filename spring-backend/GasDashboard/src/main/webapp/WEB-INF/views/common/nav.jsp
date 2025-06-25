@@ -1,7 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- 좌측 네비게이션 start ============================= -->
+<style>
+
+/* active 상태일 때 */
+.nav-menu.active {
+  background-color: #e0e7ff; /* 기존 hover보다 살짝 연한 파란색 느낌 */
+  border-left: 3px solid #6080bb; /* 기존 버튼 색상과 맞춰서 강조 */
+}
+
+/* 서브메뉴 기본 숨김 + 애니메이션 */
+.submenu {
+  max-height: 0;
+  overflow: hidden;
+  padding-left: 20px;
+  transition: max-height 0.3s ease;
+}
+
+/* active일 때 서브메뉴 펼침 */
+.nav-menu.active .submenu {
+  max-height: 150px; /* 적당한 높이 */
+}
+
+/* 서브메뉴 링크 */
+.submenu a {
+  display: block;
+  padding: 6px 8px; /* 기존 padding 느낌 유지 */
+  color: #4a4a4a; /* 기존 .nav-link 색상보다 살짝 어둡게 */
+  font-size: 14px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+.nav-menu.active > span.nav-link:hover,
+.submenu a:hover {
+  background-color: #b0c4ff; /* 기존 .nav-link:hover와 비슷하게 */
+}
+
+</style>
+<!-- 아코디언 형식의 네비게이션 서브메뉴 -->
 <nav class="sidebar-nav">
 	<!-- 상단 환영 메시지 영역 -->
 	<div class="nav-header">
@@ -26,27 +62,41 @@
 
 	<!-- 로그인 상태일 때 노출 -->
 	<c:if test="${not empty currentUserInfo}">
-		<div class="nav-menu">
-			<a class="nav-link" href="/myUsage">마이페이지</a>
-		</div>
-		<div class="nav-menu">
-			<a class="nav-link" href="/profileEdit">회원정보수정</a>
-		</div>
-
-		<!-- 관리자 및 매니저 메뉴 -->
-		<c:if
-			test="${currentUserInfo.user_type == 'admin' || currentUserInfo.user_type == 'manager'}">
-			<div class="nav-menu">
-				<a class="nav-link" href="/admin">관리자 페이지</a>
-			</div>
-		</c:if>
-
-		<!-- 관리자 전용 메뉴 -->
-		<c:if test="${currentUserInfo.user_type == 'admin'}">
-			<div class="nav-menu">
-				<a class="nav-link" href="/account">사용자 계정 관리</a>
-			</div>
-		</c:if>
+		<%-- 마이페이지 --%>
+	    <div class="nav-menu" onclick="toggleSubmenu(this)">
+	      <span class="nav-link">마이페이지</span>
+	      <div class="submenu">
+	        <a class="nav-link" href="/myUsage">나의 사용량 보기</a>
+	        <a class="nav-link" href="/profileEdit">회원정보 수정</a>
+	      </div>
+	    </div>
+	    
+		<%--  관리자/매니저만 --%>
+	    <c:if test="${currentUserInfo.user_type == 'admin' || currentUserInfo.user_type == 'manager'}">
+	      <div class="nav-menu" onclick="toggleSubmenu(this)">
+	        <span class="nav-link">관리자 페이지</span>
+	        <div class="submenu">
+	          <a class="nav-link" href="/admin">관리 기능</a>
+	          <c:if test="${currentUserInfo.user_type == 'admin'}">
+	            <a class="nav-link" href="/account">사용자 계정 관리</a>
+	          </c:if>
+	        </div>
+	      </div>
+	    </c:if>
 	</c:if>
 </nav>
-<!-- 좌측 네비게이션 end ============================= -->
+<script>
+  function toggleSubmenu(element) {
+    const allMenus = document.querySelectorAll('.nav-menu');
+    allMenus.forEach(menu => {
+      if (menu !== element) menu.classList.remove('active');
+    });
+    element.classList.toggle('active');
+  }
+
+  function closeAllSubmenus() {
+    document.querySelectorAll('.nav-menu').forEach(menu => {
+      menu.classList.remove('active');
+    });
+  }
+</script>
