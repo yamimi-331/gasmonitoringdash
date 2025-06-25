@@ -98,7 +98,12 @@ async function fetchPrediction() {
   //const loading = document.getElementById("loading");
   //loading.style.display = "inline";
 
-  try {
+  try { 
+	  // 로딩창 표시
+	  showChartLoading();
+	  
+	  // 브라우저에 렌더링 타이밍을 줌
+	  await new Promise(resolve => setTimeout(resolve, 50));
     // 차트용 데이터
     let data;
     // 평가점수 데이터
@@ -242,7 +247,11 @@ async function fetchPrediction() {
   } finally {
     // 로딩중 메세지 비활성화
     //loading.style.display = "none";
+     requestAnimationFrame(() => {
+	    hideChartLoading();
+	  });
   }
+  
 }
 
 //연도별 각 지역의 가스 총 공급량 json 받아오기
@@ -674,5 +683,15 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollToSlide(currentSlide + 1);
   });
 });
+
+// 로딩 기능 추가
+function showChartLoading() {
+  document.getElementById("chartLoading").style.display = "flex";
+}
+
+function hideChartLoading() {
+  document.getElementById("chartLoading").style.display = "none";
+}
+
 
 //#endregion

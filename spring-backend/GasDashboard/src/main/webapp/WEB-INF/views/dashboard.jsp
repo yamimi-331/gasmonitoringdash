@@ -57,8 +57,12 @@
 						</div>
 						<!-- 연도별 전국 가스 공급량 차트 -->
 						<div class="charts-top">
-							<div class="local-charts-box">
+							<div class="local-charts-box loading-wrapper">
 								<canvas id="yearLocalSupply"></canvas>
+								<!-- 로딩 오버레이 -->
+							    <!-- <div class="local-loading-overlay" id="chartLoading">
+							      <div class="spinner"></div>
+							    </div> -->
 							</div>
 						</div>
 					</div>
@@ -107,8 +111,12 @@
 						</div>
 						<!-- 차트 -->
 						<div class="charts-top">
-							<div class="charts-box">
+							<div class="charts-box loading-wrapper">
 								<canvas id="gasChart"></canvas>
+								<!-- 로딩 오버레이 -->
+							    <div class="local-loading-overlay" id="chartLoading">
+							      <div class="spinner"></div>
+							    </div>
 							</div>
 						</div>
 					</div>

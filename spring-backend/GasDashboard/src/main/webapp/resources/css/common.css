@@ -198,3 +198,36 @@ tr, td{
   overflow-y: auto;
   display: block;
 }
+
+/* 화면의 로딩 구간 설정 추가*/
+/* 오버레이 기준 부모 */
+.loading-wrapper {
+  position: relative; /* 기준 역할만 함 */
+}
+
+/* 오버레이 */
+.local-loading-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: none; /* 기본은 숨김 */
+  justify-content: center;
+  align-items: center;
+  z-index: 5; /* 기존 내용보다 위에 오도록 설정 */
+}
+
+/* 스피너 */
+.spinner {
+  border: 5px solid #e0e0e0;
+  border-top: 5px solid #6080bb;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+
