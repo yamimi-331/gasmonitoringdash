@@ -58,10 +58,10 @@
 								<td>${item.user_id}</td>
 								<td>${item.user_nm}</td>
 								<c:choose>
-									<c:when test="${ item.user_type == 'preManager' }">
+									<c:when test="${ item.user_type == 'commonM' }">
 										<td>매니저(승인 요청)</td>
 									</c:when>
-									<c:when test="${ item.user_type == 'preAdmin' }">
+									<c:when test="${ item.user_type == 'commonA' ||  item.user_type == 'managerA'  }">
 										<td>관리자(승인 요청)</td>
 									</c:when>
 								</c:choose>

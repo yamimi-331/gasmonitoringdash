@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 관리자 권한 요청한 계정 조회 -->
 	<select id="selectPreAccount" resultType="com.eco.domain.UserVO">
 		<![CDATA[
-		SELECT * FROM t_user WHERE user_type IN ('preManager','preAdmin')
+		SELECT * FROM t_user WHERE user_type IN ('commonA','commonM','managerA') and use_yn = 'Y'
 		]]>
 	</select>
 	<!-- 관리자 권한 변경 위한 계정 조회 -->

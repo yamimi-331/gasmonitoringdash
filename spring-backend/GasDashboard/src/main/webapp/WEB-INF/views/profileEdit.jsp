@@ -76,33 +76,41 @@
 				        </div>
 				        <div>
 				        	<c:choose>
-					        	<c:when test="${currentUserInfo.user_type == 'preManager'}">
-					        		<input type="radio" name="user_type" id="typePreManager" value="preManager" checked>
-						            <label for="typePreManager">직원(승인요청)</label>
+					        	<c:when test="${currentUserInfo.user_type == 'commonM'}">
+					        		<input type="radio" name="user_type" id="typeCommonM" value="commonM" checked>
+						            <label for="typeCommonM">직원(승인요청)</label>
 					        	</c:when>
 					        	<c:when test="${currentUserInfo.user_type == 'manager'}">
-					        		<input type="radio" name="user_type" id="typePreManager" value="manager" checked>
-						            <label for="typePreManager">직원</label>
+					        		<input type="radio" name="user_type" id="typeManager" value="manager" checked>
+						            <label for="typeManager">직원</label>
 					        	</c:when>
 								<c:otherwise>
-									<input type="radio" name="user_type" id="typePreManager" value="preManager">
-						            <label for="typePreManager">직원(승인요청)</label>
+									<input type="radio" name="user_type" id="typeCommonM" value="commonM">
+						            <label for="typeCommonM">직원(승인요청)</label>
 								</c:otherwise>
 				        	</c:choose>
 				        </div>
 				        <div>
 				        	<c:choose>
-					        	<c:when test="${currentUserInfo.user_type == 'preAdmin'}">
-					        		<input type="radio" name="user_type" id="typePreAdmin" value="preAdmin" checked>
-						            <label for="typePreAdmin">관리자(승인요청)</label>
+					        	<c:when test="${currentUserInfo.user_type == 'commonA'}">
+					        		<input type="radio" name="user_type" id="typeCommonA" value="commonA" checked>
+						            <label for="typeCommonA">관리자(승인요청)</label>
+					        	</c:when>
+					        	<c:when test="${currentUserInfo.user_type == 'managerA'}">
+					        		<input type="radio" name="user_type" id="typeManagerA" value="managerA" checked>
+						            <label for="typeManagerA">관리자(승인요청)</label>
 					        	</c:when>
 					        	<c:when test="${currentUserInfo.user_type == 'admin'}">
 					        		<input type="radio" name="user_type" id="typeAdmin" value="admin" checked>
 						            <label for="typeAdmin">관리자</label>
 					        	</c:when>
+					        	<c:when test="${ currentUserInfo.user_type == 'manager'}">
+					        		<input type="radio" name="user_type" id="typeManagerA" value="managerA">
+						            <label for="typeManagerA">관리자(승인요청)</label>
+					        	</c:when>
 								<c:otherwise>
-									<input type="radio" name="user_type" id="typePreAdmin" value="preAdmin">
-						            <label for="typePreAdmin">관리자(승인요청)</label>
+									<input type="radio" name="user_type" id="typeCommonA" value="commonA">
+						            <label for="typeCommonA">관리자(승인요청)</label>
 								</c:otherwise>
 				        	</c:choose>
 				        </div>

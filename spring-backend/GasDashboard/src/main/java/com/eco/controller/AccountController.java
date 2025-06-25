@@ -57,10 +57,13 @@ public class AccountController {
 	public String approveUser(UserVO user, RedirectAttributes redirectAttributes) {
 		String newType = "";
 		switch (user.getUser_type()) {
-		case "preManager":
+		case "commonM":
 			newType = "manager";
 			break;
-		case "preAdmin":
+		case "commonA":
+			newType = "admin";
+			break;
+		case "managerA":
 			newType = "admin";
 			break;
 		default:
@@ -85,11 +88,18 @@ public class AccountController {
 	// 사용자 등급 변경 거절
 	@PostMapping("/reject")
 	public String rejectUser(UserVO user, RedirectAttributes redirectAttributes) {
-		String common = "common";
-		user.setUser_type(common);
+		String type = user.getUser_type();
+		String resultType= "";
+		if(type == "commonM" || type =="commonA") {
+			resultType = "common";
+		} else if(type == "managerA") {
+			resultType = "manager";
+		} 
+		user.setUser_type(resultType);
+		
 		adminService.changeUserType(user);
 
-		redirectAttributes.addFlashAttribute("msg", "일반 회원으로 등급이 변경 되었습니다.");
+		redirectAttributes.addFlashAttribute("msg", resultType + "으로 등급이 변경 되었습니다.");
 		return "redirect:/account";
 	}
 

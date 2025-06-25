@@ -74,7 +74,7 @@
 	    </div>
 	    
 		<%--  관리자/매니저만 --%>
-	    <c:if test="${currentUserInfo.user_type == 'admin' || currentUserInfo.user_type == 'manager'}">
+	    <c:if test="${currentUserInfo.user_type == 'admin' || currentUserInfo.user_type == 'manager' || currentUserInfo.user_type == 'managerA'}">
 	      <div class="nav-menu" onclick="toggleSubmenu(this)">
 	        <span class="nav-link">관리자 페이지</span>
 	        <div class="submenu">
