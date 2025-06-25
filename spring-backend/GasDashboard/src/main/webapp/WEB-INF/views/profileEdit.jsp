@@ -11,12 +11,15 @@
 <link href="../../resources/css/user.css?after" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<header></header>
+	<header>
+		<h2 class="header-title">회원정보 수정</h2>
+	</header>
+	<!-- nav와 main을 가로로 나란히 배치하기위한 컨테이너 -->
+	<div class="container">
+		<jsp:include page="/WEB-INF/views/common/nav.jsp" />
+		
 	<main>
 		<div class="form-container">
-			<div class="form-title">
-				<h2 class="text-center">회원정보 수정</h2>
-			</div>
 			<!-- 회원정보 수정 폼 -->
 			<form class="user-form" method="post" id="profileEditForm" action="/profileEdit">
 				<div class="form-group">
@@ -112,11 +115,11 @@
 
 			<!-- 회원 탈퇴 폼 -->
 			<form class="button-group" id="profiledeleteForm" method="post" action="/profileEdit/delete">
-				<button onclick="return confirmDelete()" class="btn submit-area">회원 탈퇴</button>
-				<a class="go-main" href="/myUsage">돌아가기</a>
+				<a href="javascript:void(0);" onclick="return confirmDelete()" class="del-account">회원 탈퇴</a>
 			</form>
 		</div>
 	</main>
+	</div>
 	<footer></footer>
 </body>
 </html>

@@ -124,6 +124,15 @@ main.user-page{
 	text-decoration: underline;
 	cursor: pointer;
 }
+.del-account{
+	text-decoration: none;
+	color: red;
+	font-size: 15px;
+}
+.del-account:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
 
 .text-center{
 	text-align: center;
