@@ -98,13 +98,32 @@
 									<option value="경상북도">경상북도</option>
 									<option value="경상남도">경상남도</option>
 									<option value="제주특별자치도">제주특별자치도</option>
-								</select> <label for="model">분석 모델: </label> <select id="model"
-									name="model" required>
+								</select>
+								<label for="model">분석 모델: </label>
+								<div class="info-box">
+									<img class="info-img" src="../../resources/img/info.png">
+									<div class="information">
+										<div>
+											XGBoost<br>
+											단기 예측에 빠르고 정확.
+										</div>
+										<div>
+											Prophet<br>
+											계절성과 추세가 뚜렷한 중단기 예측에 유리. 복잡한 변동에는 한계 존재.
+										</div>
+										<div>
+											LSTM<br>
+											복잡한 패턴과 장기 흐름을 파악하는 데 유리. 먼 미래 예측은 불확실성이 커질 가능성 존재.
+										</div>
+									</div>
+								</div>
+								<select id="model" name="model" required>
 									<option value="XGBoost" selected>XGBoost</option>
 									<option value="Prophet">Prophet</option>
 									<option value="LSTM">LSTM</option>
-								</select> <label for="period">예측 기간: </label> <select id="period"
-									name="period" required>
+								</select>
+								<label for="period">예측 기간: </label>
+								<select id="period" name="period" required>
 									<option value="3" selected>3개월</option>
 									<option value="6">6개월</option>
 									<option value="12">12개월</option>

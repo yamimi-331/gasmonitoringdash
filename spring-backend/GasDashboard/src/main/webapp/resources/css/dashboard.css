@@ -246,3 +246,44 @@ canvas {
 .slide-controls img:hover{
 	opacity: 1;
 }
+
+
+.info-box {
+	position: relative;
+	display: inline-block;
+}
+.info-img{
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	vertical-align: middle;
+}
+.information{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 5px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 1.5;
+  top: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1000;
+  width: max-content;
+  max-width: 310px;
+  white-space: normal;
+}
+.info-box:hover .information {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
