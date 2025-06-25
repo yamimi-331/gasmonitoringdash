@@ -75,7 +75,7 @@ public class AccountController {
 		adminService.changeUserType(user);
 
 		String newTypeStr = "";
-		if (newType == "mannager") {
+		if (newType == "manager") {
 			newTypeStr = "매니저";
 		} else {
 			newTypeStr = "관리자";
