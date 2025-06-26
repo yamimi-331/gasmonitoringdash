@@ -149,7 +149,7 @@ def get_coldDay_supply(
     
 # 한파일수 & 공급량 & 기온 데이터 반환(JSON)
 @app.get("/api/gas/coldDayTempSupply")
-def get_coldDay_supply(
+def get_coldDay_Temp_supply(
     localname: str = Query(..., description="선택 지역"),
     year: int = Query(2025, description="선택 연도")
 ):

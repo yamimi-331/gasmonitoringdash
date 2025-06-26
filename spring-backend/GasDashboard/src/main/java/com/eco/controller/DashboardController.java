@@ -10,14 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.eco.domain.UserVO;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
 @RequestMapping("/")
-@AllArgsConstructor
 public class DashboardController {
+	
 	@GetMapping("")
 	public String dashboardPage(Model model, HttpSession session) {
 		UserVO user = (UserVO) session.getAttribute("currentUserInfo");

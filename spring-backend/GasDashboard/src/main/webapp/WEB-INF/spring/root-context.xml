@@ -38,7 +38,7 @@
 	</bean>
 	
 	<!-- 비밀번호 암호화 -->
-	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
 	
 	<mybatis-spring:scan base-package="com.eco.mapper"/>
 </beans>

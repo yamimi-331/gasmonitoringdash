@@ -588,7 +588,7 @@ async function loadWinterCorrelation(localName, year) {
 	
 	const queryParams = new URLSearchParams({ localname: localName, year });
 		
-	const response = await fetch('http://localhost:8000/api/gas/coldDaySupply?'+queryParams);
+	const response = await fetch('http://localhost:8000/api/gas/coldDayTempSupply?'+queryParams);
     const data = await response.json();
     
     const labels = data.map(item => item.YearMonth);
@@ -651,7 +651,7 @@ async function loadWinterCorrelation(localName, year) {
     	        title: { display: true, text: '동계한파일수' },
 				ticks:{
 					precision:0,
-					stageSize: 1
+					stepSize: 1
 				},
 				grid:{
 					drawOnChartArea: false
