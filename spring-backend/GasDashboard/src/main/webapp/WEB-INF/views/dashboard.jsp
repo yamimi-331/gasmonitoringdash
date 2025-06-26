@@ -218,11 +218,18 @@
 								<option value="제주특별자치도">제주특별자치도</option>
 							</select>
 						</div>
-						<!-- 한파일수 & 공급량 차트 -->
 						<div class="charts-top">
+							<!-- 한파일수 & 공급량 차트 -->
 							<div class="charts-box-small loading-wrapper">
 								<canvas id="coldDayChart"></canvas>
 								<div class="local-loading-overlay" id="loading-coldDayChart">
+								    <div class="spinner"></div>
+								  </div>
+							</div>
+							<!-- 기온 & 공급량 차트 -->
+							<div class="charts-box-small loading-wrapper">
+								<canvas id="temperatureChart"></canvas>
+								<div class="local-loading-overlay" id="loading-temperatureChart">
 								    <div class="spinner"></div>
 								  </div>
 							</div>

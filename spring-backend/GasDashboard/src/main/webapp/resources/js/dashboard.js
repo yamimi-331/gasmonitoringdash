@@ -578,26 +578,29 @@ function handleSelectChange() {
 	}
 }
 
-// "한파 일수 & 공급량 차트"
+// "한파 일수 & 공급량 차트" and "온도 & 공급량 차트" 
 async function loadWinterCorrelation(localName, year) {
   try {
 	showLoading('coldDayChart');
+	showLoading('temperatureChart');
 	// 브라우저에 렌더링 타이밍을 줌
-	  await new Promise(resolve => setTimeout(resolve, 50));
-	  
+    await new Promise(resolve => setTimeout(resolve, 50));
+	
 	const queryParams = new URLSearchParams({ localname: localName, year });
 		
 	const response = await fetch('http://localhost:8000/api/gas/coldDaySupply?'+queryParams);
     const data = await response.json();
     
-    const labels = data.map(item => item.Month+'월');
+    const labels = data.map(item => item.YearMonth);
     const coldDays = data.map(item => item.ColdDay);
     const gasSupply = data.map(item => item.GasSupply);
-    
+    const temperatures = data.map(item => item.Temperature);
+     
     destroyIfChartExists("coldDayChart");
+    destroyIfChartExists("temperatureChart");
     
-    const ctx = document.getElementById("coldDayChart").getContext("2d");
-    new Chart(ctx, {
+    const ctx1 = document.getElementById("coldDayChart").getContext("2d");
+    new Chart(ctx1, {
     	  data: {
     	    labels: labels,
     	    datasets: [
@@ -669,14 +672,85 @@ async function loadWinterCorrelation(localName, year) {
     	    }
     	  }
     	});
+    	// 온도 차트 
+	    const ctx2 = document.getElementById("temperatureChart").getContext("2d");
+	    new Chart(ctx2, {
+	      data: {
+	        labels: labels,
+	        datasets: [
+	          {
+	            type: 'line',
+	            label: "기온 (°C)",
+	            data: temperatures,
+	            borderColor: "rgba(255, 159, 64, 1)",
+	            backgroundColor: "rgba(255, 159, 64, 0.1)",
+	            yAxisID: 'y1',
+	            tension: 0.3,
+	            pointStyle: 'circle',
+	            pointRadius: 6,
+	            pointBorderWidth: 2,
+	            pointBackgroundColor: '#fff',
+	            pointBorderColor: 'rgba(255, 159, 64, 1)',
+	            fill: false
+	          },
+	          {
+	            type: 'line',
+	            label: "가스사용량",
+	            data: gasSupply,
+	            borderColor: "rgba(54, 162, 235, 1)",
+	            backgroundColor: "rgba(54, 162, 235, 0.1)",
+	            yAxisID: 'y2',
+	            tension: 0.3,
+	            pointStyle: 'circle',
+	            pointRadius: 6,
+	            pointBorderWidth: 2,
+	            pointBackgroundColor: '#fff',
+	            pointBorderColor: 'rgba(54, 162, 235, 1)',
+	            fill: false
+	          }
+	        ]
+	      },
+	      options: {
+	        responsive: true,
+	        plugins: {
+	          title: {
+	            display: true,
+	            text: `${localName}의 ${year}년 기온 & 가스 사용량 차트`
+	          }
+	        },
+	        scales: {
+	          y1: {
+	            type: 'linear',
+	            position: 'right',
+	            title: { display: true, text: '기온 (°C)' },
+	            grid: { drawOnChartArea: false },
+	            beginAtZero: false
+	          },
+	          y2: {
+	            type: 'linear',
+	            position: 'left',
+	            title: { display: true, text: '가스사용량 (백만 m³)' },
+	            ticks: {
+	              callback: function (value) {
+	                return (value / 1000000).toFixed(0)
+	              }
+	            },
+	            beginAtZero: true
+	          }
+	        }
+	      }
+	    });
+    	
   } catch (error) {
     console.error("데이터 불러오기 실패:", error);
   } finally{
   	requestAnimationFrame(() => {
 	    hideLoading('coldDayChart');
+	     hideLoading('temperatureChart');
 	  });
   }
 }
+
 // 스크롤 및 버튼으로 슬라이드 이동
 document.addEventListener('DOMContentLoaded', () => {
   const scrollWrapper = document.querySelector('.dashboard-scroll-wrapper');
