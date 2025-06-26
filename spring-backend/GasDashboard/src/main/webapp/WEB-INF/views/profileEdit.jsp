@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>DashBoard</title>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="../../resources/js/profileEdit.js?after"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet" type="text/css">
 <link href="../../resources/css/user.css?after" rel="stylesheet" type="text/css">
@@ -42,21 +43,14 @@
 					<label for="userName">이름</label>
 					<input class="input-area" type="text" id="userName" name="user_nm" value="${currentUserInfo.user_nm}">
 				</div>
-	
+				
 				<div class="form-group">
-					<label for="localCd">지역</label>
-					<select class="select-area" id="localCd" name="local_cd">
-						<c:forEach var="loc" items="${localList}">
-							<option value="${loc.local_cd}"
-								<c:if test="${loc.local_cd == currentUserInfo.local_cd}">selected</c:if>>
-								${loc.local_nm}</option>
-						</c:forEach>
-					</select>
-				</div>
-	
-				<div class="form-group">
-					<label for="user_addr">상세주소</label>
-					<input class="input-area" type="text" id="user_addr" name="user_addr" value="${currentUserInfo.user_addr}">
+					<label for="user_addr">주소</label> 
+					<input type="hidden" name="local_cd" id="local_cd">
+					<div class="id-group">
+						<input class="input-id" type="text" name="user_addr" id="user_addr" autocomplete="off"  value="${currentUserInfo.user_addr}" readonly>
+	    				<button type="button" class="input-id-button" onclick="searchAddress()">주소 검색</button>
+					</div>
 				</div>
 	
 				<div class="form-group">

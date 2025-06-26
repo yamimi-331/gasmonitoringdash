@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>DashBoard</title>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="../../resources/js/signup.js"></script>
 <link href="../../resources/css/common.css?after" rel="stylesheet" type="text/css">
 <link href="../../resources/css/user.css?after" rel="stylesheet" type="text/css">
@@ -41,18 +42,14 @@
 					<input class="input-area" type="text" name="user_nm" id="user_nm" autocomplete="off">
 				</div>
 				<div class="form-group">
-					<label for="local_cd">지역</label>
-					<select class="select-area" id="local_cd" name="local_cd" required>
-						<option value="">-- 지역 선택 --</option>
-						<c:forEach var="local" items="${localList}">
-							<option value="${local.local_cd.toString()}">${local.local_nm}</option>
-						</c:forEach>
-					</select>
+					<label for="user_addr">주소</label> 
+					<input type="hidden" name="local_cd" id="local_cd">
+					<div class="id-group">
+						<input class="input-id" type="text" name="user_addr" id="user_addr" autocomplete="off" readonly>
+	    				<button type="button" class="input-id-button"  onclick="searchAddress()">주소 검색</button>
+	    			</div>
 				</div>
-				<div class="form-group">
-					<label for="user_addr">상세주소</label> 
-					<input class="input-area" type="text" name="user_addr" id="user_addr" autocomplete="off">
-				</div>
+    
 				<label>회원 유형</label>
 				<div class="radio-group">
 					<div><input type="radio" name="user_type" value="common" id="common" checked><label for="common">일반</label></div>
