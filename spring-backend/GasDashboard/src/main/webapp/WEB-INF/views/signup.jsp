@@ -53,7 +53,7 @@
 				<label>회원 유형</label>
 				<div class="radio-group">
 					<div><input type="radio" name="user_type" value="common" id="common" checked><label for="common">일반</label></div>
-					<div><input type="radio" name="user_type" value="commonM" id="commonM"><label for="commonM">매니저(승인요청)</label></div>
+					<div><input type="radio" name="user_type" value="commonM" id="commonM"><label for="commonM">직원(승인요청)</label></div>
 					<div><input type="radio" name="user_type" value="commonA" id="commonA"><label for="commonA">관리자(승인요청)</label></div>
 				</div>
 				<div class="button-group">

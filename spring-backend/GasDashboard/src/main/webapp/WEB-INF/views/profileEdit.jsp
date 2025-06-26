@@ -27,22 +27,55 @@
 					<label for="userId">사용자 아이디</label>
 					<input class="input-area" type="text" id="userId" name="user_id" value="${currentUserInfo.user_id}" readonly>
 				</div>
-	
-				<div class="form-group">
-					<label for="userPw">비밀번호</label>
-					<input class="input-area" type="password" id="userPw" name="user_pw">
+				
+				
+
+				<c:choose>
+				  <c:when test="${not empty userDto.user_pw}">
+				  	<div class="form-group">
+						<label for="userPw">비밀번호</label>
+						<input class="input-area" type="password" id="userPw" name="user_pw" value="${userDto.user_pw}">
+					</div>	
+				  </c:when>
+				  <c:otherwise>
+					<div class="form-group">
+						<label for="userPw">비밀번호</label>
+						<input class="input-area" type="password" id="userPw" name="user_pw">
+					</div>		    
+				  </c:otherwise>
+				</c:choose>
+				<c:if test="${not empty errorMsg}">
+				    <div style="color:red; margin: 3px 0;">
+				        ${errorMsg}
+				    </div>
+				</c:if>
+				
+				<c:choose>
+				  <c:when test="${not empty userDto.user_new_pw}">
+				  	<div class="form-group">
+					<label for="pwCheck">새 비밀번호</label>
+					<input type="password" class="input-area" id="pwNew" name="user_new_pw" value="${userDto.user_new_pw}">
 				</div>
-	
+				  </c:when>
+				  <c:otherwise>
+					<div class="form-group">
+					<label for="pwCheck">새 비밀번호</label>
+					<input type="password" class="input-area" id="pwNew" name="user_new_pw">
+				</div>	    
+				</c:otherwise>
+				</c:choose>
+				
 				<div class="form-group">
-					<label for="pwCheck">비밀번호 확인</label>
+					<label for="pwCheck">새 비밀번호 확인</label>
 					<input type="password" class="input-area" id="pwCheck" name="pw_check">
 					<small id="pwCheckMsg" class="form-text"></small>
 				</div>
-
+			
 				<div class="form-group">
 					<label for="userName">이름</label>
 					<input class="input-area" type="text" id="userName" name="user_nm" value="${currentUserInfo.user_nm}">
-				</div>
+				</div>		
+				
 				
 				<div class="form-group">
 					<label for="user_addr">주소</label> 
@@ -76,6 +109,10 @@
 					        	</c:when>
 					        	<c:when test="${currentUserInfo.user_type == 'manager'}">
 					        		<input type="radio" name="user_type" id="typeManager" value="manager" checked>
+						            <label for="typeManager">직원</label>
+					        	</c:when>
+					        	<c:when test="${currentUserInfo.user_type == 'admin'}">
+					        		<input type="radio" name="user_type" id="typeManager" value="manager">
 						            <label for="typeManager">직원</label>
 					        	</c:when>
 								<c:otherwise>

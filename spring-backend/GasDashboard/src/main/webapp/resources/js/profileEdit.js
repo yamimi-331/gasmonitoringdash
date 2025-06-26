@@ -3,6 +3,7 @@
  */
 document.addEventListener("DOMContentLoaded", function () {
     const pwField = document.getElementById("userPw");
+    const pwNewField = document.getElementById("pwNew");
     const pwCheckField = document.getElementById("pwCheck");
     const pwCheckMsg = document.getElementById("pwCheckMsg");
     const form = document.getElementById("profileEditForm");
@@ -10,23 +11,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const userNmInput = document.querySelector('input[name="user_nm"]');
 	
     // 비밀번호 입력 감지
-    pwField.addEventListener("input", checkPasswordMatch);
+    pwNewField.addEventListener("input", checkPasswordMatch);
     pwCheckField.addEventListener("input", checkPasswordMatch);
 
     // 비밀번호 일치 확인
     function checkPasswordMatch() {
         const pw = pwField.value;
+        const newpw = pwNewField.value;
         const pwCheck = pwCheckField.value;
 		
-	    // 둘 다 비어있으면 초기화
-	    if (pw === "" && pwCheck === "") {
-	        pwCheckField.classList.remove("is-valid", "is-invalid");
-	        pwCheckMsg.textContent = "";
-	        return true; // 수정 페이지에선 비워도 괜찮으므로 true 반환
+	    // 하나라도 비어있으면 포커스 주고 false 반환
+	    if (pw === "") {
+	        alert("비밀번호를 입력해주세요.");
+	        pwField.focus();
+	        return false;
 	    }
-	
+		
 	    // 둘 중 하나라도 입력됐을 때 비교
-	    if (pw !== pwCheck) {
+	    if (newpw !== pwCheck) {
 	        pwCheckField.classList.add("is-invalid");
 	        pwCheckField.classList.remove("is-valid");
 	        pwCheckMsg.textContent = "비밀번호가 일치하지 않습니다.";
@@ -51,8 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	        return;
     	}
     	if (!checkPasswordMatch()) {
-            alert("비밀번호가 일치하지 않습니다.");
-            pwCheckField.focus();
             e.preventDefault();
             return;
         }

@@ -59,7 +59,7 @@
 								<td>${item.user_nm}</td>
 								<c:choose>
 									<c:when test="${ item.user_type == 'commonM' }">
-										<td>매니저(승인 요청)</td>
+										<td>직원(승인 요청)</td>
 									</c:when>
 									<c:when test="${ item.user_type == 'commonA' ||  item.user_type == 'managerA'  }">
 										<td>관리자(승인 요청)</td>
@@ -108,7 +108,7 @@
 							<select id="div_level" name="div_level">
 								<option value="">-- 권한 등급 선택 --</option>
 								<option value="common">일반 회원</option>
-								<option value="manager">매니저</option>
+								<option value="manager">직원</option>
 								<option value="admin">관리자</option>
 							</select> <input type="search" id="searchKeyword" placeholder="이름 입력"
 								autocomplete="off" />
@@ -154,7 +154,7 @@
 					<select id="newUserLevel" name="newUserLevel">
 						<option value="">-- 권한 등급 선택 --</option>
 						<option value="common">일반 회원</option>
-						<option value="manager">매니저</option>
+						<option value="manager">직원</option>
 						<option value="admin">관리자</option>
 					</select>
 					<button class="nav-btn" onclick="saveUserLevel()">저장</button>

@@ -76,12 +76,12 @@ public class AccountController {
 
 		String newTypeStr = "";
 		if (newType == "manager") {
-			newTypeStr = "매니저";
+			newTypeStr = "직원";
 		} else {
 			newTypeStr = "관리자";
 		}
 
-		redirectAttributes.addFlashAttribute("msg", newTypeStr + "로 등급이 변경 되었습니다.");
+		redirectAttributes.addFlashAttribute("msg", newTypeStr + "(으)로 등급이 변경 되었습니다.");
 		return "redirect:/account";
 	}
 

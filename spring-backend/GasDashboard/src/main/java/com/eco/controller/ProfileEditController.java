@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eco.domain.LocalVO;
+import com.eco.domain.UserUpdateDTO;
 import com.eco.domain.UserVO;
 import com.eco.service.UserService;
 
@@ -49,31 +50,39 @@ public class ProfileEditController {
 	
 	// 회원정보 수정 
 	@PostMapping("")
-	public String updateProfile(@ModelAttribute UserVO userVo,
+	public String updateProfile(@ModelAttribute UserUpdateDTO userDto,
 	                            HttpSession session,
-	                            RedirectAttributes redirectAttributes) {
+	                            RedirectAttributes redirectAttributes,
+	                            Model model) {
 
 	    // 세션에서 현재 사용자 정보 가져오기
 	    UserVO sessionUser = (UserVO) session.getAttribute("currentUserInfo");
+	    
+	    if (sessionUser == null) return "redirect:/login"; // 로그인 안된 경우
 
-	    if (sessionUser == null) {
-	        return "redirect:/login"; // 로그인 안된 경우
+	    // 1. 현재 비밀번호 확인
+	    if (!passwordEncoder.matches(userDto.getUser_pw(), sessionUser.getUser_pw())) {
+	        model.addAttribute("errorMsg", "현재 비밀번호가 일치하지 않습니다.");
+	        model.addAttribute("userDto", userDto);
+	        return "/profileEdit";
+	    }
+
+	    // 2. 새 비밀번호 변경
+	    if (userDto.getUser_new_pw() != null && !userDto.getUser_new_pw().isBlank()) {
+	        sessionUser.setUser_pw(passwordEncoder.encode(userDto.getUser_new_pw()));
+	    }
+
+	    // local_cd가 비어 있으면 세션의 기존 local_cd로 설정
+	    if (userDto.getLocal_cd() == null || userDto.getLocal_cd().trim().isEmpty()) {
+	        userDto.setLocal_cd(sessionUser.getLocal_cd());
 	    }
 	    
-	    // 비밀번호 처리
-	    String newPw = userVo.getUser_pw();
-	    if (newPw != null && !newPw.trim().isEmpty()) {
-	        // 새 비밀번호 입력된 경우 → 암호화 후 저장
-	        String encodedPw = passwordEncoder.encode(newPw);
-	        sessionUser.setUser_pw(encodedPw);
-	    } // 아니면 기존 비밀번호 그대로 유지
-
-	    // 기존 정보에 새로 입력된 값 반영
-	    sessionUser.setUser_pw(userVo.getUser_pw());
-	    sessionUser.setUser_nm(userVo.getUser_nm());
-	    sessionUser.setLocal_cd(userVo.getLocal_cd());
-	    sessionUser.setUser_addr(userVo.getUser_addr());
-	    sessionUser.setUser_type(userVo.getUser_type());
+	    // 3. 나머지 정보 업데이트
+	    sessionUser.setUser_nm(userDto.getUser_nm());
+	    sessionUser.setUser_addr(userDto.getUser_addr());
+	    sessionUser.setLocal_cd(userDto.getLocal_cd());
+	    sessionUser.setUser_type(userDto.getUser_type());
+	    
 	    // DB 업데이트
 	    userService.updateUserInfo(sessionUser);
 
