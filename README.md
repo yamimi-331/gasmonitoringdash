@@ -1,9 +1,22 @@
-# 가스 공급량 수요예측 모니터링 대시보드
+## Gas Monitoring Dashboard
 
-이 프로젝트는 가스 공급량 공공 데이터를 기반으로 **XGBoost, LSTM, Prophet** 모델을 활용해 수요를 예측하고,
-Spring MVC + FastAPI 구조로 예측 결과를 시각화하고 관리할 수 있는 **가스 수요 예측 모니터링 시스템**입니다.
+## 💡 프로젝트 개요
+**Gas Monitoring Dashboard**는  가스 공급량 공공 데이터를 기반으로 **XGBoost, LSTM, Prophet** 모델을 활용하여 수요를 예측하고, 예측 결과를 시각화 및 관리할 수 있도록  **Spring MVC와 FastAPI를 연동한 모니터링 시스템**입니다. 본 프로젝트는 가스 수요 예측의 정확성을 높이고, 예측 결과를 효율적으로 관리 및 모니터링하는 데 중점을 두었습니다.
 
-## 프로젝트 구조
+## 🛠️ 개발 환경 및 기술 스택
+
+- 개발 기간: 2025년 6월 13일 ~ 2025년 7월 1일
+- 개발자: 신혁주(팀장), 팀원 2명
+- 프레임워크: Spring Framework (Spring MVC), FastAPI
+- IDE: STS3 (Spring Tool Suite 3)
+- 서버: Apache Tomcat 9 (Spring Backend), Uvicorn (FastAPI)
+- 데이터베이스: MySQL
+- 아키텍처: MVC (Spring) + RESTful API (Spring ↔ FastAPI) + Machine Learning (FastAPI)
+- 예측 모델: Python (XGBoost, LSTM, Prophet)
+
+## 📦 프로젝트 구조
+
+프로젝트는 효율적인 관리와 역할 분담을 위해 다음과 같이 모듈화하여 구성되었습니다.
 
 ```
 GasMonitoringDashboard/
@@ -46,59 +59,65 @@ GasMonitoringDashboard/
 └── README.md               # 프로젝트 설명 파일
 ```
 
----
+## ✨ 주요 기능
 
-## 기술 요소
+### 수요 예측 기능 (FastAPI)
 
-| 구성 요소  | 기술                                       |
-| ------ | ---------------------------------------- |
-| 프론트엔드  | JSP, HTML, JS, CSS                 |
-| 백엔드    | Java Spring MVC, MyBatis                 |
-| 데이터베이스 | MySQL                                    |
-| 예측 모델  | Python (FastAPI), XGBoost, LSTM, Prophet |
-| 서버통신   | RESTful API (Spring ↔ FastAPI)           |
-| 실행 서버  | Uvicorn (FastAPI)                        |
+* **가스 수요 예측 모델**:
 
----
+  * `main.py`를 통해 XGBoost, LSTM, Prophet 모델을 활용한 가스 수요 예측을 수행합니다.
+  * XGBoost: 주요 변수 기반의 기본적인 예측을 수행합니다.
+  * LSTM: 시계열 데이터의 장기적인 패턴을 학습하여 높은 정확도의 예측을 제공합니다.
+  * Prophet: 계절성 및 추세 요소를 자동으로 감지하여 복잡한 시계열 예측에 강점을 보입니다.
+    
+* **특정 시나리오 예측**:
 
-## 기능 요약
-
-### 예측 기능 (FastAPI)
-
-* 모델 기본 가스 수요 예측
-
-  * `main.py`에서 다른 함수 호출
-  * JSON 형태로 결과 발환
-
-* 모델 구조
-
-  * XGBoost: 가능성 기본 예측
-  * LSTM: 시계열 기반 고정도 예측
-  * Prophet: 계절성/추상 고도 담수
+  * `coldDaySupply.py`: 한파 시나리오에 따른 가스 공급량 예측을 지원합니다.
+  * `population.py`: 인구 변화가 가스 수요에 미치는 영향을 분석합니다.
+  * `yearsupply.py`: 연간 가스 공급량을 예측합니다.
+    
+* **JSON 결과 반환**:
+ 
+ * 예측 결과는 RESTful API를 통해 JSON 형태로 반환되어 Spring 백엔드와 연동됩니다.
 
 ### 관리 및 모니터링 (Spring MVC)
 
-* 지역/사용자 기본 가스 사용량 관리
-* 예측 결과 차트\uub85c 시각화
-* 개인/관리자 유형 구분 및 승인 요청 규범
+* 가스 사용량 관리: 지역별/사용자별 가스 사용량 데이터를 효율적으로 관리합니다.
+* 예측 결과 시각화: FastAPI로부터 받은 예측 결과를 차트 형태로 시각화하여 직관적인 모니터링을 가능하게 합니다.
+* 권한 관리: 개인 사용자 및 관리자 유형을 구분하며, 특정 기능에 대한 승인 요청 규범을 적용합니다.
 
+  
 ### 데이터베이스 (MySQL)
 
-* 지역, 공공조, 가계조, 사용자 데이터
-* 초기 테이블/더미 데이터 제공
+* 지역, 공공기관, 가계, 사용자 등 가스 수요 예측 및 관리에 필요한 데이터를 저장합니다.
+* 초기 테이블 생성 스크립트와 더미 데이터를 제공하여 즉시 환경 구축이 가능합니다.
 
 ---
 
-## 실행 방법
+## 🚀 프로젝트 실행 방법
 
-### 1. MySQL 초기화
+### 1.프로젝트 클론:
 
 ```bash
-mysql -u [USER] -p [DB명] < mysql-query/table_create.sql
-mysql -u [USER] -p [DB명] < mysql-query/dummy_data_insert.sql
+git clone https://github.com/tmxose/GasMonitoringDashboard.git
+```
+
+### 2. MySQL 초기화:
+
+ - MySQL 데이터베이스를 생성합니다.
+ - 제공된 SQL 파일을 사용하여 필요한 테이블을 생성하고 더미 데이터를 삽입합니다.
+
+```bash
+mysql -u [USER] -p [DB_NAME] < mysql-query/table_create.sql
+mysql -u [USER] -p [DB_NAME] < mysql-query/dummy_data_insert.sql
+
 ```
 
 ### 2. FastAPI 서버 실행
+
+ - fastapi-ml 디렉토리로 이동합니다.
+ - 필요한 Python 의존성을 설치합니다.
+ - Uvicorn을 사용하여 FastAPI 애플리케이션을 실행합니다.
 
 ```bash
 cd fastapi-ml
@@ -108,28 +127,12 @@ uvicorn main:app --reload
 
 ### 3. Spring 서버 실행
 
-* `spring-backend/GasDashboard` 를 IDE(STS/IntelliJ) 등으로 import
-* Tomcat 또는 Spring Boot Devtools 실행
+ - spring-backend/GasDashboard 프로젝트를 IDE (STS/IntelliJ)로 임포트합니다.
+ - src/main/webapp/WEB-INF/spring/root-context.xml 파일에 데이터베이스 연결 정보를 설정합니다.
+ - Maven 의존성 설치: 프로젝트 우클릭 -> Maven -> Update Project... 를 통해 필요한 의존성을 다운로드합니다.
+ - Apache Tomcat 9 서버를 IDE에 연동하고, 프로젝트를 서버에 추가합니다.
+ - Tomcat 서버를 시작하여 웹 애플리케이션을 실행합니다.
 
----
-
-## 기타
-
-* 모델 학습: `fastapi-ml/training/`에서 진행
-* 시각화 코드: `visualization/`에 두어 있음
-* 지역명 → 카드 변환: 프론트에서 자동 처리
-
----
-
-## 회고 안
-
-* 현대 프로토 프리공간 이구 (React, Vue) 규포
-* Kafka 기능 실시간 데이터 포스트
-* Docker 기본 통합 배포 환경 구성
-
----
-
-## 문의
-
-게등자: 신혁주 (Shin Hyukju)
-GitHub: [https://github.com/tmxose](https://github.com/tmxose)
+## 개발자 정보
+ - 개발자: 신혁주(Shin Hyeokju)
+ - GitHub: https://github.com/tmxose/GasMonitoringDashboard.git
