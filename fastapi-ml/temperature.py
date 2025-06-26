@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 
-def get_winter_gas_data(file_path, region, year):
+def get_winter_temp_data(df, region, year):
     """
     특정 지역과 연도에 대해 월별(1, 2, 3, 11, 12월) 동계한파일수와 가스사용량을 JSON으로 반환
     Args:
@@ -11,8 +11,6 @@ def get_winter_gas_data(file_path, region, year):
     Returns:
         str: JSON 형식 문자열
     """
-    df = pd.read_excel(file_path)
-
     # 날짜 컬럼 파싱
     df['Date'] = pd.to_datetime(df['Date'])
 
@@ -42,11 +40,11 @@ def get_winter_gas_data(file_path, region, year):
     return result
 
 
-# ✅ 테스트 실행
-if __name__ == "__main__":
-    file_path = "./data/GasData.xlsx"  # 파일명 바꿔주세요
-    region = "강원특별자치도"
-    year = 2021
+# # ✅ 테스트 실행
+# if __name__ == "__main__":
+#     file_path = "./data/GasData.xlsx"  # 파일명 바꿔주세요
+#     region = "강원특별자치도"
+#     year = 2021
 
-    output_json = get_winter_gas_data(file_path, region, year)
-    print(output_json)
+#     output_json = get_winter_gas_data(file_path, region, year)
+#     print(output_json)

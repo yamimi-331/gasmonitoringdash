@@ -13,6 +13,7 @@ from prediction.prediction_prophet import predict_prophet
 from yearsupply import yearSupply
 from population import populationSupply
 from coldDaySupply import get_winter_gas_data
+from temperature import get_winter_temp_data
 from fastapi.responses import JSONResponse
 
 # FastAPI 사용
@@ -141,6 +142,20 @@ def get_coldDay_supply(
     try:
         df = pd.read_excel("./data/GasData.xlsx")
         result = get_winter_gas_data(df, localname, year)
+        cleaned_result = convert_all_numpy_to_builtin(result)
+        return JSONResponse(cleaned_result)
+    except ValueError as e:
+        return JSONResponse(status_code=400, content={"error": str(e)})
+    
+# 한파일수 & 공급량 & 기온 데이터 반환(JSON)
+@app.get("/api/gas/coldDayTempSupply")
+def get_coldDay_supply(
+    localname: str = Query(..., description="선택 지역"),
+    year: int = Query(2025, description="선택 연도")
+):
+    try:
+        df = pd.read_excel("./data/GasData.xlsx")
+        result = get_winter_temp_data(df, localname, year)
         cleaned_result = convert_all_numpy_to_builtin(result)
         return JSONResponse(cleaned_result)
     except ValueError as e:
