@@ -27,48 +27,30 @@
 					<label for="userId">사용자 아이디</label>
 					<input class="input-area" type="text" id="userId" name="user_id" value="${currentUserInfo.user_id}" readonly>
 				</div>
-				
-				
 
-				<c:choose>
-				  <c:when test="${not empty userDto.user_pw}">
-				  	<div class="form-group">
-						<label for="userPw">비밀번호</label>
-						<input class="input-area" type="password" id="userPw" name="user_pw" value="${userDto.user_pw}">
-					</div>	
-				  </c:when>
-				  <c:otherwise>
-					<div class="form-group">
-						<label for="userPw">비밀번호</label>
-						<input class="input-area" type="password" id="userPw" name="user_pw">
-					</div>		    
-				  </c:otherwise>
-				</c:choose>
-				<c:if test="${not empty errorMsg}">
-				    <div style="color:red; margin: 3px 0;">
+			  	<div class="form-group">
+			  		<label for="userPw">비밀번호</label>
+					<div class="id-group">
+						<input class="input-id" type="password" id="userPw" name="user_pw">
+						<input class="input-id-button" type="button" onclick="verifyPassword()" value="확인">
+					</div>
+				</div>	
+				<div id="pwVerifyMsg" style="color:red; margin: 3px 0;">
+				    <c:if test="${not empty errorMsg}">
 				        ${errorMsg}
-				    </div>
-				</c:if>
-				
-				<c:choose>
-				  <c:when test="${not empty userDto.user_new_pw}">
-				  	<div class="form-group">
-					<label for="pwCheck">새 비밀번호</label>
-					<input type="password" class="input-area" id="pwNew" name="user_new_pw" value="${userDto.user_new_pw}">
+				    </c:if>
 				</div>
-				  </c:when>
-				  <c:otherwise>
-					<div class="form-group">
-					<label for="pwCheck">새 비밀번호</label>
-					<input type="password" class="input-area" id="pwNew" name="user_new_pw">
-				</div>	    
-				</c:otherwise>
-				</c:choose>
+								
+				<div class="form-group">
+				  <label for="pwNew">새 비밀번호</label>
+				  <input type="password" class="input-area" id="pwNew" name="user_new_pw" readonly>
+				  <div id="newPwMsg" style="margin-top:5px; font-size:0.9em;"></div> 
+				</div>
 				
 				<div class="form-group">
-					<label for="pwCheck">새 비밀번호 확인</label>
-					<input type="password" class="input-area" id="pwCheck" name="pw_check">
-					<small id="pwCheckMsg" class="form-text"></small>
+				  <label for="pwCheck">새 비밀번호 확인</label>
+				  <input type="password" class="input-area" id="pwCheck" name="pw_check" readonly>
+				  <small id="pwCheckMsg"></small>
 				</div>
 			
 				<div class="form-group">

@@ -1,79 +1,157 @@
 /**
  * 
  */
+    // 비밀번호 인증 여부 전역 변수 (컨트롤러에서 인증 후 true로 변경한다고 가정)
+let isPasswordVerified = false; // 인증 여부 전역 관리
+
 document.addEventListener("DOMContentLoaded", function () {
     const pwField = document.getElementById("userPw");
     const pwNewField = document.getElementById("pwNew");
     const pwCheckField = document.getElementById("pwCheck");
     const pwCheckMsg = document.getElementById("pwCheckMsg");
+    const newPwMsg = document.getElementById("newPwMsg");
     const form = document.getElementById("profileEditForm");
-    
     const userNmInput = document.querySelector('input[name="user_nm"]');
-	
-    // 비밀번호 입력 감지
+    const userAddrInput = document.getElementById("user_addr");
+    const localCdInput = document.getElementById("local_cd");
+    const userTypeInputs = document.querySelectorAll('input[name="user_type"]');
+
+    // 새 비밀번호가 현재 비밀번호와 같은지 확인하는 함수
+    function checkOldPwNewPwMatch() {
+        const currentPw = pwField.value.trim();
+        const newpw = pwNewField.value.trim();
+
+        if (newPwMsg) {
+            newPwMsg.textContent = "";
+            newPwMsg.style.color = "";
+        }
+
+        if (newpw !== "" && currentPw !== "" && newpw === currentPw) {
+            if (newPwMsg) {
+                newPwMsg.textContent = "현재 비밀번호와 동일합니다.";
+                newPwMsg.style.color = "red";
+            }
+            return false;
+        }
+        return true;
+    }
+
+    // 비밀번호 일치 확인 함수 (새 비밀번호와 확인 비밀번호)
+    function checkPasswordMatch() {
+        const newpw = pwNewField.value.trim();
+        const pwCheck = pwCheckField.value.trim();
+
+        pwCheckMsg.textContent = "";
+        pwCheckMsg.style.color = "";
+
+        if (newpw === "" && pwCheck === "") {
+            pwCheckField.classList.remove("is-invalid", "is-valid");
+            return true;
+        }
+
+        if (!checkOldPwNewPwMatch()) {
+            pwCheckField.classList.add("is-invalid");
+            pwCheckField.classList.remove("is-valid");
+            pwCheckMsg.textContent = "";
+            return false;
+        }
+
+        if (newpw !== pwCheck) {
+            pwCheckField.classList.add("is-invalid");
+            pwCheckField.classList.remove("is-valid");
+            pwCheckMsg.textContent = "비밀번호가 일치하지 않습니다.";
+            pwCheckMsg.style.color = "red";
+            return false;
+        } else {
+            pwCheckField.classList.remove("is-invalid");
+            pwCheckField.classList.add("is-valid");
+            pwCheckMsg.textContent = "비밀번호가 일치합니다.";
+            pwCheckMsg.style.color = "green";
+            return true;
+        }
+    }
+
     pwNewField.addEventListener("input", checkPasswordMatch);
     pwCheckField.addEventListener("input", checkPasswordMatch);
 
-    // 비밀번호 일치 확인
-    function checkPasswordMatch() {
-        const pw = pwField.value;
-        const newpw = pwNewField.value;
-        const pwCheck = pwCheckField.value;
-		
-	    // 하나라도 비어있으면 포커스 주고 false 반환
-	    if (pw === "") {
-	        alert("비밀번호를 입력해주세요.");
-	        pwField.focus();
-	        return false;
-	    }
-		
-	    // 둘 중 하나라도 입력됐을 때 비교
-	    if (newpw !== pwCheck) {
-	        pwCheckField.classList.add("is-invalid");
-	        pwCheckField.classList.remove("is-valid");
-	        pwCheckMsg.textContent = "비밀번호가 일치하지 않습니다.";
-	        pwCheckMsg.style.color = "red";
-	        return false;
-	    } else {
-	        pwCheckField.classList.remove("is-invalid");
-	        pwCheckField.classList.add("is-valid");
-	        pwCheckMsg.textContent = "비밀번호가 일치합니다.";
-	        pwCheckMsg.style.color = "green";
-	        return true;
-	    }
+    // 변경사항 체크 함수
+    function isFormChanged() {
+        const originalUserNm = userNmInput.getAttribute("data-original") || "";
+        const originalUserAddr = userAddrInput.getAttribute("data-original") || "";
+        const originalLocalCd = localCdInput.getAttribute("data-original") || "";
+        let originalUserType = "";
+        userTypeInputs.forEach(radio => {
+            if (radio.hasAttribute("data-original-checked")) originalUserType = radio.value;
+        });
+
+        const currentUserNm = userNmInput.value.trim();
+        const currentUserAddr = userAddrInput.value.trim();
+        const currentLocalCd = localCdInput.value.trim();
+        let currentUserType = "";
+        userTypeInputs.forEach(radio => {
+            if (radio.checked) currentUserType = radio.value;
+        });
+
+        const newPwVal = pwNewField.value.trim();
+
+        return (
+            currentUserNm !== originalUserNm ||
+            currentUserAddr !== originalUserAddr ||
+            currentLocalCd !== originalLocalCd ||
+            currentUserType !== originalUserType ||
+            newPwVal !== ""
+        );
     }
 
-    // 폼 제출 시 비밀번호 확인
+    // 처음 로드 시점에 데이터-original 속성으로 원본 저장 (없으면 이 코드 생략 가능)
+    userNmInput.setAttribute("data-original", userNmInput.value.trim());
+    userAddrInput.setAttribute("data-original", userAddrInput.value.trim());
+    localCdInput.setAttribute("data-original", localCdInput.value.trim());
+    userTypeInputs.forEach(radio => {
+        if (radio.checked) {
+            radio.setAttribute("data-original-checked", "true");
+        } else {
+            radio.removeAttribute("data-original-checked");
+        }
+    });
+
     form.addEventListener("submit", function (e) {
-        const userNm = userNmInput.value.trim();
-        if (userNm == "" || userNm == null) {
-	        alert("이름을 입력해주세요.");
-	        userNmInput.focus();
-	        e.preventDefault();
-	        return;
-    	}
-    	if (!checkPasswordMatch()) {
+        if (userNmInput.value.trim() === "") {
+            alert("이름을 입력해주세요.");
+            userNmInput.focus();
+            e.preventDefault();
+            return;
+        }
+
+        if (!isPasswordVerified) {
+            alert("현재 비밀번호 확인을 먼저 해주세요.");
+            pwField.focus();
+            e.preventDefault();
+            return;
+        }
+
+        if (!checkPasswordMatch()) {
+            e.preventDefault();
+            return;
+        }
+
+        if (!isFormChanged()) {
+            alert("수정된 정보가 없습니다.");
             e.preventDefault();
             return;
         }
     });
 
-    // 탈퇴 최종 확인 함수
     window.confirmDelete = function () {
-    	if (!checkPasswordMatch()) {
+        if (!checkPasswordMatch()) {
             alert("비밀번호가 일치하지 않습니다.");
             pwCheckField.focus();
             return false;
-        } else {
-	        if (confirm("정말로 회원을 탈퇴하시겠습니까?\n계정복구는 당사로 문의해주시기 바랍니다.")) {
-	            document.getElementById('profiledeleteForm').submit();
-	            return true;
-	        } else {
-	            return false;
-	        }
-	    }
+        }
+        return confirm("정말로 회원을 탈퇴하시겠습니까?\n계정복구는 당사로 문의해주시기 바랍니다.");
     };
 });
+
 
 
 // 주소 API
@@ -139,3 +217,40 @@ function searchAddress() {
         }
     }).open();
 }
+
+//비밀번호 검증
+function verifyPassword() {
+  const currentPw = document.getElementById("userPw").value;
+  if (!currentPw) {
+    alert("비밀번호를 입력해주세요.");
+    return;
+  }
+
+  fetch("/profileEdit/verifyPw", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ user_pw: currentPw })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      isPasswordVerified = true;  // 인증 완료
+      document.getElementById("userPw").readOnly = true;
+      document.getElementById("userPw").style.backgroundColor = "#eee";
+
+      document.getElementById("pwNew").readOnly = false;
+      document.getElementById("pwCheck").readOnly = false;
+
+      document.getElementById("pwVerifyMsg").textContent = "비밀번호 확인 완료";
+      document.getElementById("pwVerifyMsg").style.color = "green";
+    } else {
+	  isPasswordVerified = false;
+      document.getElementById("pwVerifyMsg").textContent = "비밀번호가 일치하지 않습니다.";
+      document.getElementById("pwVerifyMsg").style.color = "red";
+    }
+  });
+}
+
+

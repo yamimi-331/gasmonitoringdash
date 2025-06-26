@@ -1,6 +1,8 @@
 package com.eco.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,7 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eco.domain.LocalVO;
@@ -52,20 +56,12 @@ public class ProfileEditController {
 	@PostMapping("")
 	public String updateProfile(@ModelAttribute UserUpdateDTO userDto,
 	                            HttpSession session,
-	                            RedirectAttributes redirectAttributes,
-	                            Model model) {
+	                            RedirectAttributes redirectAttributes) {
 
 	    // 세션에서 현재 사용자 정보 가져오기
 	    UserVO sessionUser = (UserVO) session.getAttribute("currentUserInfo");
 	    
 	    if (sessionUser == null) return "redirect:/login"; // 로그인 안된 경우
-
-	    // 1. 현재 비밀번호 확인
-	    if (!passwordEncoder.matches(userDto.getUser_pw(), sessionUser.getUser_pw())) {
-	        model.addAttribute("errorMsg", "현재 비밀번호가 일치하지 않습니다.");
-	        model.addAttribute("userDto", userDto);
-	        return "/profileEdit";
-	    }
 
 	    // 2. 새 비밀번호 변경
 	    if (userDto.getUser_new_pw() != null && !userDto.getUser_new_pw().isBlank()) {
@@ -112,5 +108,22 @@ public class ProfileEditController {
 
 	    return "redirect:/";
 	}
+	
+	@PostMapping(value = "/verifyPw", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public Map<String, Object> verifyPassword(@RequestBody UserVO vo, HttpSession session) {
+		UserVO sessionUser = (UserVO) session.getAttribute("currentUserInfo");
+		Map<String, Object> result = new HashMap<>();
 
+	    if (sessionUser == null) {
+	        result.put("success", false);
+	        result.put("msg", "세션이 만료되었습니다.");
+	        return result;
+	    }
+
+	    boolean matched = passwordEncoder.matches(vo.getUser_pw(), sessionUser.getUser_pw());
+	    result.put("success", matched);
+	    result.put("msg", matched ? "확인되었습니다." : "비밀번호가 일치하지 않습니다.");
+	    return result;
+	}
 }
