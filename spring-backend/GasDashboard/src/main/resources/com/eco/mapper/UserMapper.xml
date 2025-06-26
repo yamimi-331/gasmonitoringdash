@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getUserSelect" resultType="com.eco.domain.UserVO">
 		<![CDATA[
 		SELECT * FROM t_user
-		WHERE use_yn = 'Y' AND user_id = #{user_id} and user_pw = #{user_pw}
+		WHERE use_yn = 'Y' AND user_id = #{user_id}
 		]]>
 	</select>
 	
@@ -72,4 +72,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    WHERE user_cd = #{user_cd}
 	    ]]>	
 	</update>
+	
 </mapper>

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.eco.domain.LocalVO;
@@ -20,15 +21,22 @@ import lombok.extern.log4j.Log4j;
 public class UserServiceImpl implements UserService {
 	// MySQL 쿼리 매핑
 	private UserMapper mapper;
-
+	// 비밀번호 암호화
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	// 로그인
 	@Override
-	public UserVO login(UserVO user) {
+	public UserVO login(UserVO inputUser) {
 		try {
-			return mapper.getUserSelect(user);
-		} catch (Exception e) {
-			throw new ServiceException("로그인 실패", e);
-		}
+	        // 입력한 아이디로 사용자 정보 조회
+	        UserVO dbUser = mapper.getUserSelect(inputUser); // 이 때 inputUser.user_id 가 기준
+	        if (dbUser != null && passwordEncoder.matches(inputUser.getUser_pw(), dbUser.getUser_pw())) {
+	            return dbUser; // 로그인 성공
+	        }
+	        return null; // 로그인 실패
+	    } catch (Exception e) {
+	        throw new ServiceException("로그인 실패", e);
+	    }
 	}
 
 	// 회원가입
@@ -38,6 +46,9 @@ public class UserServiceImpl implements UserService {
 			String localCode = String.valueOf(user.getLocal_cd()); // 회원가입 폼에서 선택한 지역코드
 			String userCd = findMaxUserCd(localCode);
 			user.setUser_cd(userCd);
+			// 비밀번호 암호화
+			String encodedPw = passwordEncoder.encode(user.getUser_pw());
+	        user.setUser_pw(encodedPw);
 			mapper.userInsert(user);
 		} catch (Exception e) {
 			throw new ServiceException("회원가입 실패", e);
@@ -95,6 +106,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	// 회원 탈퇴
 	@Override
 	public void deactivateUser(String user_cd) {
 		try {
@@ -106,5 +118,5 @@ public class UserServiceImpl implements UserService {
 			throw new ServiceException("회원 탈퇴 처리 실패", e);
 		}
 	}
-
+	
 }

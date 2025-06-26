@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,9 @@ import lombok.extern.log4j.Log4j;
 public class ProfileEditController {
 
 	private final UserService userService;
-
+	
+	private PasswordEncoder passwordEncoder;
+	
 	// 회원정보 수정 페이지 진입
 	@GetMapping("")
 	public String profileEditPage(Model model, HttpSession session) {
@@ -56,6 +59,15 @@ public class ProfileEditController {
 	    if (sessionUser == null) {
 	        return "redirect:/login"; // 로그인 안된 경우
 	    }
+	    
+	    // 비밀번호 처리
+	    String newPw = userVo.getUser_pw();
+	    if (newPw != null && !newPw.trim().isEmpty()) {
+	        // 새 비밀번호 입력된 경우 → 암호화 후 저장
+	        String encodedPw = passwordEncoder.encode(newPw);
+	        sessionUser.setUser_pw(encodedPw);
+	    } // 아니면 기존 비밀번호 그대로 유지
+
 	    // 기존 정보에 새로 입력된 값 반영
 	    sessionUser.setUser_pw(userVo.getUser_pw());
 	    sessionUser.setUser_nm(userVo.getUser_nm());

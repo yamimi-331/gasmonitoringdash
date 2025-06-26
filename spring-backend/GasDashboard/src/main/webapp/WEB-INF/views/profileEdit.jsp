@@ -30,7 +30,7 @@
 	
 				<div class="form-group">
 					<label for="userPw">비밀번호</label>
-					<input class="input-area" type="password" id="userPw" name="user_pw" value="${currentUserInfo.user_pw}">
+					<input class="input-area" type="password" id="userPw" name="user_pw">
 				</div>
 	
 				<div class="form-group">

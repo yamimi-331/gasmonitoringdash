@@ -17,24 +17,28 @@ document.addEventListener("DOMContentLoaded", function () {
     function checkPasswordMatch() {
         const pw = pwField.value;
         const pwCheck = pwCheckField.value;
-
-        if (pw && pwCheck && pw !== pwCheck) {
-            pwCheckField.classList.add("is-invalid");
-            pwCheckField.classList.remove("is-valid");
-            pwCheckMsg.textContent = "비밀번호가 일치하지 않습니다.";
-            pwCheckMsg.style.color = "red";
-            return false;
-        } else if (pw && pwCheck && pw === pwCheck) {
-            pwCheckField.classList.remove("is-invalid");
-            pwCheckField.classList.add("is-valid");
-            pwCheckMsg.textContent = "비밀번호가 일치합니다.";
-            pwCheckMsg.style.color = "green";
-            return true;
-        } else {
-            pwCheckField.classList.remove("is-valid", "is-invalid");
-            pwCheckMsg.textContent = "";
-            return false;
-        }
+		
+	    // 둘 다 비어있으면 초기화
+	    if (pw === "" && pwCheck === "") {
+	        pwCheckField.classList.remove("is-valid", "is-invalid");
+	        pwCheckMsg.textContent = "";
+	        return true; // 수정 페이지에선 비워도 괜찮으므로 true 반환
+	    }
+	
+	    // 둘 중 하나라도 입력됐을 때 비교
+	    if (pw !== pwCheck) {
+	        pwCheckField.classList.add("is-invalid");
+	        pwCheckField.classList.remove("is-valid");
+	        pwCheckMsg.textContent = "비밀번호가 일치하지 않습니다.";
+	        pwCheckMsg.style.color = "red";
+	        return false;
+	    } else {
+	        pwCheckField.classList.remove("is-invalid");
+	        pwCheckField.classList.add("is-valid");
+	        pwCheckMsg.textContent = "비밀번호가 일치합니다.";
+	        pwCheckMsg.style.color = "green";
+	        return true;
+	    }
     }
 
     // 폼 제출 시 비밀번호 확인

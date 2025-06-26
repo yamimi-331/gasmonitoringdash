@@ -200,6 +200,14 @@
 			<artifactId>json</artifactId>
 			<version>20220320</version>
 		</dependency>
+
+		<!-- 비밀번호 암호화 -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+		    <version>5.0.7.RELEASE</version> 
+		</dependency>
+				
 	</dependencies>
 	<build>
 		<plugins>

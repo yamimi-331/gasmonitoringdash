@@ -22,4 +22,5 @@ public interface UserService {
 	public void updateUserInfo(UserVO sessionUser);
 	// 회원 탈퇴
 	public void deactivateUser(String user_cd);
+
 }
