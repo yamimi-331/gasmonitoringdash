@@ -4,88 +4,57 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.ticker as ticker
 
+# 📁 데이터 불러오기 & 전처리
 df = pd.read_excel("data/GasData5.xlsx")
 plt.rcParams['font.family'] = 'Malgun Gothic'
 plt.rcParams['axes.unicode_minus'] = False
 
-# 숫자형 데이터 변환 (쉼표 제거)
-df['GasSupply'] = df['GasSupply'].astype(str).str.replace(',', '').astype(float)
-df['ResidentialGas'] = df['ResidentialGas'].astype(str).str.replace(',', '').astype(float)
+# 🔢 숫자형 컬럼 처리
+numeric_cols = ['GasSupply', 'ResidentialGas', 'Population']
+for col in numeric_cols:
+    df[col] = df[col].astype(str).str.replace(',', '').astype(float if col != 'Population' else int)
 
 df['Temperature'] = df['Temperature'].astype(float)
-df['Population'] = df['Population'].astype(str).str.replace(',', '').astype(int)
+df['Rainfall'] = df['Rainfall'].astype(float)
+df['Humidity'] = df['Humidity'].astype(float)
 
-# 날짜 파싱
+# 📅 날짜 처리
 df['Date'] = pd.to_datetime(df['Date'])
 df['Month'] = df['Date'].dt.month
 df['Year'] = df['Date'].dt.year
 
-# 동계
+# ❄️ 동계 데이터
 winter_df = df[df['Month'].isin([11, 12, 1, 2, 3])]
-seoul_df = df[df['Local'].isin(["서울특별시"])]
 
-winter_seoul_df = df[
-    (df['Local'].isin(["서울특별시"])) & 
-    (df['Month'].isin([11, 12, 1, 2, 3]))
-]
+# 📊 공통 그래프 함수 (방정식 및 상관계수는 콘솔 출력용)
+def plot_with_regression(x, y, data, title, xlabel, ylabel, logx=False):
+    plt.figure(figsize=(10, 6))
+    sns.regplot(x=x, y=y, data=data, ci=None, marker='o')
+    
+    if logx:
+        plt.xscale('log')
+    
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    
+    ax = plt.gca()
+    ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
+    ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
+    
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+    
+    # 콘솔 출력으로 방정식, 상관계수 표시
+    slope, intercept = np.polyfit(data[x], data[y], 1)
+    corr = data[x].corr(data[y])
+    print(f"{title}")
+    print(f"  회귀방정식: y = {slope:.2f}x + {intercept:,.0f}")
+    print(f"  상관계수 r = {corr:.2f}\n")
 
-# Y축 숫자 포맷: 천 단위 콤마 포함
-
-
-plt.figure(figsize=(10, 6))
-sns.regplot(x='Temperature', y='GasSupply', data=df, ci=None, marker='o')
-plt.title('기온 vs 가스 공급량 (월별)')
-plt.xlabel('기온 (°C)')
-plt.ylabel('가스 공급량')
-corr_temp = df['Temperature'].corr(df['GasSupply'])
-print(f"기온 vs 가스 공급량 상관계수: {corr_temp:.2f}")
-ax = plt.gca()
-ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
-ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
-plt.tight_layout()
-plt.show()
-
-plt.figure(figsize=(10, 6))
-sns.regplot(x='Humidity', y='GasSupply', data=df, ci=None, marker='o')
-plt.title('습도 vs 가스 공급량 (월별)')
-plt.xlabel('습도')
-plt.ylabel('가스 공급량')
-corr_humidity = df['Humidity'].corr(df['GasSupply'])
-print(f"습도 vs 가스 공급량 상관계수: {corr_humidity:.2f}")
-ax = plt.gca()
-ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
-ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
-plt.tight_layout()
-plt.show()
-
-plt.figure(figsize=(10, 6))
-sns.regplot(x='Rainfall', y='GasSupply', data=df, ci=None, marker='o')
-plt.title('강수량 vs 가스 공급량 (월별)')
-plt.xlabel('강수량')
-plt.ylabel('가스 공급량')
-corr_humidity = df['Rainfall'].corr(df['GasSupply'])
-print(f"강수량 vs 가스 공급량 상관계수: {corr_humidity:.2f}")
-ax = plt.gca()
-ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
-ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
-plt.tight_layout()
-plt.show()
-
-plt.figure(figsize=(10, 6))
-sns.regplot(data=winter_df, x='Population', y='ResidentialGas', ci=None, marker='o')
-plt.xscale('log')
-plt.title('인구수 vs 가스 공급량')
-plt.xlabel('인구수')
-plt.ylabel('가스 공급량')
-corr_pop = winter_df['Population'].corr(winter_df['ResidentialGas'])
-print(f"인구수 vs 가정용 가스 공급량 상관계수: {corr_pop:.2f}")
-ax = plt.gca()
-ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
-ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
-plt.tight_layout()
-plt.show()
-
-
-
-# plt.tight_layout()
-# plt.show()
+# 🔍 그래프 출력 및 콘솔 정보 출력
+plot_with_regression('Temperature', 'GasSupply', df, '기온 vs 가스 공급량 (월별)', '기온 (°C)', '가스 공급량')
+plot_with_regression('Humidity', 'GasSupply', df, '습도 vs 가스 공급량 (월별)', '습도', '가스 공급량')
+plot_with_regression('Rainfall', 'GasSupply', df, '강수량 vs 가스 공급량 (월별)', '강수량', '가스 공급량')
+plot_with_regression('Population', 'ResidentialGas', winter_df, '인구수 vs 가정용 가스 공급량 (동계)', '인구수', '가정용 가스 공급량', logx=True)
