@@ -29,7 +29,7 @@ def populationSupply(df, localname):
         residential = int(row['ResidentialGas'])
 
         result[selected_local][year] = {"평균 인구수": population,
-                                        "가스 총 공급량": gas_supply,
+                                        "가스 총 공급량": residential,
                                         "1인당 가스 사용량": round(residential / population, 4)}
 
     # year_supply = json.dumps(result, indent=4, ensure_ascii=False)

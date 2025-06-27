@@ -188,7 +188,7 @@
 							</div>
 						</div>
 
-						<h2 class="main-title">가스 사용량과 기온·한파일수 비교 분석</h2>
+						<h2 class="main-title">동계 가스 사용량과 기온·한파일수 비교 분석</h2>
 						<div class="black-line"></div>
 						<div class="controls">
 						<label for="city_detail">년도: </label>
