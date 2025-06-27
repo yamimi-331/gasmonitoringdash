@@ -195,23 +195,26 @@ async function fetchPrediction() {
       data: {
         labels: labels,
         datasets: [
-          {
-            label: "실제 공급량",
-            data: actual,
-            backgroundColor: "rgba(54, 162, 235, 0.7)",
-          },
-          {
-            label: "과거 예측",
-            data: pastPred,
-            backgroundColor: "rgba(255, 206, 86, 0.7)",
-          },
-          {
-            label: "미래 예측",
-            data: futurePred,
-            backgroundColor: "rgba(75, 192, 192, 0.7)",
-          },
-        ],
-      },
+		{
+			label: "실제 공급량",
+			data: actual,
+			backgroundColor: "rgba(54, 162, 235, 0.7)",
+		},
+		{
+			label: "예측 공급량",
+			data: labels.map((_, i) => { 
+				const pastVal = pastPred[i];
+				const futureVal = futurePred[i];
+
+				if (typeof pastVal === "number" && pastVal !== 0) return pastVal;
+				if (typeof futureVal === "number" && futureVal !== 0) return futureVal;
+
+				return null;  // 막대 표시 안함
+			}),
+			backgroundColor: "rgba(255, 159, 64, 0.7)",
+		},
+		],
+	},
       options: {
         responsive: true,
          maintainAspectRatio: false,

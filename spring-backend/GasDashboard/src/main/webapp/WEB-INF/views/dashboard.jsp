@@ -33,44 +33,6 @@
 			<div class="dashboard-scroll-wrapper">
 				<!-- 대시보드를 담은 컨테이너 start -------------------------------------- -->
 				<div class="dashboard-container">
-					<!-- 연도별 가스 공급량 차트 영역 Start ---------------------------------- -->
-					<section class="dashboard-page">
-					<div class="dashboard">
-						<div id="yearForm">
-							<h2 class="main-title">전국 가스 공급량</h2>
-							<div class="black-line"></div>
-							<div>
-								<label for="year" class="visually-hidden">년도:</label> <select id="year" name="year"
-									required class="visually-hidden">
-									<option value="2020">2020</option>
-									<option value="2021">2021</option>
-									<option value="2022">2022</option>
-									<option value="2023">2023</option>
-									<option value="2024">2024</option>
-									<option value="2025" selected>2025</option>
-								</select>
-							</div>
-						</div>
-						<!-- 상단 차트 공간 -->
-						<div class="charts-top">
-							<div id="topLocalSupply" class="loading-wrapper"></div>
-							<div class="local-loading-overlay" id="loading-topLocalSupply">
-								<div class="spinner"></div>
-							</div>
-						</div>
-						<!-- 연도별 전국 가스 공급량 차트 -->
-						<div class="charts-top">
-							<div class="local-charts-box loading-wrapper">
-								<canvas id="yearLocalSupply"></canvas>
-								<!-- 로딩 오버레이 -->
-							    <div class="local-loading-overlay" id="loading-yearLocalSupply">
-									<div class="spinner"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					</section>
-					<!-- 연도별 가스 공급량 차트 영역 End ---------------------------------- -->
 					<!-- 가스 공급량 및 수요예측 차트 Start ------------------------------------------------ -->
 					<section class="dashboard-page">
 					<div class="dashboard">
@@ -141,6 +103,46 @@
 					</div>
 					</section>
 					<!-- 가스 공급량 및 수요예측 차트 End ------------------------------------------------ -->
+					
+					<!-- 연도별 가스 공급량 차트 영역 Start ---------------------------------- -->
+					<section class="dashboard-page">
+					<div class="dashboard">
+						<div id="yearForm">
+							<h2 class="main-title">전국 가스 공급량</h2>
+							<div class="black-line"></div>
+							<div>
+								<label for="year" class="visually-hidden">년도:</label> <select id="year" name="year"
+									required class="visually-hidden">
+									<option value="2020">2020</option>
+									<option value="2021">2021</option>
+									<option value="2022">2022</option>
+									<option value="2023">2023</option>
+									<option value="2024">2024</option>
+									<option value="2025" selected>2025</option>
+								</select>
+							</div>
+						</div>
+						<!-- 상단 차트 공간 -->
+						<div class="charts-top">
+							<div id="topLocalSupply" class="loading-wrapper"></div>
+							<div class="local-loading-overlay" id="loading-topLocalSupply">
+								<div class="spinner"></div>
+							</div>
+						</div>
+						<!-- 연도별 전국 가스 공급량 차트 -->
+						<div class="charts-top">
+							<div class="local-charts-box loading-wrapper">
+								<canvas id="yearLocalSupply"></canvas>
+								<!-- 로딩 오버레이 -->
+							    <div class="local-loading-overlay" id="loading-yearLocalSupply">
+									<div class="spinner"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					</section>
+					<!-- 연도별 가스 공급량 차트 영역 End ---------------------------------- -->
+					
 					<section class="dashboard-page">
 					<div class="small-contaier">
 					
@@ -187,7 +189,7 @@
 							</div>
 						</div>
 
-						<h2 class="main-title">동계 한파일수 vs 가스사용량</h2>
+						<h2 class="main-title">가스 사용량과 기온·한파일수 비교 분석</h2>
 						<div class="black-line"></div>
 						<div class="controls">
 						<label for="city_detail">년도: </label>
@@ -219,17 +221,17 @@
 							</select>
 						</div>
 						<div class="charts-top">
-							<!-- 한파일수 & 공급량 차트 -->
-							<div class="charts-box-small loading-wrapper">
-								<canvas id="coldDayChart"></canvas>
-								<div class="local-loading-overlay" id="loading-coldDayChart">
-								    <div class="spinner"></div>
-								  </div>
-							</div>
 							<!-- 기온 & 공급량 차트 -->
 							<div class="charts-box-small loading-wrapper">
 								<canvas id="temperatureChart"></canvas>
 								<div class="local-loading-overlay" id="loading-temperatureChart">
+								    <div class="spinner"></div>
+								  </div>
+							</div>
+							<!-- 한파일수 & 공급량 차트 -->
+							<div class="charts-box-small loading-wrapper">
+								<canvas id="coldDayChart"></canvas>
+								<div class="local-loading-overlay" id="loading-coldDayChart">
 								    <div class="spinner"></div>
 								  </div>
 							</div>
