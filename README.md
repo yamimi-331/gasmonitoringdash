@@ -61,7 +61,7 @@ GasMonitoringDashboard/
 
 ## ✨ 주요 기능
 
-### 수요 예측 기능 (FastAPI)
+**수요 예측 기능 (FastAPI)**
 
 * **가스 수요 예측 모델**:
 
@@ -80,13 +80,13 @@ GasMonitoringDashboard/
  
  * 예측 결과는 RESTful API를 통해 JSON 형태로 반환되어 Spring 백엔드와 연동됩니다.
 
-### 관리 및 모니터링 (Spring MVC)
+**관리 및 모니터링 (Spring MVC)**
 
 * 가스 사용량 관리: 로그인 기능을 통해 사용자별 개인 사용량 조회 및 지역별 평균 데이터와 비교하여 가스 사용량 절약 플랜을 세울수도 있습니다.
 * 예측 결과 시각화: FastAPI로부터 받은 예측 결과를 차트 형태로 시각화하여 직관적인 모니터링을 가능하게 합니다.
 * 권한 관리: 개인 사용자 및 관리자 유형을 구분하며, 특정 기능에 대한 승인 요청 규범을 적용합니다.
   
-### 데이터베이스 (MySQL)
+**데이터베이스 (MySQL)**
 
 * 지역, 공공기관, 사용자 등 가스 수요 예측 및 관리에 필요한 데이터를 저장합니다.
 * 초기 테이블 생성 스크립트와 더미 데이터를 제공하여 즉시 환경 구축이 가능합니다.
@@ -95,13 +95,13 @@ GasMonitoringDashboard/
 
 ## 🚀 프로젝트 실행 방법
 
-### 1.프로젝트 클론:
+**1.프로젝트 클론:**
 
 ```bash
 git clone https://github.com/tmxose/GasMonitoringDashboard.git
 ```
 
-### 2. MySQL 초기화:
+**2. MySQL 초기화:**
 
  - MySQL 데이터베이스를 생성합니다.
  - 제공된 SQL 파일을 사용하여 필요한 테이블을 생성하고 더미 데이터를 삽입합니다.
@@ -112,7 +112,7 @@ mysql -u [USER] -p [DB_NAME] < mysql-query/dummy_data_insert.sql
 
 ```
 
-### 2. FastAPI 서버 실행
+**2. FastAPI 서버 실행**
 
  - fastapi-ml 디렉토리로 이동합니다.
  - 필요한 Python 의존성을 설치합니다.
@@ -124,7 +124,7 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-### 3. Spring 서버 실행
+**3. Spring 서버 실행**
 
  - spring-backend/GasDashboard 프로젝트를 IDE (STS/IntelliJ)로 임포트합니다.
  - src/main/webapp/WEB-INF/spring/root-context.xml 파일에 데이터베이스 연결 정보를 설정합니다.
