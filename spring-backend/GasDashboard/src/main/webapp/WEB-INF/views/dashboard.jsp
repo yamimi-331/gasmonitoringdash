@@ -145,7 +145,6 @@
 					
 					<section class="dashboard-page">
 					<div class="small-contaier">
-					
 					<!-- 지역/년도별 인구수 및 가스 공급량 차트 start ----------------------------------------------- -->
 					<div class="dashboard">
 						<h2 class="main-title">지역/년도별 인구수 및 가스 공급량 차트</h2>
