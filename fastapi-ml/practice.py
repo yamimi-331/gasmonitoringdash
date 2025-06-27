@@ -24,6 +24,14 @@ df['Year'] = df['Date'].dt.year
 winter_df = df[df['Month'].isin([11, 12, 1, 2, 3])]
 seoul_df = df[df['Local'].isin(["서울특별시"])]
 
+winter_seoul_df = df[
+    (df['Local'].isin(["서울특별시"])) & 
+    (df['Month'].isin([11, 12, 1, 2, 3]))
+]
+
+# Y축 숫자 포맷: 천 단위 콤마 포함
+
+
 plt.figure(figsize=(10, 6))
 sns.regplot(x='Temperature', y='GasSupply', data=df, ci=None, marker='o')
 plt.title('기온 vs 가스 공급량 (월별)')
@@ -31,36 +39,53 @@ plt.xlabel('기온 (°C)')
 plt.ylabel('가스 공급량')
 corr_temp = df['Temperature'].corr(df['GasSupply'])
 print(f"기온 vs 가스 공급량 상관계수: {corr_temp:.2f}")
+ax = plt.gca()
+ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
+ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
+plt.tight_layout()
 plt.show()
 
+plt.figure(figsize=(10, 6))
 sns.regplot(x='Humidity', y='GasSupply', data=df, ci=None, marker='o')
 plt.title('습도 vs 가스 공급량 (월별)')
 plt.xlabel('습도')
 plt.ylabel('가스 공급량')
 corr_humidity = df['Humidity'].corr(df['GasSupply'])
 print(f"습도 vs 가스 공급량 상관계수: {corr_humidity:.2f}")
+ax = plt.gca()
+ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
+ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
+plt.tight_layout()
 plt.show()
 
+plt.figure(figsize=(10, 6))
 sns.regplot(x='Rainfall', y='GasSupply', data=df, ci=None, marker='o')
 plt.title('강수량 vs 가스 공급량 (월별)')
 plt.xlabel('강수량')
 plt.ylabel('가스 공급량')
 corr_humidity = df['Rainfall'].corr(df['GasSupply'])
 print(f"강수량 vs 가스 공급량 상관계수: {corr_humidity:.2f}")
+ax = plt.gca()
+ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
+ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
+plt.tight_layout()
 plt.show()
 
-sns.regplot(data=seoul_df, x='Population', y='ResidentialGas', ci=None, marker='o')
+plt.figure(figsize=(10, 6))
+sns.regplot(data=winter_df, x='Population', y='ResidentialGas', ci=None, marker='o')
+plt.xscale('log')
 plt.title('인구수 vs 가스 공급량')
 plt.xlabel('인구수')
 plt.ylabel('가스 공급량')
 corr_pop = winter_df['Population'].corr(winter_df['ResidentialGas'])
 print(f"인구수 vs 가정용 가스 공급량 상관계수: {corr_pop:.2f}")
-plt.show()
-
-# Y축 숫자 포맷: 천 단위 콤마 포함
 ax = plt.gca()
 ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
 ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{x:,.0f}'))
+plt.tight_layout()
+plt.show()
+
+
 
 # plt.tight_layout()
 # plt.show()
