@@ -26,7 +26,7 @@
 </head>
 <body>
 	<header>
-		<h2 class="header-title">관리자 페이지</h2>
+		<h2 class="header-title">직원 페이지</h2>
 	</header>
 	<!-- nav와 main을 가로로 나란히 배치하기위한 컨테이너 -->
 	<div class="container">

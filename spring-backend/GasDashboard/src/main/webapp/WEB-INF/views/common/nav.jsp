@@ -66,7 +66,7 @@
 	<c:if test="${not empty currentUserInfo}">
 		<%-- 마이페이지 --%>
 	    <div class="nav-menu" onclick="toggleSubmenu(this)">
-	      <span class="nav-link">마이페이지</span>
+	      <span class="nav-link">마이 페이지</span>
 	      <div class="submenu">
 	        <a class="nav-link" href="/myUsage">나의 사용량 보기</a>
 	        <a class="nav-link" href="/profileEdit">회원정보 수정</a>
@@ -76,11 +76,11 @@
 		<%--  관리자/매니저만 --%>
 	    <c:if test="${currentUserInfo.user_type == 'admin' || currentUserInfo.user_type == 'manager' || currentUserInfo.user_type == 'managerA'}">
 	      <div class="nav-menu" onclick="toggleSubmenu(this)">
-	        <span class="nav-link">관리자 페이지</span>
+	        <span class="nav-link">운영 페이지</span>
 	        <div class="submenu">
-	          <a class="nav-link" href="/admin">관리 기능</a>
+	          <a class="nav-link" href="/admin">직원 페이지</a>
 	          <c:if test="${currentUserInfo.user_type == 'admin'}">
-	            <a class="nav-link" href="/account">사용자 계정 관리</a>
+	            <a class="nav-link" href="/account">관리자 페이지</a>
 	          </c:if>
 	        </div>
 	      </div>

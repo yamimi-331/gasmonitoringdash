@@ -17,7 +17,7 @@
 </head>
 <body>
 	<header>
-		<h2 class="header-title">사용자 계정 관리 페이지</h2>
+		<h2 class="header-title">관리자 페이지</h2>
 	</header>
 	<!-- nav와 main을 가로로 나란히 배치하기위한 컨테이너 -->
 	<div class="container">
@@ -45,7 +45,7 @@
 					<th>사용자번호</th>
 					<th>아이디</th>
 					<th>이름</th>
-					<th>현재 등급</th>
+					<th>현재 권한</th>
 					<th>승인 버튼</th>
 				</tr>
 				</thead>
@@ -101,12 +101,12 @@
 			</div>
 			<!-- 사용자 권한 등급 수정 start------------------------------ -->
 				<div class="result-container">
-					<h2 class="no-margin">사용자 권한 등급 수정</h2>
+					<h2 class="no-margin">사용자 권한 수정</h2>
 					<div class="black-line"></div>
 					<div class="result-inner-container">
 						<div class="search-area">
 							<select id="div_level" name="div_level">
-								<option value="">-- 권한 등급 선택 --</option>
+								<option value="">-- 권한 선택 --</option>
 								<option value="common">일반 회원</option>
 								<option value="manager">직원</option>
 								<option value="admin">관리자</option>
@@ -125,10 +125,10 @@
 							</colgroup>
 							<thead>
 							<tr>
-								<th>일련번호</th>
+								<th>사용자번호</th>
 								<th>아이디</th>
 								<th>이름</th>
-								<th>현재 등급</th>
+								<th>현재 권한</th>
 							</tr>
 							</thead>
 							<tbody>
