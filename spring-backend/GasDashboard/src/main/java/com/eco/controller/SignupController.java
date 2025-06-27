@@ -33,7 +33,6 @@ public class SignupController {
 	// 회원가입 DB INSERT
 	@PostMapping("")
 	public String signupPost(UserVO user) {
-		log.info(user);
 		service.signup(user);
 		return "login";
 	}

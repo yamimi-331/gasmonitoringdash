@@ -99,7 +99,6 @@ public class AccountController {
 		}
 		
 		user.setUser_type(resultType);
-		log.info(user);
 				
 		adminService.changeUserType(user);
 

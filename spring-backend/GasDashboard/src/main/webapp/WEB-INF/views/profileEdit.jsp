@@ -136,7 +136,7 @@
 
 			<!-- 회원 탈퇴 폼 -->
 			<form class="button-group" id="profiledeleteForm" method="post" action="/profileEdit/delete">
-				<a href="javascript:void(0);" onclick="return confirmDelete()" class="del-account">회원 탈퇴</a>
+				<button type="submit" onclick="return confirmDelete()" class="del-account">회원 탈퇴</button>
 			</form>
 		</div>
 	</main>

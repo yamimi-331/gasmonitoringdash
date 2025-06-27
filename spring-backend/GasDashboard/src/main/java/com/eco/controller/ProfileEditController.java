@@ -38,7 +38,6 @@ public class ProfileEditController {
 	// 회원정보 수정 페이지 진입
 	@GetMapping("")
 	public String profileEditPage(Model model, HttpSession session) {
-		log.info("회원정보 수정");
 		UserVO user = (UserVO) session.getAttribute("currentUserInfo");
 
 		if (user == null) {

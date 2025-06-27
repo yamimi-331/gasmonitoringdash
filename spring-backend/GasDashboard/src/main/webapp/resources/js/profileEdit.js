@@ -143,11 +143,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     window.confirmDelete = function () {
-        if (!checkPasswordMatch()) {
-            alert("비밀번호가 일치하지 않습니다.");
-            pwCheckField.focus();
+        if (!isPasswordVerified) {
+            alert("현재 비밀번호 확인을 먼저 해주세요.");
+            pwField.focus();
             return false;
         }
+        
         return confirm("정말로 회원을 탈퇴하시겠습니까?\n계정복구는 당사로 문의해주시기 바랍니다.");
     };
 });
