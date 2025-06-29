@@ -38,7 +38,7 @@ public class LoginController {
 			return "redirect: /";
 		} else {
 			// 로그인 실패 처리
-			model.addAttribute("errorMessage", "아이디 및 비밀번호가 틀립니다.");
+			model.addAttribute("message", "아이디 및 비밀번호가 틀립니다.");
 			return "login";
 		}
 	}

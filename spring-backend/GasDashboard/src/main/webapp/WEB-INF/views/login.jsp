@@ -44,9 +44,9 @@
 		
 	<footer></footer>
 	
-	<c:if test="${not empty errorMessage}">
+	<c:if test="${not empty message}">
    	 	<script>
-        	alert('${errorMessage}');
+        	alert('${message}');
     	</script>
 	</c:if>
 	

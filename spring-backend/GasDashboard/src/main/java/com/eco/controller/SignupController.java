@@ -32,8 +32,9 @@ public class SignupController {
 	
 	// 회원가입 DB INSERT
 	@PostMapping("")
-	public String signupPost(UserVO user) {
+	public String signupPost(UserVO user, Model model) {
 		service.signup(user);
+		model.addAttribute("message", "회원가입이 완료 되었습니다.");
 		return "login";
 	}
 	
