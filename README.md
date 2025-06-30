@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/46f48234-72c8-44ff-81d5-e481425a5167)## Gas Monitoring Dashboard
+## Gas Monitoring Dashboard
 
 ## 💡 프로젝트 개요
 **Gas Monitoring Dashboard**는  가스 공급량 공공 데이터를 기반으로 **XGBoost, LSTM, Prophet** 모델을 활용하여 수요를 예측하고, 예측 결과를 시각화 및 관리할 수 있도록  **Spring MVC와 FastAPI를 연동한 모니터링 시스템**입니다. 본 프로젝트는 가스 수요 예측의 정확성을 높이고, 예측 결과를 효율적으로 관리 및 모니터링하는 데 중점을 두었습니다.
