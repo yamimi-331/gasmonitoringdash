@@ -1,4 +1,4 @@
-## Gas Monitoring Dashboard
+![image](https://github.com/user-attachments/assets/46f48234-72c8-44ff-81d5-e481425a5167)## Gas Monitoring Dashboard
 
 ## 💡 프로젝트 개요
 **Gas Monitoring Dashboard**는  가스 공급량 공공 데이터를 기반으로 **XGBoost, LSTM, Prophet** 모델을 활용하여 수요를 예측하고, 예측 결과를 시각화 및 관리할 수 있도록  **Spring MVC와 FastAPI를 연동한 모니터링 시스템**입니다. 본 프로젝트는 가스 수요 예측의 정확성을 높이고, 예측 결과를 효율적으로 관리 및 모니터링하는 데 중점을 두었습니다.
@@ -14,49 +14,47 @@
 - 아키텍처: MVC (Spring) + RESTful API (Spring ↔ FastAPI) + Machine Learning (FastAPI)
 - 예측 모델: Python (XGBoost, LSTM, Prophet)
 
-## 📦 프로젝트 구조
+## 📁 프로젝트 구조
 
 프로젝트는 효율적인 관리와 역할 분담을 위해 다음과 같이 모듈화하여 구성되었습니다.
 
 ```
-GasMonitoringDashboard/
-├── fastapi-ml/            # 예측 모델 및 API 서버 (FastAPI)
-│   ├── data/              # 원본 및 전처리 데이터 저장소
-│   ├── models/            # 학습된 모델 파일 (XGBoost, LSTM 등)
-│   ├── prediction/        # 예측 로직
-│   ├── preprocessing/     # 데이터 전처리
-│   ├── training/          # 모델 학습 스크립트
-│   ├── visualization/     # 시각화 및 결과 확인용
-│   ├── main.py            # FastAPI 실행 진입점
-│   ├── coldDaySupply.py   # 한파일 시나리오 예측
-│   ├── population.py      # 인구 기반 수요 영향
-│   ├── yearsupply.py      # 연간 공급량 예측
-│   └── requirements.txt   # Python 의존성 명세
-│
-├── mysql-query/           # MySQL 테이블 및 더미 데이터 생성 코드
-│   ├── table_create.sql
-│   ├── t_local_insert.sql
-│   ├── t_public_insert.sql
-│   ├── t_usage_insert.sql
-│   ├── t_user_insert.sql
-│   └── dummy_data_insert.sql
-│
-├── spring-backend/        # Spring MVC 백엔드 (Java)
-│   └── GasDashboard/
-│       ├── src/main/java/com/eco/
-│       │   ├── controller/    # web 컨트롤러
-│       │   ├── domain/        # VO/DTO 클래스
-│       │   ├── exception/     # 예외 처리
-│       │   ├── mapper/        # MyBatis 매퍼 인터페이스
-│       │   └── service/       # 비즈니스 로직
-│       ├── resources/
-│       │   ├── com/eco/mapper/       # MyBatis XML
-│       │   ├── log4j.xml
-│       │   └── log4jdbc.log4j2.properties
-│       ├── webapp/                   # JSP 및 정적 자원
-│       └── .gitignore             # Git 이그노어 (spring 내부 추가용: sts)  
-├── .gitignore              # Git 이그노어(전체 프로젝트 용: vscode)
-└── README.md               # 프로젝트 설명 파일
+📁GasMonitoringDashboard/
+├── 📁fastapi-ml/            # 예측 모델 및 API 서버 (FastAPI)
+│   ├── 📁data/              # 원본 및 전처리 데이터 저장소
+│   ├── 📁models/            # 학습된 모델 파일 (XGBoost, LSTM 등)
+│   ├── 📁prediction/        # 예측 로직
+│   ├── 📁preprocessing/     # 데이터 전처리
+│   ├── 📁training/          # 모델 학습 스크립트
+│   ├── 📁visualization/     # 시각화 및 결과 확인용
+│   ├── 🐍main.py            # FastAPI 실행 진입점
+│   ├── 🐍coldDaySupply.py   # 한파일 시나리오 예측
+│   ├── 🐍population.py      # 인구 기반 수요 영향
+│   ├── 🐍yearsupply.py      # 연간 공급량 예측
+│   └── 📑requirements.txt   # Python 의존성 명세
+├── 📁mysql-query/           # MySQL 테이블 및 더미 데이터 생성 코드
+│   ├── 📑table_create.sql
+│   ├── 📑t_local_insert.sql
+│   ├── 📑t_public_insert.sql
+│   ├── 📑t_usage_insert.sql
+│   ├── 📑t_user_insert.sql
+│   └── 📑dummy_data_insert.sql
+├── 📁spring-backend/        # Spring MVC 백엔드 (Java)
+│   └── 📁GasDashboard/
+│       ├── 📁src/main/java/com/eco/
+│       │   ├── 📁controller/    # web 컨트롤러
+│       │   ├── 📁domain/        # VO/DTO 클래스
+│       │   ├── 📁exception/     # 예외 처리
+│       │   ├── 📁mapper/        # MyBatis 매퍼 인터페이스
+│       │   └── 📁service/       # 비즈니스 로직
+│       ├── 📁resources/
+│       │   ├── 📁com/eco/mapper/       # MyBatis XML
+│       │   ├── 📑log4j.xml
+│       │   └── 📑log4jdbc.log4j2.properties
+│       ├── 📁webapp/                   # JSP 및 정적 자원
+│       └── 📑.gitignore             # Git 이그노어 (spring 내부 추가용: sts)  
+├── 📑.gitignore              # Git 이그노어(전체 프로젝트 용: vscode)
+└── 📑README.md               # 프로젝트 설명 파일
 ```
 
 ## ✨ 주요 기능
