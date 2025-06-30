@@ -624,7 +624,7 @@ async function loadWinterCorrelation(localName, year) {
     	        fill: false
     	      },  {
     	        type: 'line', // 혹은 'line' 으로 꺾은선 변경 가능
-    	        label: "가스사용량",
+    	        label: "가스공급량",
     	        data: gasSupply,
     	        borderColor: "rgba(54, 162, 235,  1)",
     	        backgroundColor: "rgba(54, 162, 235, 0.1)",
@@ -644,7 +644,7 @@ async function loadWinterCorrelation(localName, year) {
     	    plugins: {
     	      title: {
     	        display: true,
-    	        text: localName+"의 "+ year + "년 동계 한파 일 수 & 가스 사용량 차트"
+    	        text: localName+"의 "+ year + "년 동계 한파 일 수 & 가스 공급량 차트"
     	      }
     	    },
     	    scales: {
@@ -664,7 +664,7 @@ async function loadWinterCorrelation(localName, year) {
     	      y2: {
     	        type: 'linear',
     	        position: 'left',
-    	        title: { display: true, text: '가스사용량 (백만 m³)' },
+    	        title: { display: true, text: '가스공급량 (백만 m³)' },
 				ticks:{
 					callback: function(value){
 						return (value / 1000000).toFixed(0)
@@ -698,7 +698,7 @@ async function loadWinterCorrelation(localName, year) {
 	          },
 	          {
 	            type: 'line',
-	            label: "가스사용량",
+	            label: "가스공급량",
 	            data: gasSupply,
 	            borderColor: "rgba(54, 162, 235, 1)",
 	            backgroundColor: "rgba(54, 162, 235, 0.1)",
@@ -718,7 +718,7 @@ async function loadWinterCorrelation(localName, year) {
 	        plugins: {
 	          title: {
 	            display: true,
-	            text: `${localName}의 ${year}년 기온 & 가스 사용량 차트`
+	            text: `${localName}의 ${year}년 기온 & 가스 공급량 차트`
 	          }
 	        },
 	        scales: {
@@ -732,7 +732,7 @@ async function loadWinterCorrelation(localName, year) {
 	          y2: {
 	            type: 'linear',
 	            position: 'left',
-	            title: { display: true, text: '가스사용량 (백만 m³)' },
+	            title: { display: true, text: '가스공급량 (백만 m³)' },
 	            ticks: {
 	              callback: function (value) {
 	                return (value / 1000000).toFixed(0)
