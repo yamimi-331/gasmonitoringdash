@@ -6,7 +6,7 @@
 ## 🛠️ 개발 환경 및 기술 스택
 
 - 개발 기간: 2025년 6월 13일 ~ 2025년 7월 1일
-- 개발자: 신혁주(팀장), 팀원 2명
+- 개발자: 신혁주(팀장), 박정현, 팀원
 - 프레임워크: Spring Framework (Spring MVC), FastAPI
 - IDE: STS3 (Spring Tool Suite 3)
 - 서버: Apache Tomcat 9 (Spring Backend), Uvicorn (FastAPI)
@@ -130,6 +130,10 @@ uvicorn main:app --reload
  - Apache Tomcat 9 서버를 IDE에 연동하고, 프로젝트를 서버에 추가합니다.
  - Tomcat 서버를 시작하여 웹 애플리케이션을 실행합니다.
 
-## 개발자 정보
- - 개발자: 신혁주(Shin Hyeokju)
- - GitHub: https://github.com/tmxose/GasMonitoringDashboard.git
+## **🚀 프로젝트 시연 영상**
+
+
+https://github.com/user-attachments/assets/0f033999-f4a4-4dd8-b7b1-6de7bfeb55c6
+
+
+
